@@ -3,6 +3,8 @@ import NavBars from "./components/NavBars"
 import EditorTools from "./tools/EditorTools"
 import { useEditorProvider } from "./context/EditorProvider"
 import { DragAndDropProvider } from "./context/DragDropProvider"
+import DivElement from "./components/DivElement"
+import ButtonElement from "./components/ButtonElement"
 
 function App() {
   const { openEditor } = useEditorProvider()
@@ -18,6 +20,8 @@ function App() {
             </div>
             <div>
               <NavBars />
+              <DivElement />
+              <ButtonElement />
             </div>
           </div>
           {openEditor && <EditorTools />}

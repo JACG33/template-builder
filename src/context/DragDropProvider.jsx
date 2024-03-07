@@ -26,7 +26,7 @@ export function DragAndDropProvider({ children }) {
   const handleDragEnter = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    setdragEnter("border-blue-500")
+    setdragEnter("bg-white/10")
   }
   const handleDrop = (e) => {
     e.preventDefault()
