@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useDragAndDropProvider } from '../context/DragDropProvider'
-import { useEffect } from 'react'
 
 export const BuilderArea = () => {
   const { handleDragEnter, handleDrop, dragEnter, itemsToTemplate, handleOver, handleLeave } = useDragAndDropProvider()
@@ -13,7 +12,7 @@ export const BuilderArea = () => {
 
   return (
     <div>
-      <div className={`${components.length > 0 ? "" : "h-screen flex justify-center items-center"} ${dragEnter}`} onDragEnterCapture={e => handleDragEnter(e)} onDragOver={e => handleOver(e)} onDrop={e => handleDrop(e)} onDragLeave={e => handleLeave(e)}>
+      <div className={`${components.length == 0 && "h-screen flex justify-center items-center"} ${dragEnter}`} onDragEnterCapture={e => handleDragEnter(e)} onDragOver={e => handleOver(e)} onDrop={e => handleDrop(e)} onDragLeave={e => handleLeave(e)}>
         {components.length > 0
           ?
           components.map((Item) =>
@@ -26,7 +25,7 @@ export const BuilderArea = () => {
       </div>
 
       {/*  */}
-      <div className={`${components.length > 0 ? "h-[80vh]" : ""} ${dragEnter}`} onDragEnterCapture={e => handleDragEnter(e)} onDragOver={e => handleOver(e)} onDrop={e => handleDrop(e)} onDragLeave={e => handleLeave(e)}>
+      <div className={`${components.length > 0 && "h-[80vh]"} ${dragEnter}`} onDragEnterCapture={e => handleDragEnter(e)} onDragOver={e => handleOver(e)} onDrop={e => handleDrop(e)} onDragLeave={e => handleLeave(e)}>
       </div>
     </div>
   )

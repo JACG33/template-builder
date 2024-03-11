@@ -1,35 +1,14 @@
-import { useEffect } from "react"
-import { useState } from "react"
-import { useEditorProvider } from "../../context/EditorProvider"
+import BaseElement from "./BaseElement"
 
 const placeholder = {
-  padding: "15px 1px"
+  padding: "15px 1px",
+  width: "100%",
+  backgroundColor:"#ffcc22"
 }
 
 const VerticalNav = ({ id }) => {
-  const { configComponent, handleOpenEditor } = useEditorProvider()
-  const [configOfComponent, setConfigOfComponent] = useState(placeholder)
-  const [editorMode, setEditorMode] = useState("hover:border")
-
-  useEffect(() => {
-    if (configComponent) setConfigOfComponent(configComponent)
-    // console.log(configComponent);
-  }, [configComponent])
-
-
-  return (
-    <nav className={`w-full h-24 bg-blue-300 ${editorMode}`}
-      onClick={e => handleOpenEditor(
-        {
-          conf: configOfComponent?.[id] ? configOfComponent[id] : placeholder,
-          name: id,
-          open: true
-        }
-      )}
-      style={configComponent?.[id] ? configComponent[id] : placeholder}>
-      <div className="bg-indigo-500 w-full h-full"></div>
-    </nav>
-  )
+ 
+  return (<BaseElement TypeElement={"nav"} id={id} placeholder={placeholder} />)
 }
 
 export default VerticalNav

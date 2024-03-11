@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useEditorProvider } from '../context/EditorProvider'
 import EditorToolsHeader from './EditorToolsHeader'
-import { BorderRadius, Margin, Padding } from './stylizers'
+import { BackgroundColor, BorderRadius, Margin, Padding } from './stylizers'
 import { STYLES } from '../constants/styles'
 
 const EditorTools = () => {
@@ -10,8 +10,11 @@ const EditorTools = () => {
   useEffect(() => {
     const alterConf = { ...configComponent[actualConfig] }
     for (const iterator in alterConf) {
-      if (typeof alterConf[iterator] == 'string') {
+      if (typeof alterConf[iterator] == 'string' && alterConf[iterator].includes("px")) {
         alterConf[iterator] = alterConf[iterator]?.replaceAll("px", "").split(" ")
+      }
+      if (typeof alterConf[iterator] == 'string' && alterConf[iterator].includes("%")) {
+        alterConf[iterator] = alterConf[iterator]?.replaceAll("%", "").split(" ")
       }
     }
     setConfigTemplate(alterConf)
@@ -23,19 +26,24 @@ const EditorTools = () => {
     if (target.name == "padding") {
       const padding = configTemplate.padding ? configTemplate.padding : ['0', '0']
       target.dataset.block ? padding[0] = target.value : padding[1] = target.value
-      setConfigTemplate({ ...configTemplate, "padding": padding })
+      setConfigTemplate({ ...configTemplate, [target.name]: padding })
       handleEditComponent({ ...configTemplate, [target.name]: `${padding[0]}px ${padding[1]}px` })
     }
     if (target.name == "margin") {
       const margin = configTemplate.margin ? configTemplate.margin : ['0', '0']
       target.dataset.block ? margin[0] = target.value : margin[1] = target.value
-      setConfigTemplate({ ...configTemplate, "margin": margin })
+      setConfigTemplate({ ...configTemplate, [target.name]: margin })
       handleEditComponent({ ...configTemplate, [target.name]: `${margin[0]}px ${margin[1]}px` })
     }
     if (target.name == "borderRadius") {
       let borderRadius = target.value
-      setConfigTemplate({ ...configTemplate, "borderRadius": [borderRadius] })
-      handleEditComponent({ ...configTemplate, "borderRadius": `${borderRadius}px` })
+      setConfigTemplate({ ...configTemplate, [target.name]: [borderRadius] })
+      handleEditComponent({ ...configTemplate, [target.name]: `${borderRadius}%` })
+    }
+    if (target.name == "backgroundColor") {
+      let backgroundColor = target.value.toLocaleUpperCase()
+      setConfigTemplate({ ...configTemplate, [target.name]: [backgroundColor] })
+      handleEditComponent({ ...configTemplate, [target.name]: `${backgroundColor}` })
     }
   }
 
@@ -45,6 +53,7 @@ const EditorTools = () => {
       <Padding configTemplate={configTemplate} handleChange={handleChange} />
       <Margin configTemplate={configTemplate} handleChange={handleChange} />
       <BorderRadius configTemplate={configTemplate} handleChange={handleChange} />
+      <BackgroundColor configTemplate={configTemplate} handleChange={handleChange} />
     </div>
   )
 }

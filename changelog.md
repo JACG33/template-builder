@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.2
++ Se agrego un nuevo componente en la carpeta templatesui/BaseElemnt.jsx, con le fin de reducir la duplicidad de codigo y funcion como un wrapper.
++ Se modificarons los componentes de la carpeta templateui para hacer uso del nuevo componete.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.15
 + Se agregaron dos nuevos contextos para controlar mejor la configuracion de la edicion de los elementos, y que elementos se arrastras al area de __build__.
   + DragDropProvider.
