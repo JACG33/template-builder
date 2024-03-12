@@ -6,7 +6,7 @@ const placeholder = {
 }
 const Button = ({ id }) => {
   return (
-    <BaseElement TypeElement={"button"} id={id} placeholder={placeholder}>Click</BaseElement>
+    <BaseElement TypeElement={"button"} id={id} placeholder={placeholder} dataAttribute={"Button"}>Click</BaseElement>
   )
 }
 

@@ -38,7 +38,7 @@ const EditorTools = () => {
     if (target.name == "borderRadius") {
       let borderRadius = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [borderRadius] })
-      handleEditComponent({ ...configTemplate, [target.name]: `${borderRadius}%` })
+      handleEditComponent({ ...configTemplate, [target.name]: `${borderRadius}px` })
     }
     if (target.name == "backgroundColor") {
       let backgroundColor = target.value.toLocaleUpperCase()

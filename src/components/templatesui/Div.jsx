@@ -5,10 +5,8 @@ const placeholder = {
   height: "50px"
 }
 const Div = ({ id }) => {
-
-
   return (
-    <BaseElement TypeElement={"div"} id={id} placeholder={placeholder} />
+    <BaseElement TypeElement={"div"} id={id} placeholder={placeholder} dataAttribute={"Div"} />
   )
 }
 

@@ -29,7 +29,10 @@ export function EditorProvider({ children }) {
       setOpenEditor(true)
       setConfigComponent({ ...configComponent, [name]: conf })
       handleActualConfig(name)
-    } else setOpenEditor(!openEditor)
+    } else {
+      setActualConfig(null)
+      setOpenEditor(!openEditor)
+    }
   }
 
 

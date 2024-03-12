@@ -5,7 +5,7 @@ const ButtonElement = () => {
   const {handleDragginElement } = useDragAndDropProvider()
   return (
     <WrapperComponents secctionName={"Buttons"}>
-      <div className="border rounded-md text-center cursor-pointer" draggable data-component='Button' onDragStartCapture={handleDragginElement}>
+      <div className="border rounded-md text-center cursor-pointer" draggable data-component='Button' data-typehtml="button" onDragStartCapture={handleDragginElement}>
         ButtonElement {"<button>"}
       </div>
     </WrapperComponents>

@@ -8,7 +8,7 @@ const placeholder = {
 
 const VerticalNav = ({ id }) => {
  
-  return (<BaseElement TypeElement={"nav"} id={id} placeholder={placeholder} />)
+  return (<BaseElement TypeElement={"nav"} id={id} placeholder={placeholder} dataAttribute={"VerticalNav"} />)
 }
 
 export default VerticalNav

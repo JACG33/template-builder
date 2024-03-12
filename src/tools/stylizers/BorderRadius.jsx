@@ -3,7 +3,7 @@ const BorderRadius = ({ handleChange, configTemplate }) => {
     <div>
       <span>Border Radius</span>
       <div className="flex items-center gap-2">
-        <input type="range" name="borderRadius" min={0} max={100} onChange={handleChange} value={configTemplate?.borderRadius ? configTemplate.borderRadius[0] : 0} /><span>{configTemplate?.borderRadius ? configTemplate.borderRadius[0] : 0}%</span>
+        <input type="number" name="borderRadius" min={0} max={10000} onChange={handleChange} value={configTemplate?.borderRadius ? configTemplate.borderRadius[0] : 0} />
       </div>
     </div>
   )
