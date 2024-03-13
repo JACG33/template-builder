@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.32
++ Se agrego una nueva carpeta __sidebarelementsitems__ para organizar los items que se renderizan en el __sidebar__ izquierdo.
++ Se agrego un nuevo componente __SideBarElementsItems.jsx__ para contener los componentes de la nueva carpeta creada y renderizarlos en el __sidebar__ izquierdo.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.30
 + Se corrigio el fallo de los estilos cambiando la logica de __useState()__ a __useref()__.
 + Se agrego una nueva funcionalidad al EditorProvider para eliminar del __useState()__ la configuracion de un componente eliminado.

@@ -1,5 +1,5 @@
-import { useDragAndDropProvider } from '../context/DragDropProvider'
-import { WrapperComponents } from '../layouts/WrapperComponents'
+import { useDragAndDropProvider } from '../../context/DragDropProvider'
+import { WrapperComponents } from '../../layouts/WrapperComponents'
 
 const DivElement = () => {
   const {handleDragginElement } = useDragAndDropProvider()

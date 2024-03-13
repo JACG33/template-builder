@@ -1,10 +1,8 @@
 import { BuilderArea } from "./components/BuilderArea"
-import NavBars from "./components/NavBars"
 import EditorTools from "./tools/EditorTools"
 import { useEditorProvider } from "./context/EditorProvider"
 import { useDragAndDropProvider } from "./context/DragDropProvider"
-import DivElement from "./components/DivElement"
-import ButtonElement from "./components/ButtonElement"
+import SideBarElementsItems from "./components/SideBarElementsItems"
 
 function App() {
   const { openEditor } = useEditorProvider()
@@ -18,9 +16,7 @@ function App() {
             <button type="button" className='p-2 rounded-tr-lg rounded-br-lg bg-slate-500'>search</button>
           </div>
           <div>
-            <NavBars />
-            <DivElement />
-            <ButtonElement />
+            <SideBarElementsItems />
           </div>
         </div>
         {openEditor && <EditorTools />}
