@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { useEditorProvider } from "./EditorProvider";
 
 const DragAndDropContext = createContext({
   dragginElement: "",
@@ -22,6 +23,7 @@ export function DragAndDropProvider({ children }) {
   const [subItemsToTemplate, setSubItemsToTemplate] = useState([])
   const [dragEnter, setdragEnter] = useState("")
   const [counterComponents, setCounterComponents] = useState(0)
+  const { deleteConfigStyle}=useEditorProvider()
 
   const handleDragginElement = (e, id) => {
     setDragginElement(e.target)
@@ -110,6 +112,7 @@ export function DragAndDropProvider({ children }) {
     const filteredSubComponents = subItemsToTemplate.filter((ele) => ele.id !== id && ele.parentId !== id);
     setitemsToTemplate(filteredComponents);
     setSubItemsToTemplate(filteredSubComponents);
+    deleteConfigStyle(id)
   }
 
   return (

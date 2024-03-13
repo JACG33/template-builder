@@ -9,7 +9,8 @@ const EditorContext = createContext({
   handleOpenEditor: ({ conf, name, open }) => { },
   actualConfig: false,
   setActualConfig: () => { },
-  handleActualConfig: () => { }
+  handleActualConfig: () => { },
+  deleteConfigStyle: () => { }
 })
 
 export function EditorProvider({ children }) {
@@ -35,11 +36,17 @@ export function EditorProvider({ children }) {
     }
   }
 
+  const deleteConfigStyle = (id) => {
+    const alter = Object.assign({}, configComponent)
+    delete alter[id]
+    setConfigComponent(alter)
+  }
+
 
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle
       }}
     >
       {children}

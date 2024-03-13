@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useEditorProvider } from '../context/EditorProvider'
 import EditorToolsHeader from './EditorToolsHeader'
 import { BackgroundColor, BorderRadius, Margin, Padding } from './stylizers'
@@ -6,9 +6,10 @@ import { STYLES } from '../constants/styles'
 
 const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
+  const stylesString = useRef();
   const { configComponent, handleEditComponent, actualConfig } = useEditorProvider()
   useEffect(() => {
-    const alterConf = { ...configComponent[actualConfig] }
+    const alterConf = Object.assign({}, configComponent[actualConfig])
     for (const iterator in alterConf) {
       if (typeof alterConf[iterator] == 'string' && alterConf[iterator].includes("px")) {
         alterConf[iterator] = alterConf[iterator]?.replaceAll("px", "").split(" ")
@@ -17,6 +18,7 @@ const EditorTools = () => {
         alterConf[iterator] = alterConf[iterator]?.replaceAll("%", "").split(" ")
       }
     }
+    stylesString.current = { ...configComponent[actualConfig] }
     setConfigTemplate(alterConf)
   }, [configComponent])
 
@@ -25,26 +27,27 @@ const EditorTools = () => {
     const { target } = e
     if (target.name == "padding") {
       const padding = configTemplate.padding ? configTemplate.padding : ['0', '0']
-      target.dataset.block ? padding[0] = target.value : padding[1] = target.value
+      padding[Number(target.dataset.position)] = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: padding })
-      handleEditComponent({ ...configTemplate, [target.name]: `${padding[0]}px ${padding[1]}px` })
+      stylesString.current = { ...stylesString.current, [target.name]: `${padding[0]}px ${padding[1]}px` }
     }
     if (target.name == "margin") {
       const margin = configTemplate.margin ? configTemplate.margin : ['0', '0']
-      target.dataset.block ? margin[0] = target.value : margin[1] = target.value
+      margin[Number(target.dataset.position)] = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: margin })
-      handleEditComponent({ ...configTemplate, [target.name]: `${margin[0]}px ${margin[1]}px` })
+      stylesString.current = { ...stylesString.current, [target.name]: `${margin[0]}px ${margin[1]}px` }
     }
     if (target.name == "borderRadius") {
       let borderRadius = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [borderRadius] })
-      handleEditComponent({ ...configTemplate, [target.name]: `${borderRadius}px` })
+      stylesString.current = { ...stylesString.current, [target.name]: `${borderRadius}px` }
     }
     if (target.name == "backgroundColor") {
       let backgroundColor = target.value.toLocaleUpperCase()
       setConfigTemplate({ ...configTemplate, [target.name]: [backgroundColor] })
-      handleEditComponent({ ...configTemplate, [target.name]: `${backgroundColor}` })
+      stylesString.current = { ...stylesString.current, [target.name]: `${backgroundColor}` }
     }
+    handleEditComponent({ ...stylesString.current })
   }
 
   return (

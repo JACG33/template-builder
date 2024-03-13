@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.30
++ Se corrigio el fallo de los estilos cambiando la logica de __useState()__ a __useref()__.
++ Se agrego una nueva funcionalidad al EditorProvider para eliminar del __useState()__ la configuracion de un componente eliminado.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.25
 + Se agrego la funcionalidad de poder migrar un componente a otro. 
 + Ahora se debe corregir un fallo al renderizar los estilos del componente migrado, que se encuentrar en el __EditorProvide__ ya al realizar cambios algunos de guardan en arreglos y no puden renderizarse correctamente.
