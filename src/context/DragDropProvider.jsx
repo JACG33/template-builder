@@ -72,14 +72,23 @@ export function DragAndDropProvider({ children }) {
       import("../components/templatesui/").then(res => setSubItemsToTemplate([...subItemsToTemplate, { parentId, id: count, component: res[Com], type: typehtml }]))
       setCounterComponents(count)
     } else {
-      const findComponents = [...itemsToTemplate].filter((ele) => ele.id == idDragginElement);
-      const filteredComponents = itemsToTemplate.filter((ele) => ele.id !== idDragginElement);
+      const idParent = Number(e.target.dataset.idcomponent);
+      const findComponents = itemsToTemplate.map(ele=>ele).filter((ele) => ele.id == idDragginElement);
+      const findSubComponent = subItemsToTemplate.map(ele=>ele).filter((ele) => ele.id == idDragginElement);
+      const filteredComponents = itemsToTemplate.map(ele=>ele).filter((ele) => ele.id !== idDragginElement);
 
       findComponents.forEach(ele => {
-        if (ele.id == idDragginElement) ele.parentId = e.target.dataset.idcomponent
+        if (ele.id == idDragginElement) ele.parentId = idParent
       })
-      setitemsToTemplate(filteredComponents);
+
+      findSubComponent.forEach(ele => {
+        if (ele.id == idDragginElement && ele.parentId != idParent) {
+          ele.parentId = idParent;
+        }
+      })
+
       setSubItemsToTemplate([...subItemsToTemplate, ...findComponents]);
+      setitemsToTemplate(filteredComponents);
       setIdDragginElement(null)
     }
   }

@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.25
++ Se agrego la funcionalidad de poder migrar un componente a otro. 
++ Ahora se debe corregir un fallo al renderizar los estilos del componente migrado, que se encuentrar en el __EditorProvide__ ya al realizar cambios algunos de guardan en arreglos y no puden renderizarse correctamente.
++ Se quito el __useState()__ del componente BaseElemente.jsx y se remplazo por un __useref()__.
+
 ## Version 0.0.22
 + Se agrego la funcionalidad de poder anidar elementos dentro de otros ya sea desde el sidebar de componentes o del __Builder Area__, aun no tiene soporte para migrar un componente que esta dentro de un componente a otro.
 + Se agrego y modifico funciones del Contexto DragDropProvider.

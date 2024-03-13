@@ -1,15 +1,14 @@
 import { useDragAndDropProvider } from '../../context/DragDropProvider'
 import { useEditorProvider } from '../../context/EditorProvider'
-import { useState, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute }) => {
   const { configComponent, handleOpenEditor } = useEditorProvider()
-  const [configOfComponent, setConfigOfComponent] = useState(placeholder)
+  const styles = useRef(placeholder)
   const { handleDragginElement, handleSubDrop, subItemsToTemplate } = useDragAndDropProvider()
 
   useEffect(() => {
-    setConfigOfComponent(configComponent)
-    // console.log(configComponent);
+    styles.current = configComponent
   }, [configComponent])
 
   return (
@@ -17,7 +16,7 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute }) 
       onClickCapture={e => {
         handleOpenEditor(
           {
-            conf: configOfComponent?.[id] ? configOfComponent[id] : placeholder,
+            conf: styles.current?.[id] ? styles.current[id] : placeholder,
             name: id,
             open: true
           }
