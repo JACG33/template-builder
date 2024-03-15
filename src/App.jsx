@@ -1,12 +1,11 @@
 import { BuilderArea } from "./components/BuilderArea"
 import EditorTools from "./tools/EditorTools"
 import { useEditorProvider } from "./context/EditorProvider"
-import { useDragAndDropProvider } from "./context/DragDropProvider"
 import SideBarElementsItems from "./components/SideBarElementsItems"
+import SideBarElementsRendered from "./components/SideBarElementsRendered"
 
 function App() {
   const { openEditor } = useEditorProvider()
-  const { itemsToTemplate, subItemsToTemplate } = useDragAndDropProvider()
   return (
     <div className='grid grid-cols-[250px_1fr_150px]'>
       <aside className='bg-slate-600 w-[250px] h-screen overflow-x-auto'>
@@ -16,7 +15,7 @@ function App() {
             <button type="button" className='p-2 rounded-tr-lg rounded-br-lg bg-slate-500'>search</button>
           </div>
           <div>
-            <SideBarElementsItems />
+            {!openEditor && <SideBarElementsItems />}
           </div>
         </div>
         {openEditor && <EditorTools />}
@@ -24,10 +23,7 @@ function App() {
       <main className="h-screen overflow-auto">
         <BuilderArea />
       </main>
-      <aside className='bg-slate-600 w-full flex flex-col h-screen overflow-x-auto'>
-        {itemsToTemplate.length > 0 && itemsToTemplate.map(ele => <span key={ele.id}>{`<${ele.type}>`}</span>)}
-        {subItemsToTemplate.length > 0 && subItemsToTemplate.map(ele => <span key={ele.id}>{`<${ele.type}>`}</span>)}
-      </aside>
+      <SideBarElementsRendered />
     </div>
   )
 }

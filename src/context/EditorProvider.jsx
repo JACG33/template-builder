@@ -10,7 +10,8 @@ const EditorContext = createContext({
   actualConfig: false,
   setActualConfig: () => { },
   handleActualConfig: () => { },
-  deleteConfigStyle: () => { }
+  deleteConfigStyle: () => { },
+  getConfigComponent: () => { },
 })
 
 export function EditorProvider({ children }) {
@@ -25,6 +26,13 @@ export function EditorProvider({ children }) {
     setActualConfig(nameConfig)
   }
 
+  /**
+   * Funcion para abrir el editor de estilos del Elemento/Componente elegido.
+   * @param {Object} opciones Json de opiones.
+   * @param {Object} opcoines.conf Json de la configuracion del Elemento/Componente elegido.
+   * @param {String|Number} opciones.name Nombre/Identidicador de la configuracion del Elemento/Componente elegido.
+   * @param {Boolean} opciones.open Boolean que identifica si esta o no abierto el editor de estilos del Elemento/Componente elegido.
+   */
   const handleOpenEditor = ({ conf, name, open }) => {
     if (open == true) {
       setOpenEditor(true)
@@ -42,11 +50,17 @@ export function EditorProvider({ children }) {
     setConfigComponent(alter)
   }
 
+  /**
+   * Funcion para obtener la configuracion de los estilos del Elemento/Componente elegido.
+   * @param {String|Number} id Nombre/Identidicador de la configuracion del Elemento/Componente elegido.
+   * @returns Json de la configuracion del Elemento/Componente elegido.
+   */
+  const getConfigComponent = (id) => configComponent?.[id] ? configComponent[id] : {}
 
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent
       }}
     >
       {children}

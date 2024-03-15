@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useRef } from "react";
 import { useEditorProvider } from "./EditorProvider";
 
 const DragAndDropContext = createContext({
@@ -14,6 +14,7 @@ const DragAndDropContext = createContext({
   handleLeave: () => { },
   handleDeleteComponent: () => { },
   handleDragginElement: () => { },
+  handleSortComponents: () => { },
 })
 
 export function DragAndDropProvider({ children }) {
@@ -23,13 +24,16 @@ export function DragAndDropProvider({ children }) {
   const [subItemsToTemplate, setSubItemsToTemplate] = useState([])
   const [dragEnter, setdragEnter] = useState("")
   const [counterComponents, setCounterComponents] = useState(0)
-  const { deleteConfigStyle}=useEditorProvider()
+  const { deleteConfigStyle } = useEditorProvider()
+  const draggedComponent = useRef()
+  const draggedOverComponent = useRef()
 
-  const handleDragginElement = (e, id) => {
+  const handleDragginElement = (e, id, index) => {
+    if (index != undefined) draggedComponent.current = index
+
     setDragginElement(e.target)
-    if (id) {
-      setIdDragginElement(id)
-    }
+
+    if (id) setIdDragginElement(id)
   }
 
   const handleDragEnter = (e) => {
@@ -75,9 +79,9 @@ export function DragAndDropProvider({ children }) {
       setCounterComponents(count)
     } else {
       const idParent = Number(e.target.dataset.idcomponent);
-      const findComponents = itemsToTemplate.map(ele=>ele).filter((ele) => ele.id == idDragginElement);
-      const findSubComponent = subItemsToTemplate.map(ele=>ele).filter((ele) => ele.id == idDragginElement);
-      const filteredComponents = itemsToTemplate.map(ele=>ele).filter((ele) => ele.id !== idDragginElement);
+      const findComponents = itemsToTemplate.map(ele => ele).filter((ele) => ele.id == idDragginElement);
+      const findSubComponent = subItemsToTemplate.map(ele => ele).filter((ele) => ele.id == idDragginElement);
+      const filteredComponents = itemsToTemplate.map(ele => ele).filter((ele) => ele.id !== idDragginElement);
 
       findComponents.forEach(ele => {
         if (ele.id == idDragginElement) ele.parentId = idParent
@@ -95,9 +99,11 @@ export function DragAndDropProvider({ children }) {
     }
   }
 
-  const handleOver = (e) => {
+  const handleOver = (e, id = null) => {
     e.preventDefault()
     e.stopPropagation()
+    if (id)
+      draggedOverComponent.current = id
     setdragEnter("bg-white/10")
   }
 
@@ -105,6 +111,21 @@ export function DragAndDropProvider({ children }) {
     e.preventDefault()
     e.stopPropagation()
     setdragEnter("")
+  }
+
+  const handleSortComponents = (e, index) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (draggedComponent.current != undefined) {
+      const cloneComponents = Object.assign([], itemsToTemplate)
+      const temp = cloneComponents[draggedComponent.current]
+
+      cloneComponents[draggedComponent.current] = cloneComponents[draggedOverComponent.current]
+      cloneComponents[draggedOverComponent.current] = temp
+
+      setitemsToTemplate(cloneComponents)
+    }
   }
 
   const handleDeleteComponent = (id) => {
@@ -118,7 +139,7 @@ export function DragAndDropProvider({ children }) {
   return (
     <DragAndDropContext.Provider
       value={{
-        dragEnter, itemsToTemplate, subItemsToTemplate, handleDragEnter, handleDrop, handleLeave, handleOver, handleDeleteComponent, handleDragginElement, dragginElement, handleSubDrop
+        dragEnter, itemsToTemplate, subItemsToTemplate, handleDragEnter, handleDrop, handleLeave, handleOver, handleDeleteComponent, handleDragginElement, dragginElement, handleSubDrop, handleSortComponents
       }}
     >
       {children}

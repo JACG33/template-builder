@@ -1,5 +1,14 @@
 # Template Builder
 
+## Version 0.0.38 15-MAR-2024
++ Se agrego las funcionalidad de ordernar/cambiar de lugar los componentes que estan en el __Builder Area__.
++ Se agregaron nuevos ajustes de estilos css:
+  + Witdh.
+  + Height.
+  + Display.
++ Se agrego funcionalidad al __sidebar__ derecho al seleccionar cualquiera de lo componentes se despliegan/muestran las opciones de edicion de estilos css.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.32
 + Se agrego una nueva carpeta __sidebarelementsitems__ para organizar los items que se renderizan en el __sidebar__ izquierdo.
 + Se agrego un nuevo componente __SideBarElementsItems.jsx__ para contener los componentes de la nueva carpeta creada y renderizarlos en el __sidebar__ izquierdo.

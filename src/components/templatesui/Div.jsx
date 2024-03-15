@@ -4,9 +4,9 @@ const placeholder = {
   backgroundColor: "#cccccc",
   height: "50px"
 }
-const Div = ({ id }) => {
+const Div = ({ id, indexItem }) => {
   return (
-    <BaseElement TypeElement={"div"} id={id} placeholder={placeholder} dataAttribute={"Div"} />
+    <BaseElement TypeElement={"div"} id={id} placeholder={placeholder} dataAttribute={"Div"} indexItem={indexItem} />
   )
 }
 
