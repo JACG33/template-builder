@@ -1,11 +1,11 @@
-import { useDragAndDropProvider } from '../../context/DragDropProvider'
-import { useEditorProvider } from '../../context/EditorProvider'
+import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
+import { useEditorProvider } from "../../hoks/useEditorProvider"
 import { useEffect, useRef } from 'react'
 
-const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, indexItem }) => {
+const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, indexItem, isParentComponent }) => {
   const { configComponent, handleOpenEditor } = useEditorProvider()
   const styles = useRef(placeholder)
-  const { handleDragginElement, handleSubDrop, subItemsToTemplate, handleSortComponents, handleOver } = useDragAndDropProvider()
+  const { handleDragginElement, handleSubDrop, subItemsToTemplate, handleSortComponents, handleOver, handleDropEnd } = useDragAndDropProvider()
 
   useEffect(() => {
     styles.current = configComponent
@@ -36,14 +36,14 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
       data-component={dataAttribute}
       data-idcomponent={id}
       draggable
-      onDragStartCapture={e => handleDragginElement(e, id,indexItem)}
-      onDrop={e => handleSubDrop(e, id, TypeElement)}
-      onDragOver={e => { handleOver(e, indexItem) }}
-      onDragEnd={e=>{handleSortComponents(e,indexItem)}}
+      onDragStartCapture={e => handleDragginElement(e, id, indexItem)}
+      onDropCapture={e => handleSubDrop(e, id, TypeElement)}
+      onDragOver={e => { handleOver(e, indexItem, isParentComponent) }}
+      onDragEnd={e => { handleDropEnd(e,isParentComponent) }}
     >
       {children}
-      {subItemsToTemplate.length > 0 && subItemsToTemplate.map(Item => {
-        if (Item.parentId == id) return (<Item.component key={Item.id} id={Item.id} />)
+      {subItemsToTemplate.length > 0 && subItemsToTemplate.map((Item, indexSubItem) => {
+        if (Item.parentId == id) return (<Item.component key={Item.id} id={Item.id} indexItem={indexSubItem} isParentComponent={false} />)
       })}
     </TypeElement>
   )

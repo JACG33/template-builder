@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.45 21-MAR-2024
++ Se "mejoró" la funcionalidad de ordernar/cambiar de lugar los componentes que estan en el __Builder Area__ u otro componente.
++ Se cambiaron algunos __useState()__ por __useRef()__
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.38 15-MAR-2024
 + Se agrego las funcionalidad de ordernar/cambiar de lugar los componentes que estan en el __Builder Area__.
 + Se agregaron nuevos ajustes de estilos css:

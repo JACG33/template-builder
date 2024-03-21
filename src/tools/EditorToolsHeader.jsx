@@ -1,5 +1,5 @@
-import { useEditorProvider } from '../context/EditorProvider'
-import { useDragAndDropProvider } from '../context/DragDropProvider'
+import { useEditorProvider } from '../hoks/useEditorProvider'
+import { useDragAndDropProvider } from '../hoks/useDragAndDropProvider'
 
 const EditorToolsHeader = () => {
 

@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
-const EditorContext = createContext({
+export const EditorContext = createContext({
   configComponent: false,
   setConfigComponent: () => { },
   handleEditComponent: () => { },
@@ -69,4 +69,3 @@ export function EditorProvider({ children }) {
 }
 
 
-export const useEditorProvider = () => useContext(EditorContext)

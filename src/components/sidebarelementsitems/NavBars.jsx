@@ -1,7 +1,7 @@
-import { useDragAndDropProvider } from "../../context/DragDropProvider";
+import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider";
 import { WrapperComponents } from "../../layouts/WrapperComponents";
 
-export default function NavBars() {
+const NavBars = () =>  {
   const {handleDragginElement } = useDragAndDropProvider()
   return (
     <WrapperComponents secctionName={"NavBars"}>
@@ -11,3 +11,5 @@ export default function NavBars() {
     </WrapperComponents>
   )
 }
+
+export default NavBars

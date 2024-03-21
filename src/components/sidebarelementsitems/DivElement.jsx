@@ -1,4 +1,4 @@
-import { useDragAndDropProvider } from '../../context/DragDropProvider'
+import { useDragAndDropProvider } from '../../hoks/useDragAndDropProvider'
 import { WrapperComponents } from '../../layouts/WrapperComponents'
 
 const DivElement = () => {

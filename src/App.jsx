@@ -1,6 +1,6 @@
 import { BuilderArea } from "./components/BuilderArea"
 import EditorTools from "./tools/EditorTools"
-import { useEditorProvider } from "./context/EditorProvider"
+import { useEditorProvider } from "./hoks/useEditorProvider"
 import SideBarElementsItems from "./components/SideBarElementsItems"
 import SideBarElementsRendered from "./components/SideBarElementsRendered"
 

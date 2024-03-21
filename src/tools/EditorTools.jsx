@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { useEditorProvider } from '../context/EditorProvider'
+import { useEditorProvider } from '../hoks/useEditorProvider'
 import EditorToolsHeader from './EditorToolsHeader'
 import { BackgroundColor, BorderRadius, Display, Height, Margin, Padding, Width } from './stylizers'
 import { STYLES } from '../constants/styles'

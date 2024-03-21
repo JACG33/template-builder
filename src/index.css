@@ -17,14 +17,39 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.element__drag__over {
+  position: relative;
+}
+
+.element__drag__over--left::before,
+.element__drag__over--right::after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  display: block;
+  height: 100%;
+  width: 20px;
+  background-color: #ccc;
+}
+
+.element__drag__over--left::before {
+  left: -20px;
+}
+
+.element__drag__over--right::after {
+  right: -20px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
