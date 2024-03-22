@@ -4,18 +4,25 @@ import EditorToolsHeader from './EditorToolsHeader'
 import { BackgroundColor, BorderRadius, Display, Height, Margin, Padding, Width } from './stylizers'
 import { STYLES } from '../constants/styles'
 
+const cleanText = ({ text = "", letters = [] }) => {
+  let clean = ""
+  letters.forEach(letter => { if (text.includes(letter)) clean = text.replaceAll(letter, "") })
+  return clean
+}
+
+
 const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
   const stylesString = useRef();
   const { configComponent, handleEditComponent, actualConfig } = useEditorProvider()
+  
   useEffect(() => {
     const alterConf = Object.assign({}, configComponent[actualConfig])
     for (const iterator in alterConf) {
-      if (typeof alterConf[iterator] == 'string' && alterConf[iterator].includes("px")) {
-        alterConf[iterator] = alterConf[iterator]?.replaceAll("px", "").split(" ")
-      }
-      if (typeof alterConf[iterator] == 'string' && alterConf[iterator].includes("%")) {
-        alterConf[iterator] = alterConf[iterator]?.replaceAll("%", "").split(" ")
+      let style = alterConf[iterator]
+      if (typeof alterConf[iterator] == 'string' && (style.includes("px") || style.includes("%") || style.includes("em") || style.includes("rem"))) {
+        let letters = ["px", "%", "em", "rem"]
+        alterConf[iterator] = cleanText({ text: alterConf[iterator], letters }).split(" ")
       }
     }
     stylesString.current = { ...configComponent[actualConfig] }
@@ -25,44 +32,48 @@ const EditorTools = () => {
 
   const handleChange = (e) => {
     const { target } = e
-    if (target.name == "padding") {
-      const padding = configTemplate.padding ? configTemplate.padding : ['0', '0']
-      padding[Number(target.dataset.position)] = target.value
+    // 
+    if (target.name == "padding" || target.name == "margin") {
+      const padding = configTemplate?.[target.name] || STYLES.margin
+      let type = target.dataset.sizetype
+      if (target.dataset.type) {
+        type=target.value
+      } else {
+        padding[Number(target.dataset.position)] = target.value
+      }
       setConfigTemplate({ ...configTemplate, [target.name]: padding })
-      stylesString.current = { ...stylesString.current, [target.name]: `${padding[0]}px ${padding[1]}px` }
+      stylesString.current = { ...stylesString.current, [target.name]: `${padding[0]}${type} ${padding[1]}${type} ${padding[2]}${type} ${padding[3]}${type}` }
     }
-    if (target.name == "margin") {
-      const margin = configTemplate.margin ? configTemplate.margin : ['0', '0']
-      margin[Number(target.dataset.position)] = target.value
-      setConfigTemplate({ ...configTemplate, [target.name]: margin })
-      stylesString.current = { ...stylesString.current, [target.name]: `${margin[0]}px ${margin[1]}px` }
-    }
-    if (target.name == "borderRadius") {
-      let borderRadius = target.value
-      setConfigTemplate({ ...configTemplate, [target.name]: [borderRadius] })
-      stylesString.current = { ...stylesString.current, [target.name]: `${borderRadius}px` }
-    }
-    if (target.name == "backgroundColor") {
-      let backgroundColor = target.value.toLocaleUpperCase()
-      setConfigTemplate({ ...configTemplate, [target.name]: [backgroundColor] })
-      stylesString.current = { ...stylesString.current, [target.name]: `${backgroundColor}` }
-    }
-    if (target.name == "display" || target.name == "justifyContent" || target.name == "alignItems" || target.name == "flexDirection") {
+
+    // 
+    if (target.name == "display" || target.name == "justifyContent" || target.name == "alignItems" || target.name == "flexDirection" || target.name == "backgroundColor") {
       let display = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [display] })
       stylesString.current = { ...stylesString.current, [target.name]: `${display}` }
     }
-    if (target.name == "gap") {
+
+    // 
+    if (target.name == "gap" || target.name == "borderRadius") {
       let gap = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [gap] })
       stylesString.current = { ...stylesString.current, [target.name]: `${gap}px` }
     }
+
+    // 
     if (target.name == "width" || target.name == "height") {
       let width = target.value
-      let type = target.dataset.typewidth || target.dataset.typeheight
-      setConfigTemplate({ ...configTemplate, [target.name]: [width] })
-      stylesString.current = { ...stylesString.current, [target.name]: `${width}${type}` }
+      let type = target.dataset.sizetype
+      let toSaveString = `${width}${type}`
+      let toSave = width
+      if (type == "auto") {
+        toSave = "auto"
+        toSaveString = "auto"
+      }
+      setConfigTemplate({ ...configTemplate, [target.name]: [toSave] })
+      stylesString.current = { ...stylesString.current, [target.name]: toSaveString }
     }
+
+    
     handleEditComponent({ ...stylesString.current })
   }
 

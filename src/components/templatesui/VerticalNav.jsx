@@ -1,7 +1,7 @@
 import BaseElement from "./BaseElement"
 
 const placeholder = {
-  padding: "15px 1px",
+  padding: "15px 0px 15px 0px",
   width: "100%",
   backgroundColor: "#ffcc22"
 }

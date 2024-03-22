@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.50 22-MAR-2024
++ Se cambiarion algunos componentes de la seccion __EditorTools.jsx__, algunas de la modificaciones permiten elgir el tipo medidad, asi como cambiar las medidas del top, right, bottom y left de algunos componentes.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.45 21-MAR-2024
 + Se "mejoró" la funcionalidad de ordernar/cambiar de lugar los componentes que estan en el __Builder Area__ u otro componente.
 + Se cambiaron algunos __useState()__ por __useRef()__
