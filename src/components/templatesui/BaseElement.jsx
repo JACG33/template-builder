@@ -14,9 +14,10 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
   useEffect(() => {
     handleOpenEditor(
       {
-        conf: styles.current?.[id] ? styles.current[id] : placeholder,
+        conf: styles.current?.[`${TypeElement}${id}`] ? styles.current[`${TypeElement}${id}`] : placeholder,
         name: id,
-        open: true
+        open: true,
+        cssClass:`${TypeElement}${id}`
       }
     )
   }, [])
@@ -26,13 +27,15 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
       onClickCapture={e => {
         handleOpenEditor(
           {
-            conf: styles.current?.[id] ? styles.current[id] : placeholder,
+            conf: styles.current?.[`${TypeElement}${id}`] ? styles.current[`${TypeElement}${id}`] : placeholder,
             name: id,
-            open: true
+            open: true,
+            cssClass:`${TypeElement}${id}`
           }
         )
       }}
-      style={configComponent?.[id] ? configComponent[id] : placeholder}
+      // style={configComponent?.[`${TypeElement}${id}`] ? configComponent[`${TypeElement}${id}`] : placeholder}
+      className={`${TypeElement}${id}` }
       data-component={dataAttribute}
       data-idcomponent={id}
       draggable

@@ -1,8 +1,8 @@
 import SpacingComponent from "./SpacingComponent"
 
-const Padding = ({ handleChange, configTemplate }) => {
+const Padding = ({ handleChange, configTemplate, configRef }) => {
   return (
-    <SpacingComponent configTemplate={configTemplate} handleChange={handleChange} text={"Padding"} sizeName={"padding"} />
+    <SpacingComponent configTemplate={configTemplate} handleChange={handleChange} text={"Padding"} sizeName={"padding"} configRef={configRef} />
   )
 }
 

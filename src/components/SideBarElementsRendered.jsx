@@ -15,9 +15,9 @@ const SideBarElementsRendered = () => {
       <span className='text-center'>Rendered Components</span>
       <div className='my-2 grid gap-2'>
         {itemsToTemplate?.length > 0 && itemsToTemplate.map(ele =>
-          <button type='button' onClick={e => handleSetOpenEditor(ele.id)} key={ele.id}>{`<${ele.type}>`}</button>)}
+          <button type='button' onClick={e => handleSetOpenEditor(`${ele.type}${ele.id}`)} key={ele.id}>{`<${ele.type}>`}</button>)}
         {subItemsToTemplate?.length > 0 && subItemsToTemplate.map(ele =>
-          <button type='button' onClick={e => handleSetOpenEditor(ele.id)} key={ele.id}>{`<${ele.type}>`}</button>)}
+          <button type='button' onClick={e => handleSetOpenEditor(`${ele.type}${ele.id}`)} key={ele.id}>{`<${ele.type}>`}</button>)}
       </div>
     </aside>
   )

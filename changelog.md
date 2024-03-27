@@ -1,5 +1,11 @@
 # Template Builder
 
+## Version 0.0.60 27-MAR-2024
++ Se agredo una nueva depevendencia __react-syntax-highlighter__ para resaltado de codigo, para el nuevo componente de "exportar" el template hecho.
++ Se cambio la forma de identificar los estilos del/los componentes de numeros a clases css, ahora se insertan los estilos dentro de un etiqueta __\<style>__ lo que servira al momento de querer exportar el __Html__, __CSS__ y __JavaScrip__ (proximamente).
++ La configuracion o estructura actual quizas cambie en el/los siguientes cambios.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.50 22-MAR-2024
 + Se cambiarion algunos componentes de la seccion __EditorTools.jsx__, algunas de la modificaciones permiten elgir el tipo medidad, asi como cambiar las medidas del top, right, bottom y left de algunos componentes.
 + Se hicieron otras modificaciones.

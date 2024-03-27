@@ -190,11 +190,12 @@ export function DragAndDropProvider({ children }) {
   }
 
   const handleDeleteComponent = (id) => {
-    const filteredComponents = itemsToTemplate.filter((ele) => ele.id !== id);
-    const filteredSubComponents = subItemsToTemplate.filter((ele) => ele.id !== id && ele.parentId !== id);
+    let comId=Number(id.replace(/[a-zA-Z]+/,"").replace(".",""))
+    const filteredComponents = itemsToTemplate.filter((ele) => ele.id !== comId);
+    const filteredSubComponents = subItemsToTemplate.filter((ele) => ele.id !== comId && ele.parentId !== comId);
+    deleteConfigStyle(id)
     setitemsToTemplate(filteredComponents);
     setSubItemsToTemplate(filteredSubComponents);
-    deleteConfigStyle(id)
   }
 
 

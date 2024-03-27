@@ -1,9 +1,9 @@
 import SizeComponent from "./SizeComponent"
 
-const Width = ({ handleChange, configTemplate }) => {
+const Width = ({ handleChange, configTemplate, configRef }) => {
 
   return (
-    <SizeComponent configTemplate={configTemplate} handleChange={handleChange} text={"Width"} sizeName={"width"} />
+    <SizeComponent configTemplate={configTemplate} handleChange={handleChange} text={"Width"} sizeName={"width"} configRef={configRef} />
   )
 }
 

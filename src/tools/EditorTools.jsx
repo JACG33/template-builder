@@ -15,13 +15,13 @@ const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
   const stylesString = useRef();
   const { configComponent, handleEditComponent, actualConfig } = useEditorProvider()
-  
+
   useEffect(() => {
     const alterConf = Object.assign({}, configComponent[actualConfig])
     for (const iterator in alterConf) {
       let style = alterConf[iterator]
-      if (typeof alterConf[iterator] == 'string' && (style.includes("px") || style.includes("%") || style.includes("em") || style.includes("rem"))) {
-        let letters = ["px", "%", "em", "rem"]
+      if (typeof alterConf[iterator] == 'string' && (style.includes("px") || style.includes("%") || style.includes("em") || style.includes("rem") || style.includes("vh") || style.includes("vw"))) {
+        let letters = ["px", "%", "em", "rem", "vh", "vw"]
         alterConf[iterator] = cleanText({ text: alterConf[iterator], letters }).split(" ")
       }
     }
@@ -37,7 +37,7 @@ const EditorTools = () => {
       const padding = configTemplate?.[target.name] || STYLES.margin
       let type = target.dataset.sizetype
       if (target.dataset.type) {
-        type=target.value
+        type = target.value
       } else {
         padding[Number(target.dataset.position)] = target.value
       }
@@ -73,18 +73,20 @@ const EditorTools = () => {
       stylesString.current = { ...stylesString.current, [target.name]: toSaveString }
     }
 
-    
+
     handleEditComponent({ ...stylesString.current })
   }
 
   return (
     <div className='px-2'>
       <EditorToolsHeader />
-      <Width configTemplate={configTemplate} handleChange={handleChange} />
-      <Height configTemplate={configTemplate} handleChange={handleChange} />
-      <Padding configTemplate={configTemplate} handleChange={handleChange} />
-      <Margin configTemplate={configTemplate} handleChange={handleChange} />
-      <BorderRadius configTemplate={configTemplate} handleChange={handleChange} />
+      <Width configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+      <Height configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+      <div className='w-full flex gap-2 justify-between'>
+        <Padding configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+        <Margin configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+      </div>
+      <BorderRadius configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
       <BackgroundColor configTemplate={configTemplate} handleChange={handleChange} />
       <Display configTemplate={configTemplate} handleChange={handleChange} />
     </div>
