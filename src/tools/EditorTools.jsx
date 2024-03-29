@@ -3,6 +3,7 @@ import { useEditorProvider } from '../hoks/useEditorProvider'
 import EditorToolsHeader from './EditorToolsHeader'
 import { BackgroundColor, BorderRadius, Display, Height, Margin, Padding, Width } from './stylizers'
 import { STYLES } from '../constants/styles'
+import WrapperDropDown from './WrapperDropDown'
 
 const cleanText = ({ text = "", letters = [] }) => {
   let clean = ""
@@ -33,7 +34,7 @@ const EditorTools = () => {
   const handleChange = (e) => {
     const { target } = e
     // 
-    if (target.name == "padding" || target.name == "margin") {
+    if (target.name == "padding") {
       const padding = configTemplate?.[target.name] || STYLES.margin
       let type = target.dataset.sizetype
       if (target.dataset.type) {
@@ -43,6 +44,19 @@ const EditorTools = () => {
       }
       setConfigTemplate({ ...configTemplate, [target.name]: padding })
       stylesString.current = { ...stylesString.current, [target.name]: `${padding[0]}${type} ${padding[1]}${type} ${padding[2]}${type} ${padding[3]}${type}` }
+    }
+
+    // 
+    if (target.name == "margin") {
+      let padding =Object.assign([], configTemplate?.[target.name] || STYLES.margin)
+      let type = target.dataset.sizetype
+      let toSaveString = stylesString.current[target.name]?.split(" ") || STYLES.margin
+
+      padding[Number(target.dataset.position)] = target.value
+      toSaveString[Number(target.dataset.position)] = target.dataset.sizetype == "auto" ? target.dataset.sizetype : `${target.value}${type}`
+
+      setConfigTemplate({ ...configTemplate, [target.name]: padding })
+      stylesString.current = { ...stylesString.current, [target.name]: toSaveString.join(" ") }
     }
 
     // 
@@ -63,12 +77,17 @@ const EditorTools = () => {
     if (target.name == "width" || target.name == "height") {
       let width = target.value
       let type = target.dataset.sizetype
-      let toSaveString = `${width}${type}`
+      let toSaveString = `${width}${type || ""}`
       let toSave = width
       if (type == "auto") {
         toSave = "auto"
         toSaveString = "auto"
       }
+      if (target.dataset?.type == "select") {
+        toSave = target.dataset.place
+        toSaveString = `${target.dataset.place}${target.value}`
+      }
+
       setConfigTemplate({ ...configTemplate, [target.name]: [toSave] })
       stylesString.current = { ...stylesString.current, [target.name]: toSaveString }
     }
@@ -80,15 +99,19 @@ const EditorTools = () => {
   return (
     <div className='px-2'>
       <EditorToolsHeader />
-      <Width configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
-      <Height configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
-      <div className='w-full flex gap-2 justify-between'>
+      <WrapperDropDown secctionName={"Display"}>
+        <Display configTemplate={configTemplate} handleChange={handleChange} />
+      </WrapperDropDown>
+      <WrapperDropDown secctionName={"Size"}>
+        <Width configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+        <Height configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+      </WrapperDropDown>
+      <WrapperDropDown secctionName={"Spacing"}>
         <Padding configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
         <Margin configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
-      </div>
+      </WrapperDropDown>
       <BorderRadius configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
       <BackgroundColor configTemplate={configTemplate} handleChange={handleChange} />
-      <Display configTemplate={configTemplate} handleChange={handleChange} />
     </div>
   )
 }

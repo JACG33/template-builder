@@ -1,5 +1,14 @@
 # Template Builder
 
+## Version 0.0.65 28-MAR-2024
++ Se moficaron algunas __tools__ del editor de estilos:
+  + El Width y el Height ahora pueden establecer un valor automatico.
+  + El Margin puede establecer un valor automatico.
+  + Nuevo componente __WrapperDropDow.jsx__ para encapsular/agrupar algunos componentes por tipo.
+  + Los componenetes __SpacingComponent.jsx__ y __SizeComponent.jsx__ se les ha cambiado la logica/programacion interna.
+  + Posiblemente surjan futuros cambios para el componeter __EditorTools.jsx__ en general de acuerdo a nuevas funciones.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.60 27-MAR-2024
 + Se agredo una nueva depevendencia __react-syntax-highlighter__ para resaltado de codigo, para el nuevo componente de "exportar" el template hecho.
 + Se cambio la forma de identificar los estilos del/los componentes de numeros a clases css, ahora se insertan los estilos dentro de un etiqueta __\<style>__ lo que servira al momento de querer exportar el __Html__, __CSS__ y __JavaScrip__ (proximamente).

@@ -1,64 +1,76 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-const SpacingComponent = ({ text, handleChange, configTemplate, sizeName, configRef }) => {
-  const [typeWidth, setTypeWidth] = useState({ size: "px" })
+const SpacingComponent = ({ text, handleChange, configTemplate, sizeName, configRef, sizeAuto = false, positionText, positionNumber }) => {
+  const [sizeType, setSizeType] = useState({ size: "px" })
+  const dialogRef = useRef(null)
+  const inp = useRef(null)
 
-  const typeWidthHandleChange = (e) => {
-    let data = { size: e.target.value }
-    setTypeWidth(data)
-    handleChange(e)
+  const toggleDialog = () => {
+    dialogRef.current.showModal()
   }
 
+  const clickBtnDialog = (e) => {
+    setSizeType({ size: e.target.dataset.value })
+    dialogRef.current.close()
+
+    const { value, name, dataset, id } = inp.current
+    const target = {
+      value, name, dataset: { ...dataset, sizetype: e.target.dataset.value }, id
+    }
+    handleChange({ target })
+  }
   useEffect(() => {
     if (configRef?.current?.[sizeName]) {
       let size = configRef.current[sizeName].split(" ")[0].replace(/[0-9]+/, "")
-      if (size != "auto") setTypeWidth({ size })
+      setSizeType({ size })
     }
   }, [])
 
-
   return (
-    <div className="w-full grid gap-2 py-1">
-      <div className="w-full flex items-center  gap-2 justify-between">
-        <label htmlFor={`${sizeName}1`}>{text}</label>
-        <select className="h-full" onChange={typeWidthHandleChange} id={`${sizeName}1`} name={sizeName} data-type="select" value={typeWidth.size}>
-          <option value="px">px</option>
-          <option value="%">%</option>
-          <option value="em">em</option>
-          <option value="rem">rem</option>
-          <option value="vh">vh</option>
-          <option value="vw">vw</option>
-        </select>
-      </div>
-      <div className="w-full grid grid-cols-2 gap-2">
-        <div>
-          <span>top</span>
-          <input className="w-full" type="number" name={sizeName} data-sizetype={typeWidth.size} data-position='0' onChange={handleChange} min={0} max={99999}
-            value={
-              configTemplate?.[sizeName] ? configTemplate[sizeName][0] : ""
-            } />
-        </div>
-        <div>
-          <span>right</span>
-          <input className="w-full" type="number" name={sizeName} data-sizetype={typeWidth.size} data-position='1' onChange={handleChange} min={0} max={99999}
-            value={
-              configTemplate?.[sizeName] ? configTemplate[sizeName][1] : ""
-            } />
-        </div>
-        <div>
-          <span>bottom</span>
-          <input className="w-full" type="number" name={sizeName} data-sizetype={typeWidth.size} data-position='2' onChange={handleChange} min={0} max={99999}
-            value={
-              configTemplate?.[sizeName] ? configTemplate[sizeName][2] : ""
-            } />
-        </div>
-        <div>
-          <span>left</span>
-          <input className="w-full" type="number" name={sizeName} data-sizetype={typeWidth.size} data-position='3' onChange={handleChange} min={0} max={99999}
-            value={
-              configTemplate?.[sizeName] ? configTemplate[sizeName][3] : ""
-            } />
-        </div>
+    <div className="w-full flex justify-between gap-2 py-2">
+      <label htmlFor={`${sizeName}${positionNumber}`}>{text} {positionText}</label>
+
+      <div className="max-w-[100px] relative py-1 px-2 flex items-center justify-center bg-white text-black">
+
+        {sizeType.size == "auto" ?
+          <input
+            className="w-14 bg-transparent outline-none"
+            id={`${sizeName}${positionNumber}`}
+            type="text"
+            name={sizeName}
+            data-position={positionNumber}
+            value="auto"
+            ref={inp}
+            data-sizetype={sizeType.size}
+            onChange={handleChange}
+          />
+          :
+          <input
+            className="w-14 bg-transparent outline-none"
+            id={`${sizeName}${positionNumber}`}
+            type="number"
+            name={sizeName}
+            data-position={positionNumber}
+            value={configTemplate?.[sizeName] ? configTemplate[sizeName][positionNumber] == "auto" ? 0 : configTemplate[sizeName][positionNumber] : 0}
+            ref={inp}
+            max={99999}
+            data-sizetype={sizeType.size}
+            onChange={handleChange}
+          />
+        }
+
+        <button type="button" onClick={toggleDialog}>{sizeType.size}</button>
+        <dialog ref={dialogRef} className="p-2 rounded-lg">
+          <div className="grid gap-1">
+            {sizeAuto && <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="auto">auto</button>}
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="px">px</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="%">%</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="em">em</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="rem">rem</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="vh">vh</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="vw">vw</button>
+          </div>
+        </dialog>
       </div>
     </div>
   )

@@ -1,8 +1,13 @@
 import SpacingComponent from "./SpacingComponent"
 
-const Margin = ({ handleChange, configTemplate ,configRef}) => {
+const Margin = ({ handleChange, configTemplate, configRef }) => {
   return (
-    <SpacingComponent configTemplate={configTemplate} handleChange={handleChange} text={"Margin"} sizeName={"margin"} configRef={configRef} />
+    <div className="grid">
+      <SpacingComponent configTemplate={configTemplate} handleChange={handleChange} text={"Margin"} sizeName={"margin"} configRef={configRef} positionNumber={0} positionText={"top"} sizeAuto={true} />
+      <SpacingComponent configTemplate={configTemplate} handleChange={handleChange} text={"Margin"} sizeName={"margin"} configRef={configRef} positionNumber={1} positionText={"rigth"} sizeAuto={true} />
+      <SpacingComponent configTemplate={configTemplate} handleChange={handleChange} text={"Margin"} sizeName={"margin"} configRef={configRef} positionNumber={2} positionText={"bottom"} sizeAuto={true} />
+      <SpacingComponent configTemplate={configTemplate} handleChange={handleChange} text={"Margin"} sizeName={"margin"} configRef={configRef} positionNumber={3} positionText={"left"} sizeAuto={true} />
+    </div>
   )
 }
 

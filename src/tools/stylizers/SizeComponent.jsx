@@ -1,69 +1,75 @@
 import { useRef, useState, useEffect } from "react";
 
-const SizeComponent = ({ text, handleChange, configTemplate, sizeName, configRef }) => {
-  const [typeWidth, setTypeWidth] = useState({ size: "auto", type: "text", value: "auto" })
+const SizeComponent = ({ text, handleChange, configTemplate, sizeName, configRef, sizeAuto = false }) => {
+  const [sizeType, setSizeType] = useState({ size: "px" })
+  const dialogRef = useRef(null)
   const inp = useRef(null)
 
-  const typeWidthHandleChange = (e) => {
-    let data = {
-      size: e.target.value,
-      type: "text",
-      value: "auto"
-    }
-    if (e.target.value == "auto") {
-      inp.current.type = "text"
-      inp.current.value = null
-      inp.current.value = "auto"
-    }
-    if (e.target.value !== "auto") {
-      data.type = "number"
-      data.value = null
-    }
-    setTypeWidth(data)
+  const toggleDialog = () => {
+    dialogRef.current.showModal()
   }
 
+  const clickBtnDialog = (e) => {
+    setSizeType({ size: e.target.dataset.value })
+    dialogRef.current.close()
+
+    const { value, name, dataset, id } = inp.current
+    const target = {
+      value, name, dataset: { ...dataset, sizetype: e.target.dataset.value }, id
+    }
+    handleChange({ target })
+  }
   useEffect(() => {
     if (configRef?.current?.[sizeName]) {
       let size = configRef.current[sizeName].replace(/[0-9]+/, "")
-      let value = configRef.current[sizeName].replace(/[a-z]+/, "")
-      if (size != "auto")
-        setTypeWidth({ size, value, type: "number" })
+      setSizeType({ size })
     }
   }, [])
 
-  useEffect(() => {
-    const { name, dataset, value, id } = inp.current
-    const target = {
-      name,
-      dataset,
-      value,
-      id,
-    }
-    const data = { target }
-    handleChange(data)
-  }, [typeWidth.size])
-
-
   return (
-    <div className="w-full flex justify-between gap-2 py-1">
+    <div className="w-full flex justify-between gap-2 py-2">
       <label htmlFor={`${sizeName}1`}>{text}</label>
-      <div className="flex items-center justify-center">
-        {typeWidth.value == "auto" ?
-          <input className="w-12" ref={inp} id={`${sizeName}1`} type={typeWidth.type} name={sizeName} data-sizetype={typeWidth.size} onChange={handleChange} value="auto" />
+
+      <div className="max-w-[100px] relative py-1 px-2 flex items-center justify-center bg-white text-black">
+
+        {sizeType.size == "auto" ?
+          <input
+            className="w-14 bg-transparent outline-none"
+            id={`${sizeName}1`}
+            type="text"
+            name={sizeName}
+            value="auto"
+            ref={inp}
+            data-sizetype={sizeType.size}
+            onChange={handleChange}
+          />
           :
-          <input className="w-12" ref={inp} id={`${sizeName}1`} type={typeWidth.type} name={sizeName} data-sizetype={typeWidth.size}
-            onChange={handleChange} min={0} max={99999}
-            value={configTemplate?.[sizeName] ? configTemplate[sizeName] == "auto" ? "100" : configTemplate[sizeName] : "100"} />
+          <input
+            className="w-14 bg-transparent outline-none"
+            id={`${sizeName}1`}
+            type="number"
+            name={sizeName}
+            value={configTemplate?.[sizeName] ? configTemplate[sizeName] == "auto" ? 100 : configTemplate[sizeName] : 100}
+            ref={inp}
+            min={0}
+            max={99999}
+            data-sizetype={sizeType.size}
+            onChange={handleChange}
+          />
         }
-        <select className="h-full" onChange={typeWidthHandleChange} name={sizeName} data-type="select" value={typeWidth.size}>
-          <option value="auto">-</option>
-          <option value="%">%</option>
-          <option value="px">px</option>
-          <option value="em">em</option>
-          <option value="rem">rem</option>
-          <option value="vh">vh</option>
-          <option value="vw">vw</option>
-        </select>
+
+        <button type="button" onClick={toggleDialog}>{sizeType.size}</button>
+        <dialog ref={dialogRef} className="p-2 rounded-lg">
+          <div className="grid gap-1">
+            {sizeAuto && <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="auto">auto</button>}
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="px">px</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="%">%</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="em">em</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="rem">rem</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="vh">vh</button>
+            <button type="button" className="py-1 px-2 hover:bg-slate-400" onClick={clickBtnDialog} data-value="vw">vw</button>
+          </div>
+        </dialog>
       </div>
     </div>
   )
