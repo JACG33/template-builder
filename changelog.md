@@ -1,5 +1,17 @@
 # Template Builder
 
+## Version 0.0.70 02-ABR-2024
++ Se moficaron algunas __tools__ del editor de estilos.
++ Se agregaron nuevos "stylizers":
+  + TextWrap.
+  + TextColor.
+  + TextAlign.
+  + Border.
+  + FontSize.
+  + SideOptions.
++ Se agrego la funcionalidad __copiar__ al boton del modal exportar.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.65 28-MAR-2024
 + Se moficaron algunas __tools__ del editor de estilos:
   + El Width y el Height ahora pueden establecer un valor automatico.

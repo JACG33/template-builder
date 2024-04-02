@@ -17,13 +17,10 @@ export function ExportImportProvider({ children }) {
   const dialogExport = useRef(null)
   const [codeToShow, setCodeToShow] = useState({ html: "", css: "", js: "" })
 
-  const handleCloseModal = () => {
-    dialogExport.current.close()
-    dialogExport.current.querySelector("#dialogbody").innerHTML = null
-  }
+  const handleCloseModal = () => dialogExport.current.close()
 
   const getHtml = () => builderArea.current.innerHTML
-  const getCss = () => document.querySelector("style[data-develope]")?.innerHTML?document.querySelector("style[data-develope]").innerHTML:""
+  const getCss = () => document.querySelector("style[data-develope]")?.innerHTML ? document.querySelector("style[data-develope]").innerHTML : ""
   const getJs = () => document.querySelector("style[data-develope]").innerHTML
 
   const handleExport = () => {

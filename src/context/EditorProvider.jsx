@@ -29,7 +29,25 @@ export function EditorProvider({ children }) {
 
   const handleActualConfig = (nameConfig) => setActualConfig(nameConfig)
 
+  /**
+   * Funcion para tranformar texto de camelCase a lowercase y separar con guion medio (-).
+   * @param {String} text Texto a transformar.
+   * @example borderRadius => border-radius.
+   * @returns Texto transformado
+   */
   const joinAndLower = (text) => text.replace(/([a-z])([A-Z])/g, '$1 $2').split(" ").join("-").toLocaleLowerCase();
+
+  /**
+   * Funcion para generar reglas css.
+   * @param {Object} opc Objecto de opciones.
+   * @param {Array} opc.toIterate Array a iterar.
+   * @returns Regala css
+   */
+  const makeCssRule = ({ toIterate = [] }) => {
+    let rule = ``
+    for (const iterator in toIterate) toIterate[iterator] != "" ? rule += `  ${joinAndLower(iterator)}: ${toIterate[iterator]};\n` : ""
+    return rule
+  }
 
   const setHeadStyles = (data = null) => {
 
@@ -39,14 +57,11 @@ export function EditorProvider({ children }) {
       const style = document.createElement("style")
       style.dataset.develope = true
 
-      let css = `.${data[0]} {\n`
+      cssStyles = `.${data[0]} {\n`
+      cssStyles += makeCssRule({ toIterate: data[1] })
+      cssStyles += `}\n`
 
-      for (const iterator in data[1]) {
-        css += `  ${joinAndLower(iterator)}: ${data[1][iterator]};\n`
-      }
-      css += `}\n`
-
-      style.innerHTML = css
+      style.innerHTML = cssStyles
       document.querySelector("head").appendChild(style)
     } else {
 
@@ -55,9 +70,7 @@ export function EditorProvider({ children }) {
 
         classes?.forEach(classStyle => {
           cssStyles += `.${classStyle} {\n`
-          for (const iterator in cssStylesRef.current[classStyle]) {
-            cssStyles += `  ${joinAndLower(iterator)}: ${cssStylesRef.current[classStyle][iterator]};\n`
-          }
+          cssStyles += makeCssRule({ toIterate: cssStylesRef.current[classStyle] })
           cssStyles += `}\n`
         });
 
