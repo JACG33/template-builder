@@ -1,6 +1,9 @@
 # Template Builder
 
 ## Version 0.0.72 04-ABR-2024
++ Se agrego nuevo componente Loader para el fallback del Suspence
+
+## Version 0.0.72 04-ABR-2024
 + Se agregaron nuevos "stylizers":
   + Transitions.
   + StateStyle: Sera para elegir el tipo de estado de un componente por ahora solo :hover.
