@@ -6,6 +6,8 @@ import { STYLES } from '../constants/styles'
 import WrapperDropDown from './WrapperDropDown'
 import FontAndText from './stylizers/FontAndText'
 import Border from './stylizers/Border'
+import StateStyle from './stylizers/StateStyle'
+import Transitions from './stylizers/Transitions'
 
 const cleanText = ({ text = "", letters = [] }) => {
   let clean = ""
@@ -17,7 +19,8 @@ const cleanText = ({ text = "", letters = [] }) => {
 const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
   const stylesString = useRef();
-  const { configComponent, handleEditComponent, actualConfig } = useEditorProvider()
+  const { configComponent, handleEditComponent, actualConfig, handleActualConfig } = useEditorProvider()
+  const stateStylesRef = useRef(actualConfig);
 
   useEffect(() => {
     const alterConf = Object.assign({}, configComponent[actualConfig])
@@ -30,7 +33,7 @@ const EditorTools = () => {
     }
     stylesString.current = Object.assign({}, configComponent[actualConfig])
     setConfigTemplate(alterConf)
-  }, [configComponent])
+  }, [configComponent,actualConfig])
 
 
   const handleChange = (e) => {
@@ -138,13 +141,25 @@ const EditorTools = () => {
       stylesString.current = { ...stylesString.current, [target.name]: toSaveString }
     }
 
+    // 
+    if (target.name == "transition") {
+      let transitions = target.value
+      setConfigTemplate({ ...configTemplate, [target.name]: [transitions] })
+      stylesString.current = { ...stylesString.current, [target.name]: transitions }
+    }
+
 
     handleEditComponent({ ...stylesString.current })
+  }
+
+  const setState = (state) => {
+    handleActualConfig(`${stateStylesRef.current}${state}`)
   }
 
   return (
     <div className='px-2'>
       <EditorToolsHeader />
+      <StateStyle setState={setState} />
       <WrapperDropDown secctionName={"Display"}>
         <Display configTemplate={configTemplate} handleChange={handleChange} />
       </WrapperDropDown>
@@ -166,6 +181,7 @@ const EditorTools = () => {
       <WrapperDropDown secctionName={"Font"}>
         <FontAndText configRef={stylesString} configTemplate={configTemplate} handleChange={handleChange} />
       </WrapperDropDown>
+      <Transitions configTemplate={configTemplate} handleChange={handleChange} />
     </div>
   )
 }

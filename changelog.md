@@ -1,5 +1,11 @@
 # Template Builder
 
+## Version 0.0.72 04-ABR-2024
++ Se agregaron nuevos "stylizers":
+  + Transitions.
+  + StateStyle: Sera para elegir el tipo de estado de un componente por ahora solo :hover.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.70 02-ABR-2024
 + Se moficaron algunas __tools__ del editor de estilos.
 + Se agregaron nuevos "stylizers":

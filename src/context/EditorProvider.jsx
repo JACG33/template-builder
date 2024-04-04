@@ -12,6 +12,7 @@ export const EditorContext = createContext({
   handleActualConfig: () => { },
   deleteConfigStyle: () => { },
   getConfigComponent: () => { },
+  setAditionalStyles: () => { }
 })
 
 export function EditorProvider({ children }) {
@@ -105,6 +106,10 @@ export function EditorProvider({ children }) {
     setConfigComponent(alter)
   }
 
+  const setAditionalStyles = (styles) => {
+    setConfigComponent({ ...configComponent, styles })
+  }
+
   /**
    * Funcion para obtener la configuracion de los estilos del Elemento/Componente elegido.
    * @param {String|Number} id Nombre/Identidicador de la configuracion del Elemento/Componente elegido.
@@ -115,7 +120,7 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent,setAditionalStyles
       }}
     >
       {children}
