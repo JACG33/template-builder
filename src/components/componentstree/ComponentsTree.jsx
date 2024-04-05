@@ -10,7 +10,7 @@ const ComponentsTree = () => {
   const handleShowComponents = () => setOpenComp(!openComp)
   return (
     <div>
-      {openComp && <div className='absolute px-2 h-screen top-0 left-[50px] bg-slate-700 componets__dialog componets__dialog--show'>
+      {openComp && <div className='absolute z-0 px-2 h-screen top-0 left-[50px] bg-slate-700 componets__dialog componets__dialog--show'>
         <SideBarElementsRendered />
       </div>}
       <ButtonRight text={"Components Tree"} handleShowComponents={handleShowComponents}>

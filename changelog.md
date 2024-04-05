@@ -1,6 +1,9 @@
 # Template Builder
 
 ## Version 0.0.80 05-ABR-2024
++ Se hicieron otras modificaciones.
+
+## Version 0.0.80 05-ABR-2024
 + Se cambio la __IU__ del layout:
   + Ahora en el __sidebar__ izquierdo mostrara botones que al clicarlos desplegara/mostra modales.
   + El editor de estilos ahora se mostrara en el __sidebar__ derecho, aunque actulamente si no se ha seleccionado un elemento para editar solo esta reservado el espacio, al seleccionar uno se muestra el editor.
