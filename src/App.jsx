@@ -1,10 +1,10 @@
 import { Suspense, lazy } from "react"
 import { BuilderArea } from "./components/BuilderArea"
-const EditorTools = lazy(() => import("./tools/EditorTools"))
-import { useEditorProvider } from "./hoks/useEditorProvider"
 import { Loader } from "./components/Loader/Loader"
 import AddComponent from "./components/addcomponents/AddComponent"
 import ComponentsTree from "./components/componentstree/ComponentsTree"
+import { useEditorProvider } from "./hoks/useEditorProvider"
+const EditorTools = lazy(() => import("./tools/EditorTools"))
 const DialogExport = lazy(() => import("./components/dialogExport/DialogExport"))
 
 function App() {
@@ -12,7 +12,9 @@ function App() {
   return (
     <div className='grid grid-cols-[50px_1fr_270px]'>
       <aside className='bg-slate-600 w-[50px] h-screen flex flex-col items-center justify-start gap-2 py-2'>
-        <DialogExport />
+        <Suspense fallback={""}>
+          <DialogExport />
+        </Suspense>
         <AddComponent />
         <ComponentsTree />
       </aside>
