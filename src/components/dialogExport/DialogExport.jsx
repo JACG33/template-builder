@@ -14,7 +14,7 @@ const DialogExport = () => {
     try {
       await navigator.clipboard.writeText(codeToShow[actualTab])
       setCopied(true)
-      setTimeout(() => setCopied(false), 3000);
+      setTimeout(() => setCopied(false), 500);
     } catch (error) {
       console.log(error);
     }

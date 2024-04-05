@@ -96,7 +96,7 @@ export function EditorProvider({ children }) {
       setHeadStyles([cssClass, conf])
     } else {
       setActualConfig(null)
-      setOpenEditor(!openEditor)
+      setOpenEditor(false)
     }
   }
 

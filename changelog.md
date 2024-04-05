@@ -1,5 +1,8 @@
 # Template Builder
 
+## Version 0.0.73 05-ABR-2024
++ Se agregaron cambios.
+
 ## Version 0.0.72 04-ABR-2024
 + Se agrego nuevo componente Loader para el fallback del Suspence
 

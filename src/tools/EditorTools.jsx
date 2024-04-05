@@ -33,7 +33,7 @@ const EditorTools = () => {
     }
     stylesString.current = Object.assign({}, configComponent[actualConfig])
     setConfigTemplate(alterConf)
-  }, [configComponent,actualConfig])
+  }, [configComponent, actualConfig])
 
 
   const handleChange = (e) => {
@@ -181,7 +181,9 @@ const EditorTools = () => {
       <WrapperDropDown secctionName={"Font"}>
         <FontAndText configRef={stylesString} configTemplate={configTemplate} handleChange={handleChange} />
       </WrapperDropDown>
-      <Transitions configTemplate={configTemplate} handleChange={handleChange} />
+      <WrapperDropDown secctionName={"Transitions"}>
+        <Transitions configTemplate={configTemplate} handleChange={handleChange} />
+      </WrapperDropDown>
     </div>
   )
 }
