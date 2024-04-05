@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { STYLES } from '../constants/styles'
 import { useEditorProvider } from '../hoks/useEditorProvider'
 import EditorToolsHeader from './EditorToolsHeader'
-import { BackgroundColor, BorderRadius, Display, Height, Margin, Padding, Width } from './stylizers'
-import { STYLES } from '../constants/styles'
 import WrapperDropDown from './WrapperDropDown'
-import FontAndText from './stylizers/FontAndText'
+import { BackgroundColor, BorderRadius, Display, Height, Margin, Padding, Width } from './stylizers'
 import Border from './stylizers/Border'
+import FontAndText from './stylizers/FontAndText'
 import StateStyle from './stylizers/StateStyle'
 import Transitions from './stylizers/Transitions'
 
@@ -20,10 +20,9 @@ const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
   const stylesString = useRef();
   const { configComponent, handleEditComponent, actualConfig, handleActualConfig } = useEditorProvider()
-  const stateStylesRef = useRef(actualConfig);
 
   useEffect(() => {
-    const alterConf = Object.assign({}, configComponent[actualConfig])
+    const alterConf = Object.assign({}, configComponent?.[actualConfig] || configTemplate)
     for (const iterator in alterConf) {
       let style = alterConf[iterator]
       if (typeof alterConf[iterator] == 'string' && (style.includes("px") || style.includes("%") || style.includes("em") || style.includes("rem") || style.includes("vh") || style.includes("vw"))) {
@@ -31,7 +30,7 @@ const EditorTools = () => {
         alterConf[iterator] = cleanText({ text: alterConf[iterator], letters }).split(" ")
       }
     }
-    stylesString.current = Object.assign({}, configComponent[actualConfig])
+    stylesString.current = Object.assign({}, configComponent?.[actualConfig] || {})
     setConfigTemplate(alterConf)
   }, [configComponent, actualConfig])
 
@@ -153,7 +152,10 @@ const EditorTools = () => {
   }
 
   const setState = (state) => {
-    handleActualConfig(`${stateStylesRef.current}${state}`)
+    let confname = actualConfig
+    if (actualConfig?.includes(":"))
+      confname = actualConfig.split(":")[0]
+    handleActualConfig(`${confname}${state}`)
   }
 
   return (

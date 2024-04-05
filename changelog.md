@@ -1,6 +1,8 @@
 # Template Builder
 
-## Version 0.0.80 05-ABR-2024
+## Version 0.0.82 05-ABR-2024
++ Ahora el editor de estilos esta disponible sin la necesidad de seleccionar un componente.
++ Las ventanas/modales de los botones del __sidebar__ izquierdo esta separado en un componente __LeftSideContainer__.
 + Se hicieron otras modificaciones.
 
 ## Version 0.0.80 05-ABR-2024

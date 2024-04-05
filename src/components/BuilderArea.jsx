@@ -6,7 +6,7 @@ import { useEditorProvider } from '../hoks/useEditorProvider'
 export const BuilderArea = () => {
   const { handleDragEnter, handleDrop, itemsToTemplate, handleOver, handleLeave } = useDragAndDropProvider()
   const { builderArea } = useExportImportProvider()
-  const { handleOpenEditor } = useEditorProvider()
+  const { handleActualConfig } = useEditorProvider()
   const [components, setComponents] = useState([])
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export const BuilderArea = () => {
 
 
   return (
-    <div ref={builderArea} className={`h-screen`} onClickCapture={() => handleOpenEditor({ open: false })} onDragEnterCapture={e => handleDragEnter(e)} onDragOver={e => handleOver(e)} onDrop={e => handleDrop(e)} onDragLeave={e => handleLeave(e)}>
+    <div ref={builderArea} className={`h-screen`} onClickCapture={() => handleActualConfig("")} onDragEnterCapture={e => handleDragEnter(e)} onDragOver={e => handleOver(e)} onDrop={e => handleDrop(e)} onDragLeave={e => handleLeave(e)}>
       {components.length > 0
         &&
         components.map((Item, indexItem) =>

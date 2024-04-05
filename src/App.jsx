@@ -3,16 +3,14 @@ import { BuilderArea } from "./components/BuilderArea"
 import { Loader } from "./components/Loader/Loader"
 import AddComponent from "./components/addcomponents/AddComponent"
 import ComponentsTree from "./components/componentstree/ComponentsTree"
-import { useEditorProvider } from "./hoks/useEditorProvider"
 const EditorTools = lazy(() => import("./tools/EditorTools"))
 const DialogExport = lazy(() => import("./components/dialogExport/DialogExport"))
 
 function App() {
-  const { openEditor } = useEditorProvider()
   return (
     <div className='grid grid-cols-[50px_1fr_270px]'>
       <aside className='bg-slate-600 w-[50px] h-screen flex flex-col items-center justify-start gap-2 py-2'>
-        <Suspense fallback={""}>
+        <Suspense fallback={<Loader css={"*:w-[40px] *:h-[40px]"} />}>
           <DialogExport />
         </Suspense>
         <AddComponent />
@@ -23,7 +21,7 @@ function App() {
       </main>
       <aside className='bg-slate-600 w-[270px] h-screen overflow-x-auto flex flex-col items-center justify-start gap-2 py-2'>
         <Suspense fallback={<Loader />}>
-          {openEditor && <EditorTools />}
+          <EditorTools />
         </Suspense>
       </aside>
     </div>
