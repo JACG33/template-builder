@@ -2,41 +2,28 @@ import { Suspense, lazy } from "react"
 import { BuilderArea } from "./components/BuilderArea"
 const EditorTools = lazy(() => import("./tools/EditorTools"))
 import { useEditorProvider } from "./hoks/useEditorProvider"
-const SideBarElementsItems = lazy(() => import("./components/SideBarElementsItems"))
-const SideBarElementsRendered = lazy(() => import("./components/SideBarElementsRendered"))
-import { useExportImportProvider } from "./hoks/useExportImportProvider"
 import { Loader } from "./components/Loader/Loader"
+import AddComponent from "./components/addcomponents/AddComponent"
+import ComponentsTree from "./components/componentstree/ComponentsTree"
 const DialogExport = lazy(() => import("./components/dialogExport/DialogExport"))
 
 function App() {
   const { openEditor } = useEditorProvider()
-  const { handleExport } = useExportImportProvider()
   return (
-    <div className='grid grid-cols-[270px_1fr_150px]'>
-      <aside className='bg-slate-600 w-[270px] h-screen overflow-x-auto'>
-        <div>
-          <Suspense fallback={""}>
-            <DialogExport />
-          </Suspense>
-          <button type="button" className="m-auto p-2 bg-indigo-600 text-white rounded-lg" onClick={handleExport}>Export</button>
-        </div>
-        <div>
-          <div>
-            <Suspense fallback={<Loader/>}>
-              {!openEditor && <SideBarElementsItems />}
-            </Suspense>
-          </div>
-        </div>
-        <Suspense fallback={<Loader/>}>
-          {openEditor && <EditorTools />}
-        </Suspense>
+    <div className='grid grid-cols-[50px_1fr_270px]'>
+      <aside className='bg-slate-600 w-[50px] h-screen flex flex-col items-center justify-start gap-2 py-2'>
+        <DialogExport />
+        <AddComponent />
+        <ComponentsTree />
       </aside>
       <main className="h-screen overflow-auto">
         <BuilderArea />
       </main>
-      <Suspense fallback={<Loader/>}>
-        <SideBarElementsRendered />
-      </Suspense>
+      <aside className='bg-slate-600 w-[270px] h-screen overflow-x-auto flex flex-col items-center justify-start gap-2 py-2'>
+        <Suspense fallback={<Loader />}>
+          {openEditor && <EditorTools />}
+        </Suspense>
+      </aside>
     </div>
   )
 }

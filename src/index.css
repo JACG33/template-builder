@@ -29,6 +29,7 @@
   display: block;
   height: 100%;
   width: 20px;
+  border: 1px dashed blue;
   background-color: #ccc;
 }
 
@@ -38,6 +39,19 @@
 
 .element__drag__over--right::after {
   right: -20px;
+}
+
+.componets__dialog--show{
+  animation: ShowComponents 100ms linear forwards;
+}
+
+@keyframes ShowComponents {
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
 }
 
 @media (prefers-color-scheme: light) {

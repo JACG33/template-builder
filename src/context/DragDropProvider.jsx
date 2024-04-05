@@ -190,6 +190,7 @@ export function DragAndDropProvider({ children }) {
   }
 
   const handleDeleteComponent = (id) => {
+    console.log(id);
     let comId=Number(id.replace(/[a-zA-Z]+/,"").replace(".",""))
     const filteredComponents = itemsToTemplate.filter((ele) => ele.id !== comId);
     const filteredSubComponents = subItemsToTemplate.filter((ele) => ele.id !== comId && ele.parentId !== comId);

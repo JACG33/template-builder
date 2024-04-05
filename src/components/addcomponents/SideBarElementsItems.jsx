@@ -1,4 +1,4 @@
-import { NavBars, ButtonElement, DivElement, Paragraph } from './sidebarelementsitems/index'
+import { NavBars, ButtonElement, DivElement, Paragraph } from '../sidebarelementsitems/index'
 
 const SideBarElementsItems = () => {
   return (
