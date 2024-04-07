@@ -1,13 +1,10 @@
-import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider";
 import { WrapperComponents } from "../../layouts/WrapperComponents";
+import MoldeElement from "./MoldeElement";
 
 const NavBars = () =>  {
-  const {handleDragginElement } = useDragAndDropProvider()
   return (
     <WrapperComponents secctionName={"NavBars"}>
-      <div className="border rounded-md text-center cursor-pointer" draggable data-component='VerticalNav' data-typehtml="nav" onDragStartCapture={handleDragginElement}>
-        VerticalNav {"<nav>"}
-      </div>
+      <MoldeElement htmlType={"nav"} nameComponent={"VerticalNav"} />
     </WrapperComponents>
   )
 }

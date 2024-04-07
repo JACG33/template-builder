@@ -1,6 +1,5 @@
-import { createContext, useState, useRef, useEffect } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { useEditorProvider } from "../hoks/useEditorProvider";
-import { SUB_COMPONENTS } from "../constants/subComponents";
 
 export const DragAndDropContext = createContext({
   dragginElement: "",
@@ -19,7 +18,7 @@ export const DragAndDropContext = createContext({
 })
 
 export function DragAndDropProvider({ children }) {
-  const [dragginElement, setDragginElement] = useState("")
+  const [dragginElement, setDragginElement] = useState({ e: null, sideBar: false })
   const [idDragginElement, setIdDragginElement] = useState(null)
   const [itemsToTemplate, setitemsToTemplate] = useState([])
   const [subItemsToTemplate, setSubItemsToTemplate] = useState([])
@@ -38,16 +37,15 @@ export function DragAndDropProvider({ children }) {
     })
 
     return () => {
-
-      document.removeEventListener("keydown", e => { })
       document.removeEventListener("keyup", e => { })
+      document.removeEventListener("keydown", e => { })
     }
   }, [])
 
-  const handleDragginElement = (e, id, index) => {
+  const handleDragginElement = ({ e, sideBar }, id, index) => {
     if (index != undefined) draggedComponent.current = index
 
-    setDragginElement(e.target)
+    setDragginElement({ e: e.target, sideBar })
 
     if (id) setIdDragginElement(id)
   }
@@ -66,8 +64,8 @@ export function DragAndDropProvider({ children }) {
    * @param {Number|String} opc.parentId Identificador de un componente padre en caso el componente se encuentre dentro de otro. 
    */
   const impAndSetComponent = ({ fnState, arrayState, typeElement, parentId }) => {
-    let Com = dragginElement?.dataset?.component
-    let typehtml = dragginElement?.dataset?.typehtml || typeElement
+    let Com = dragginElement.e?.dataset?.component
+    let typehtml = dragginElement.e?.dataset?.typehtml || typeElement
     let count = counterComponents.current++
     import("../components/templatesui/").then(res => fnState([...arrayState, { id: count, component: res[Com], type: typehtml, parentId }]))
   }
@@ -77,7 +75,7 @@ export function DragAndDropProvider({ children }) {
     e.stopPropagation()
     if (ctrlKeyPress.current == "control") return
     // console.log(idDragginElement);
-    if (idDragginElement == null) {
+    if (idDragginElement == null && dragginElement.sideBar) {
       impAndSetComponent({ fnState: setitemsToTemplate, arrayState: itemsToTemplate })
     } else {
       const findComponents = [...subItemsToTemplate].filter((ele) => ele.id == idDragginElement);
@@ -89,8 +87,8 @@ export function DragAndDropProvider({ children }) {
       // console.log(findComponents);
       setitemsToTemplate([...itemsToTemplate, ...findComponents]);
       setSubItemsToTemplate(filteredComponents);
-      setIdDragginElement(null)
     }
+    setIdDragginElement(null)
     // removeStylesOverElement(e)
   }
 
@@ -159,7 +157,7 @@ export function DragAndDropProvider({ children }) {
     if (draggedComponent.current != undefined && draggedOverComponent.current != undefined) {
       if (isParentComponent == true) {
         const sortedComponents = sortComponents({ originalComponents: itemsToTemplate, currentDragging: draggedComponent.current, currentOverDragging: draggedOverComponent.current })
-        
+
         setitemsToTemplate(sortedComponents)
       } else {
         const sortedComponents = sortComponents({ originalComponents: subItemsToTemplate, currentDragging: draggedComponent.current, currentOverDragging: draggedOverComponent.current })
@@ -191,7 +189,7 @@ export function DragAndDropProvider({ children }) {
 
   const handleDeleteComponent = (id) => {
     console.log(id);
-    let comId=Number(id.replace(/[a-zA-Z]+/,"").replace(".",""))
+    let comId = Number(id.replace(/[a-zA-Z]+/, "").replace(".", ""))
     const filteredComponents = itemsToTemplate.filter((ele) => ele.id !== comId);
     const filteredSubComponents = subItemsToTemplate.filter((ele) => ele.id !== comId && ele.parentId !== comId);
     deleteConfigStyle(id)
@@ -217,7 +215,7 @@ export function DragAndDropProvider({ children }) {
     }
   }
 
-  const removeStylesOverElement = (e=null) => {
+  const removeStylesOverElement = (e = null) => {
     document.querySelectorAll(".element__drag__over")?.forEach(ele => {
       ele.style.marginRight = null
       ele.style.marginLeft = null

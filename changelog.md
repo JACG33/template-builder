@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.85 07-ABR-2024
++ Ahora los componentes de la carpeta __sidebarelemtensitems__ comparten un componete base para evitar el tener repetir logica que se puede encapsular en un componente i reutilizarlo.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.82 05-ABR-2024
 + Ahora el editor de estilos esta disponible sin la necesidad de seleccionar un componente.
 + Las ventanas/modales de los botones del __sidebar__ izquierdo esta separado en un componente __LeftSideContainer__.

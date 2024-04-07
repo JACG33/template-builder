@@ -1,13 +1,10 @@
-import { useDragAndDropProvider } from '../../hoks/useDragAndDropProvider'
 import { WrapperComponents } from '../../layouts/WrapperComponents'
+import MoldeElement from './MoldeElement'
 
 const ButtonElement = () => {
-  const {handleDragginElement } = useDragAndDropProvider()
   return (
     <WrapperComponents secctionName={"Buttons"}>
-      <div className="border rounded-md text-center cursor-pointer" draggable data-component='Button' data-typehtml="button" onDragStartCapture={handleDragginElement}>
-        ButtonElement {"<button>"}
-      </div>
+      <MoldeElement htmlType={"button"} nameComponent={"Button"} />
     </WrapperComponents>
   )
 }

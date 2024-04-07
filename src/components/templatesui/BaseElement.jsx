@@ -1,11 +1,11 @@
+import { useEffect, useRef } from 'react'
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
 import { useEditorProvider } from "../../hoks/useEditorProvider"
-import { useEffect, useRef } from 'react'
 
 const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, indexItem, isParentComponent }) => {
   const { configComponent, handleOpenEditor } = useEditorProvider()
   const styles = useRef(placeholder)
-  const { handleDragginElement, handleSubDrop, subItemsToTemplate, handleSortComponents, handleOver, handleDropEnd } = useDragAndDropProvider()
+  const { handleDragginElement, handleSubDrop, subItemsToTemplate, handleOver, handleDropEnd } = useDragAndDropProvider()
 
   useEffect(() => {
     styles.current = configComponent
@@ -38,10 +38,11 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
       className={`${TypeElement}${id}` }
       data-component={dataAttribute}
       data-idcomponent={id}
+      data-typehtml={TypeElement}
       draggable
-      onDragStartCapture={e => handleDragginElement(e, id, indexItem)}
+      onDragStartCapture={e => handleDragginElement({e}, id, indexItem)}
       onDropCapture={e => handleSubDrop(e, id, TypeElement)}
-      onDragOver={e => { handleOver(e, indexItem, isParentComponent) }}
+      onDragOverCapture={e => { handleOver(e, indexItem, isParentComponent) }}
       onDragEnd={e => { handleDropEnd(e,isParentComponent) }}
     >
       {children}
