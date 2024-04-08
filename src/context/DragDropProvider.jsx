@@ -97,7 +97,6 @@ export function DragAndDropProvider({ children }) {
     e.stopPropagation()
     if (ctrlKeyPress.current == "control") return
     // console.log(typeElement);
-    // if (SUB_COMPONENTS[typehtml]==true) return
     if (idDragginElement == null) {
       impAndSetComponent({ fnState: setSubItemsToTemplate, arrayState: subItemsToTemplate, typeElement, parentId })
     } else {
@@ -122,11 +121,11 @@ export function DragAndDropProvider({ children }) {
     }
   }
 
-  const handleOver = (e, id = null, isParentComponent) => {
+  const handleOver = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (id && ctrlKeyPress.current == "control") {
-      draggedOverComponent.current = id
+    if (e.target.dataset.dragindex && ctrlKeyPress.current == "control") {
+      draggedOverComponent.current = Number(e.target.dataset.dragindex)
       stylesOverElement(e)
     }
   }
@@ -180,7 +179,7 @@ export function DragAndDropProvider({ children }) {
   const sortComponents = ({ originalComponents, currentDragging, currentOverDragging }) => {
     const cloneComponents = Object.assign([], originalComponents)
     const temp = cloneComponents[currentDragging]
-
+    
     cloneComponents[currentDragging] = cloneComponents[currentOverDragging]
     cloneComponents[currentOverDragging] = temp
 
@@ -199,29 +198,13 @@ export function DragAndDropProvider({ children }) {
 
 
   const stylesOverElement = (e) => {
-    let rect = e.target.getBoundingClientRect();
-    let width = rect.width / 2
-    let x = e.clientX - rect.left; //x position within the element.
-    let y = e.clientY - rect.top;  //y position within the element.
     removeStylesOverElement(e)
     e.target.classList.add("element__drag__over")
-    if (x > width) {
-      e.target.classList.add("element__drag__over--right")
-      e.target.style.marginRight = "20px"
-    }
-    if (x < width) {
-      e.target.classList.add("element__drag__over--left")
-      e.target.style.marginLeft = "20px"
-    }
   }
 
   const removeStylesOverElement = (e = null) => {
     document.querySelectorAll(".element__drag__over")?.forEach(ele => {
-      ele.style.marginRight = null
-      ele.style.marginLeft = null
       ele.classList.remove("element__drag__over")
-      ele.classList.remove("element__drag__over--right")
-      ele.classList.remove("element__drag__over--left")
     })
   }
 

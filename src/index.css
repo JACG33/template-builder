@@ -19,37 +19,20 @@
 
 .element__drag__over {
   position: relative;
+  opacity: .85;
+  transition: outline 200ms ease-in-out;
 }
 
-.element__drag__over--left::before,
-.element__drag__over--right::after {
-  content: "";
-  position: absolute;
-  top: 0px;
-  display: block;
-  height: 100%;
-  width: 20px;
-  border: 1px dashed blue;
-  background-color: #ccc;
-}
-
-.element__drag__over--left::before {
-  left: -20px;
-}
-
-.element__drag__over--right::after {
-  right: -20px;
-}
-
-.componets__dialog--show{
+.componets__dialog--show {
   animation: ShowComponents 100ms linear forwards;
 }
 
 @keyframes ShowComponents {
-  from{
+  from {
     opacity: 0;
   }
-  to{
+
+  to {
     opacity: 1;
   }
 }

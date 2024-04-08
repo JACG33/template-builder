@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.87 08-ABR-2024
++ Se corrigio un __bug__ que al momento de querer ordenar o cambiar de lugar un componente no se podia con el primer elemento, solo se aplicaba a partir del segundo componente.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.85 07-ABR-2024
 + Ahora los componentes de la carpeta __sidebarelemtensitems__ comparten un componete base para evitar el tener repetir logica que se puede encapsular en un componente i reutilizarlo.
 + Se hicieron otras modificaciones.

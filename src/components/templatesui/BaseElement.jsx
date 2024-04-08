@@ -17,7 +17,7 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
         conf: styles.current?.[`${TypeElement}${id}`] ? styles.current[`${TypeElement}${id}`] : placeholder,
         name: id,
         open: true,
-        cssClass:`${TypeElement}${id}`
+        cssClass: `${TypeElement}${id}`
       }
     )
   }, [])
@@ -30,20 +30,21 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
             conf: styles.current?.[`${TypeElement}${id}`] ? styles.current[`${TypeElement}${id}`] : placeholder,
             name: id,
             open: true,
-            cssClass:`${TypeElement}${id}`
+            cssClass: `${TypeElement}${id}`
           }
         )
       }}
       // style={configComponent?.[`${TypeElement}${id}`] ? configComponent[`${TypeElement}${id}`] : placeholder}
-      className={`${TypeElement}${id}` }
+      className={`${TypeElement}${id}`}
       data-component={dataAttribute}
       data-idcomponent={id}
       data-typehtml={TypeElement}
+      data-dragindex={indexItem}
       draggable
-      onDragStartCapture={e => handleDragginElement({e}, id, indexItem)}
+      onDragStartCapture={e => handleDragginElement({ e }, id, indexItem)}
       onDropCapture={e => handleSubDrop(e, id, TypeElement)}
-      onDragOverCapture={e => { handleOver(e, indexItem, isParentComponent) }}
-      onDragEnd={e => { handleDropEnd(e,isParentComponent) }}
+      onDragOver={e => { handleOver(e) }}
+      onDragEnd={e => { handleDropEnd(e, isParentComponent) }}
     >
       {children}
       {subItemsToTemplate.length > 0 && subItemsToTemplate.map((Item, indexSubItem) => {
