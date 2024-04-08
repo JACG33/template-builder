@@ -1,7 +1,6 @@
 @import "./assets/base.css";
 
 body {
-  box-sizing: border-box;
   background-color: var(--dark-950);
 }
 
@@ -26,6 +25,7 @@ body {
 
 .builder__aside--right {
   width: 270px;
+  overflow-y: auto;
 }
 
 .element__drag__over {
@@ -35,30 +35,15 @@ body {
 }
 
 .componets__dialog--show {
-  animation: ShowComponents 100ms linear forwards;
+  animation: ShowDialogComponents 100ms linear forwards;
 }
 
-@keyframes ShowComponents {
+@keyframes ShowDialogComponents {
   from {
     opacity: 0;
   }
 
   to {
     opacity: 1;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
   }
 }

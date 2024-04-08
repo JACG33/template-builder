@@ -1,5 +1,5 @@
 .aside__float__left__container {
-  position: absolute;
+  position: fixed;
   padding-inline: 8px;
   height: 100dvh;
   top: 0px;
