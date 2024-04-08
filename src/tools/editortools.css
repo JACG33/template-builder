@@ -1,0 +1,168 @@
+.wrapper__component {
+  padding-inline: 8px;
+  padding-block: 16px;
+  border-bottom: 3px solid var(--dark-50);
+  cursor: pointer;
+  color: var(--dark-50);
+}
+
+.wrapper__component__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wrapper__component__header__span {
+  padding-inline: 8px;
+  padding-block: 4px;
+}
+
+.wrapper__component__header__btn {
+  padding-inline: 4px;
+  padding-block: 8px;
+  border-radius: 8px;
+  border: transparent;
+  background-color: transparent;
+  color: var(--dark-50);
+}
+
+.wrapper__component__items{
+  display: grid;
+  gap: 8px;
+  height: 0px;
+  overflow: hidden;
+}
+
+.wrapper__component__items--show{
+  margin-top: 8px;
+  height: 100%;
+  overflow: auto;
+}
+
+.editot__tools__header{
+  text-align: center;
+  padding: 4px;
+}
+
+.state__style{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 8px;
+  margin-block: 8px;
+  padding-inline: 8px;
+  padding-block: 8px;
+  border-bottom: 3px solid var(--dark-50);
+}
+  
+
+.display__select__wp{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 8px;
+  margin-block: 8px;
+}
+
+
+.size__component{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-block: 8px;
+}
+
+.size__component__input_wp{
+  max-width: 100px;
+  height: 24px;
+  position: relative;
+  padding-block: 4px;
+  padding-inline: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--dark-50);
+}
+
+.size__component__input_wp input{
+  color: var(--dark-950);
+  border: transparent;
+  width: 46px;
+  background-color: transparent;
+  outline: none;
+}
+
+
+.btn__type_size{
+  width: 100px;
+  background-color: transparent;
+  color: var(--dark-950);
+  border: transparent;
+  cursor: pointer;
+}
+
+.dialog__size{
+  border-radius: 8px;  
+  padding: 8px;
+  margin: auto;
+  border: transparent;
+}
+
+.dialog__size__btns{
+  display: grid;
+  gap: 4px;
+}
+
+.dialog__size__btn{
+  padding-block: 4px;
+  padding-inline: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: transparent;
+  background-color: var(--green-700);
+}
+.dialog__size__btn:hover{
+  background-color: var(--green-600);
+}
+
+
+.padding__wrp{
+  width: 100%;
+  display: grid;
+  gap: 8px;
+  padding-block: 4px;
+}
+
+.padding__header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.padding__joined{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.padding__separated{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 8px;
+}
+
+
+
+.border__wrp{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+.w-full{
+  width: 100%;
+}

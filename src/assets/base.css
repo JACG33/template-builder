@@ -1,0 +1,72 @@
+/*
+  https://uicolors.app/create
+  COLORS:
+  Base Dark #474747
+  Base Blue #0078c2
+  Base Green #00c227
+  Base Red #c20000
+*/
+
+
+:root {
+  /* Dark */
+  --dark-50: #f6f6f6;
+  --dark-100: #e7e7e7;
+  --dark-200: #d1d1d1;
+  --dark-300: #b0b0b0;
+  --dark-400: #888888;
+  --dark-500: #6d6d6d;
+  --dark-600: #5d5d5d;
+  --dark-700: #4f4f4f;
+  --dark-800: #474747;
+  --dark-900: #3d3d3d;
+  --dark-950: #262626;
+
+  /* Blue */
+  --blue-50: #f0f8ff;
+  --blue-100: #e0f1fe;
+  --blue-200: #b9e3fe;
+  --blue-300: #7ccefd;
+  --blue-400: #36b6fa;
+  --blue-500: #0c9deb;
+  --blue-600: #0078c2;
+  --blue-700: #0162a3;
+  --blue-800: #065486;
+  --blue-900: #0b466f;
+  --blue-950: #072c4a;
+
+  /* Green */
+  --green-50: #eefff0;
+  --green-100: #d7ffde;
+  --green-200: #b2ffc0;
+  --green-300: #76ff90;
+  --green-400: #33f559;
+  --green-500: #09de33;
+  --green-600: #00c227;
+  --green-700: #049121;
+  --green-800: #0a7120;
+  --green-900: #0a5d1d;
+  --green-950: #00340c;
+
+  /* Red */
+  --red-50: #ffefef;
+  --red-100: #ffdcdc;
+  --red-200: #ffbfbf;
+  --red-300: #ff9292;
+  --red-400: #ff5454;
+  --red-500: #ff1f1f;
+  --red-600: #ff0000;
+  --red-700: #db0000;
+  --red-800: #c20000;
+  --red-900: #940808;
+  --red-950: #520000;
+
+  /* Font Family */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color-scheme: dark light;
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+}

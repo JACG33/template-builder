@@ -28,14 +28,14 @@ const SpacingComponent = ({ text, handleChange, configTemplate, sizeName, config
   }, [])
 
   return (
-    <div className="w-full flex justify-between gap-2 py-2">
+    <div className="size__component">
       <label htmlFor={`${sizeName}${positionNumber}`}>{text} {positionText}</label>
 
-      <div className="max-w-[100px] h-6 relative py-1 px-2 flex items-center justify-center bg-white text-black">
+      <div className="size__component__input_wp">
 
         {sizeType.size == "auto" ?
           <input
-            className="w-14 bg-transparent outline-none"
+            className=""
             id={`${sizeName}${positionNumber}`}
             type="text"
             name={sizeName}
@@ -47,7 +47,7 @@ const SpacingComponent = ({ text, handleChange, configTemplate, sizeName, config
           />
           :
           <input
-            className="w-14 bg-transparent outline-none"
+            className=""
             id={`${sizeName}${positionNumber}`}
             type="number"
             name={sizeName}

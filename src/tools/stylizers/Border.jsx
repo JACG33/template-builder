@@ -20,7 +20,7 @@ const Border = ({ handleChange, configTemplate, configRef }) => {
 
   return (
     <div>
-      <div className="w-full flex items-center  gap-2 justify-between">
+      <div className="padding__header">
         <label htmlFor={"border"}>Border</label>
         <SideOptions setSplitType={setSplitType} split={split} />
         <select className="h-[21px]" onChange={typeWidthHandleChange} id={"border"} data-type="select" value={typeWidth.size}>
@@ -32,7 +32,7 @@ const Border = ({ handleChange, configTemplate, configRef }) => {
         </select>
       </div>
 
-      {split == "joined" && <div>
+      {split == "joined" && <div className='padding__joined'>
         <BorderSeparated configRef={configRef} configTemplate={configTemplate} handleChange={handleChange} split={split} typeWidth={typeWidth} borderPosition={"border"} sizeUnit={typeWidth.size} />
       </div>}
 
@@ -95,7 +95,7 @@ const BorderSeparated = ({ handleChange, configRef, typeWidth, split, borderPosi
 
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="border__wrp">
       <input className="" ref={inpRef} type="number" name={borderPosition} data-name={borderPosition} data-sizetype={typeWidth.size} data-split={split} onChange={borderChange} min={0} max={99999}
         value={borderStyles.current.size ? borderStyles.current.size : 0} data-borderstyle={JSON.stringify(borderStyles.current)} />
 

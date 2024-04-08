@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.90 08-ABR-2024
++ Se quito la libreria __TailwindCss__ para utilizar estilos css __vanilla__, la razon es porque __TailwindCss__ tiene unos formateadores css, que al exportar el codigo de la platilla generada, el aspecto no es el mismo que el de la plantilla, por ejemplo el __border__ de los __buttons__ __TailwindCss__ los quita, pero al exportar estos aparecen.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.87 08-ABR-2024
 + Se corrigio un __bug__ que al momento de querer ordenar o cambiar de lugar un componente no se podia con el primer elemento, solo se aplicaba a partir del segundo componente.
 + Se hicieron otras modificaciones.

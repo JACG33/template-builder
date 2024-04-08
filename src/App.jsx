@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react"
-import { BuilderArea } from "./components/BuilderArea"
+import { BuilderArea } from "./components/builderarea/BuilderArea"
 import { Loader } from "./components/Loader/Loader"
 import AddComponent from "./components/addcomponents/AddComponent"
 import ComponentsTree from "./components/componentstree/ComponentsTree"
@@ -8,18 +8,16 @@ const DialogExport = lazy(() => import("./components/dialogExport/DialogExport")
 
 function App() {
   return (
-    <div className='grid grid-cols-[50px_1fr_270px]'>
-      <aside className='bg-slate-600 w-[50px] h-screen flex flex-col items-center justify-start gap-2 py-2'>
-        <Suspense fallback={<Loader css={"*:w-[40px] *:h-[40px]"} />}>
+    <div className='builder__area'>
+      <aside className='builder__aside builder__aside--left'>
+        <Suspense fallback={<Loader size={"md"} />}>
           <DialogExport />
         </Suspense>
         <AddComponent />
         <ComponentsTree />
       </aside>
-      <main className="h-screen overflow-auto">
-        <BuilderArea />
-      </main>
-      <aside className='bg-slate-600 w-[270px] h-screen overflow-x-auto flex flex-col items-center justify-start gap-2 py-2'>
+      <BuilderArea />
+      <aside className='builder__aside builder__aside--right'>
         <Suspense fallback={<Loader />}>
           <EditorTools />
         </Suspense>

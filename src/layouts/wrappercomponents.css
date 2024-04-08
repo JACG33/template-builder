@@ -1,0 +1,40 @@
+.wrapper__component {
+  padding-inline: 8px;
+  padding-block: 16px;
+  border-bottom: 3px solid var(--dark-50);
+  cursor: pointer;
+  color: var(--dark-50);
+}
+
+.wrapper__component__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wrapper__component__header__span {
+  padding-inline: 8px;
+  padding-block: 4px;
+}
+
+.wrapper__component__header__btn {
+  padding-inline: 4px;
+  padding-block: 8px;
+  border-radius: 8px;
+  border: transparent;
+  background-color: transparent;
+  color: var(--dark-50);
+}
+
+.wrapper__component__items{
+  display: grid;
+  gap: 8px;
+  height: 0px;
+  overflow: hidden;
+}
+
+.wrapper__component__items--show{
+  margin-top: 8px;
+  height: 100%;
+  overflow: auto;
+}

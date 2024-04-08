@@ -1,5 +1,15 @@
 .btn__tooltip{
+  margin: auto;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: var(--blue-600);
+  color: var(--dark-50);
+  border: transparent;
+  cursor: pointer;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn__tooltip:hover .btn__tooltip__message{
@@ -11,7 +21,7 @@
   position: absolute;
   top: 5px;
   left: 55px;
-  background-color: #4f46e5;
+  background-color: var(--blue-600);
   border-radius: .5rem;
   padding: .5rem;
   width: fit-content;
@@ -31,6 +41,6 @@
   width: 15px;
   top: 30%;
   left: -13px;
-  background-color: #4f46e5;
+  background-color: var(--blue-600);
   clip-path: polygon(100% 0, 0 49%, 100% 100%);
 }

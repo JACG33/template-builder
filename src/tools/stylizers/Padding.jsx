@@ -21,8 +21,8 @@ const Padding = ({ handleChange, configTemplate, configRef }) => {
 
 
   return (
-    <div className="w-full grid gap-2 py-1">
-      <div className="w-full flex items-center  gap-2 justify-between">
+    <div className="padding__wrp">
+      <div className="padding__header">
         <label htmlFor={"padding1"}>Padding</label>
         <SideOptions setSplitType={setSplitType} split={split} />
         <select className="h-full" onChange={typeWidthHandleChange} id={"padding1"} name={"padding"} data-type="select" value={typeWidth.size}>
@@ -34,14 +34,14 @@ const Padding = ({ handleChange, configTemplate, configRef }) => {
           <option value="vw">vw</option>
         </select>
       </div>
-      {split == "joined" && <div className="flex items-center gap-2">
+      {split == "joined" && <div className="padding__joined">
         <input className="w-full" type="number" name={"padding"} data-sizetype={typeWidth.size} data-split={split} data-position='0' onChange={handleChange} min={0} max={99999}
           value={
             configTemplate?.["padding"] ? configTemplate["padding"][0] : ""
           } />
       </div>}
 
-      {split == "separated" && <div className="w-full grid grid-cols-2 gap-2">
+      {split == "separated" && <div className="padding__separated">
         <div>
           <span>top</span>
           <input className="w-full" type="number" name={"padding"} data-sizetype={typeWidth.size} data-split={split} data-position='0' onChange={handleChange} min={0} max={99999}

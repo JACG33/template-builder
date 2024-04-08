@@ -8,6 +8,7 @@ import Border from './stylizers/Border'
 import FontAndText from './stylizers/FontAndText'
 import StateStyle from './stylizers/StateStyle'
 import Transitions from './stylizers/Transitions'
+import "./editortools.css"
 
 const cleanText = ({ text = "", letters = [] }) => {
   let clean = ""
@@ -160,7 +161,7 @@ const EditorTools = () => {
 
   return (
     <div className='px-2'>
-      <EditorToolsHeader />
+      <EditorToolsHeader cssClass={actualConfig} />
       <StateStyle setState={setState} />
       <WrapperDropDown secctionName={"Display"}>
         <Display configTemplate={configTemplate} handleChange={handleChange} />

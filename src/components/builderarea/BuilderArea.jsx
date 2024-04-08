@@ -1,6 +1,7 @@
-import { useDragAndDropProvider } from '../hoks/useDragAndDropProvider'
-import { useEditorProvider } from '../hoks/useEditorProvider'
-import { useExportImportProvider } from '../hoks/useExportImportProvider'
+import { useDragAndDropProvider } from '../../hoks/useDragAndDropProvider'
+import { useEditorProvider } from '../../hoks/useEditorProvider'
+import { useExportImportProvider } from '../../hoks/useExportImportProvider'
+import "./builderarea.css"
 
 export const BuilderArea = () => {
   const { handleDragEnter, handleDrop, itemsToTemplate, handleOver, handleLeave } = useDragAndDropProvider()
@@ -8,7 +9,7 @@ export const BuilderArea = () => {
   const { handleActualConfig } = useEditorProvider()
 
   return (
-    <div ref={builderArea} className={`h-screen`} onClickCapture={() => handleActualConfig("")} onDragEnterCapture={e => handleDragEnter(e)} onDragOver={e => handleOver(e)} onDrop={e => handleDrop(e)} onDragLeave={e => handleLeave(e)}>
+    <div ref={builderArea} className="builder__zone" onClickCapture={() => handleActualConfig("")} onDragEnterCapture={e => handleDragEnter(e)} onDragOver={e => handleOver(e)} onDrop={e => handleDrop(e)} onDragLeave={e => handleLeave(e)}>
       {itemsToTemplate.length > 0
         &&
         itemsToTemplate.map((Item, indexItem) =>

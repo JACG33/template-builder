@@ -28,14 +28,14 @@ const SizeComponent = ({ text, handleChange, configTemplate, sizeName, configRef
   }, [])
 
   return (
-    <div className="w-full flex justify-between gap-2 py-2">
+    <div className="size__component">
       <label htmlFor={`${sizeName}1`}>{text}</label>
 
-      <div className="max-w-[100px] h-6 relative py-1 px-2 flex items-center justify-center bg-white text-black">
+      <div className="size__component__input_wp">
 
         {sizeType.size == "auto" ?
           <input
-            className="w-14 bg-transparent outline-none"
+            className=""
             id={`${sizeName}1`}
             type="text"
             name={sizeName}
@@ -46,7 +46,7 @@ const SizeComponent = ({ text, handleChange, configTemplate, sizeName, configRef
           />
           :
           <input
-            className="w-14 bg-transparent outline-none"
+            className=""
             id={`${sizeName}1`}
             type="number"
             name={sizeName}

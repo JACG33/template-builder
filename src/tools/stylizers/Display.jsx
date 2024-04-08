@@ -13,7 +13,7 @@ const Display = ({ handleChange, configTemplate }) => {
 
   return (
     <div>
-      <div className="w-full grid grid-cols-2 gap-2">
+      <div className="display__select__wp">
         <span>Display</span>
         <select name="display" id="" onChange={selectHandleChange} value={configTemplate?.display ? configTemplate.display : ""}>
           <option value="">Select Display</option>
@@ -24,7 +24,7 @@ const Display = ({ handleChange, configTemplate }) => {
       </div>
       <div className="grid items-center gap-2 my-2">
         {selectType == "flex" &&
-          <div className='w-full grid grid-cols-2 gap-2'>
+          <div className='display__select__wp'>
             <label htmlFor="fdire">Flex Direction</label>
             <select name="flexDirection" id="fdire" onChange={selectHandleChange} value={configTemplate?.flexDirection ? configTemplate.flexDirection : ""}>
               <option value=""></option>
@@ -35,7 +35,7 @@ const Display = ({ handleChange, configTemplate }) => {
             </select>
           </div>
         }
-        <div className='w-full grid grid-cols-2 gap-2'>
+        <div className='display__select__wp'>
           <label htmlFor="juCo">Justify Content</label>
           <select name="justifyContent" id="juCo" onChange={selectHandleChange} value={configTemplate?.justifyContent ? configTemplate.justifyContent : ""}>
             <option value=""></option>
@@ -47,7 +47,7 @@ const Display = ({ handleChange, configTemplate }) => {
             <option value="space-between">Space-between</option>
           </select>
         </div>
-        <div className='w-full grid grid-cols-2 gap-2'>
+        <div className='display__select__wp'>
           <label htmlFor="AlI">Align Items</label>
           <select name="alignItems" id="AlI" onChange={selectHandleChange} value={configTemplate?.alignItems ? configTemplate.alignItems : ""}>
             <option value=""></option>
@@ -56,7 +56,7 @@ const Display = ({ handleChange, configTemplate }) => {
             <option value="end">End</option>
           </select>
         </div>
-        <div className='w-full grid grid-cols-2 gap-2'>
+        <div className='display__select__wp'>
           <label htmlFor="spc">Spacing</label>
           <input type="number" name="gap" id="spc" min={0} max={10000} onChange={handleChange} value={configTemplate?.gap ? configTemplate.gap : 0} />
         </div>

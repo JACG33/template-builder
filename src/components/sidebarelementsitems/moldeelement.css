@@ -1,0 +1,6 @@
+.molde__element{
+  border: 1px solid var(--dark-50);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+}

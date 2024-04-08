@@ -1,20 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "./assets/base.css";
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+body {
+  box-sizing: border-box;
+  background-color: var(--dark-950);
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+.builder__area {
+  display: grid;
+  grid-template-columns: 50px 1fr 270px;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+.builder__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 8px;
+  background-color: var(--dark-900);
+  height: 100dvh;
+}
+
+.builder__aside--left {
+  width: 50px;
+}
+
+.builder__aside--right {
+  width: 270px;
 }
 
 .element__drag__over {
