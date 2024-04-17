@@ -1,8 +1,7 @@
 import { Suspense, lazy } from "react"
-import { BuilderArea } from "./components/builderarea/BuilderArea"
 import { Loader } from "./components/Loader/Loader"
-import AddComponent from "./components/addcomponents/AddComponent"
-import ComponentsTree from "./components/componentstree/ComponentsTree"
+import { BuilderArea } from "./components/builderarea/BuilderArea"
+import SideBarLeftItems from "./components/sidebarleftitems/SideBarLeftItems"
 const EditorTools = lazy(() => import("./tools/EditorTools"))
 const DialogExport = lazy(() => import("./components/dialogExport/DialogExport"))
 
@@ -13,8 +12,7 @@ function App() {
         <Suspense fallback={<Loader size={"md"} />}>
           <DialogExport />
         </Suspense>
-        <AddComponent />
-        <ComponentsTree />
+        <SideBarLeftItems />
       </aside>
       <BuilderArea />
       <aside className='builder__aside builder__aside--right'>

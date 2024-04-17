@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.91 17-ABR-2024
++ Migrando algunos estilos a vailla.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.90 08-ABR-2024
 + Se quito la libreria __TailwindCss__ para utilizar estilos css __vanilla__, la razon es porque __TailwindCss__ tiene unos formateadores css, que al exportar el codigo de la platilla generada, el aspecto no es el mismo que el de la plantilla, por ejemplo el __border__ de los __buttons__ __TailwindCss__ los quita, pero al exportar estos aparecen.
 + Se hicieron otras modificaciones.
