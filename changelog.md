@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.95 18-ABR-2024
++ Se agrego la opcion de breackpoint/mediaquery (sin funcionalidad significativa).
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.91 17-ABR-2024
 + Migrando algunos estilos a vailla.
 + Se hicieron otras modificaciones.

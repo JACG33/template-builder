@@ -16,7 +16,7 @@ const StateStyle = ({ setState}) => {
   return (
     <div className='state__style'>
       <span>State</span>
-      <button type="button" className="w-[100px] border rounded-lg flex items-center justify-center" onClick={toggleDialog}>{stateType.state==""?"normal":stateType.state}</button>
+      <button type="button" className="" onClick={toggleDialog}>{stateType.state==""?"normal":stateType.state}</button>
       <dialog ref={dialogRef} className="dialog__size">
         <div className="dialog__size__btns">
           <button type="button" className="dialog__size__btn" onClick={clickBtnDialog} data-value="">normal</button>

@@ -23,9 +23,11 @@ export function EditorProvider({ children }) {
   const cssStylesRef = useRef()
 
   const handleEditComponent = (conf) => {
-    setConfigComponent({ ...configComponent, [actualConfig]: conf })
-    cssStylesRef.current = { ...configComponent, [actualConfig]: conf }
-    setHeadStyles()
+    if (openEditor == true) {
+      setConfigComponent({ ...configComponent, [actualConfig]: conf })
+      cssStylesRef.current = { ...configComponent, [actualConfig]: conf }
+      setHeadStyles()
+    }
   }
 
   const handleActualConfig = (nameConfig) => setActualConfig(nameConfig)
@@ -51,7 +53,6 @@ export function EditorProvider({ children }) {
   }
 
   const setHeadStyles = (data = null) => {
-
     let cssStyles = ``;
 
     if (!document.querySelector("style[data-develope]")) {
@@ -120,12 +121,10 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent,setAditionalStyles
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, setAditionalStyles
       }}
     >
       {children}
     </EditorContext.Provider>
   )
 }
-
-

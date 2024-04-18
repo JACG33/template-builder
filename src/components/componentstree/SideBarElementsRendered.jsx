@@ -12,7 +12,7 @@ const SideBarElementsRendered = () => {
 
   const handleSetOpenEditor = (id) => {
     const conf = getConfigComponent(id)
-    handleOpenEditor({ conf, name: id, open: true })
+    handleOpenEditor({ conf, cssClass: id, open: true })
   }
 
   return (
@@ -21,7 +21,7 @@ const SideBarElementsRendered = () => {
       <div className='my-2 grid gap-2'>
         {itemsToTemplate?.length > 0 && itemsToTemplate.map(ele => {
           return (
-            <div key={ele.id} className='flex justify-around gap-1'>
+            <div key={ele.id} className='tree__element'>
               <button type='button' onClick={e => handleSetOpenEditor(`${ele.type}${ele.id}`)}>{`<${ele.type}>`}</button>
               <ButtonDelete handleDelete={handleDelete} type={ele.type} id={ele.id} />
             </div>
@@ -31,7 +31,7 @@ const SideBarElementsRendered = () => {
 
         {subItemsToTemplate?.length > 0 && subItemsToTemplate.map(ele => {
           return (
-            <div key={ele.id} className='flex justify-around gap-1'>
+            <div key={ele.id} className='tree__element'>
               <button type='button' onClick={e => handleSetOpenEditor(`${ele.type}${ele.id}`)} key={ele.id}>{`<${ele.type}>`}</button>
               <ButtonDelete handleDelete={handleDelete} type={ele.type} id={ele.id} />
             </div>

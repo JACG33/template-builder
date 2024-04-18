@@ -39,7 +39,7 @@
   overflow: auto;
 }
 
-.editot__tools__header {
+.editor__tools__header {
   text-align: center;
   padding: 4px;
 }
@@ -48,9 +48,8 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
-  margin-block: 8px;
   padding-inline: 8px;
-  padding-block: 8px;
+  padding-block: 16px;
   border-bottom: 3px solid var(--dark-50);
 }
 
@@ -135,7 +134,8 @@
 
 .padding__header {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
   justify-content: space-between;
   align-items: center;
   gap: 8px;
@@ -166,7 +166,7 @@
   border-radius: 8px;
   min-width: 80px;
   width: 80px;
-  height: 35px;
+  height: 30px;
   overflow: hidden;
   background-color: var(--blue-500);
 }

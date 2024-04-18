@@ -5,6 +5,7 @@
   top: 0px;
   left: 50px;
   background-color: var(--dark-700);
+  z-index: 1;
 }
 
 .aside__float__left__container__header {

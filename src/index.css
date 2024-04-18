@@ -6,9 +6,20 @@ body {
 
 .builder__area {
   display: grid;
+  grid-template-rows: 40px 1fr;
   grid-template-columns: 50px 1fr 270px;
 }
 
+.top__area {
+  width: 100%;
+  background-color: blueviolet;
+  background-color: var(--dark-900);
+  border-bottom: 1px solid var(--dark-500);
+  grid-column: 1/4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .builder__aside {
   display: flex;
@@ -16,7 +27,7 @@ body {
   gap: 8px;
   padding-block: 8px;
   background-color: var(--dark-900);
-  height: 100dvh;
+  height: calc(100dvh - 40px);
 }
 
 .builder__aside--left {
@@ -26,6 +37,42 @@ body {
 .builder__aside--right {
   width: 270px;
   overflow-y: auto;
+}
+
+.wrap__builder {
+  overflow: hidden;
+  /* display: flex; */
+}
+
+.builder__zone {
+  width: 100%;
+  height: calc(100dvh - 60px);
+  background-color: #FFF;
+  overflow-y: auto;
+  margin: 1% auto;
+}
+
+.builder__zone--sm {
+  width: 640px;
+}
+
+.builder__zone--md {
+  width: 768px;
+}
+
+.builder__zone--lg {
+  width: 1024px;
+  transform: scale(0.9) translate(-36px, 0px);
+}
+
+.builder__zone--xl {
+  width: 1280px;
+  transform: scale(0.72) translate(-225px, 0px);
+}
+
+.builder__zone--2xl {
+  width: 1536px;
+  transform: scale(0.6) translate(-480px, 0px);
 }
 
 .element__drag__over {
@@ -46,4 +93,12 @@ body {
   to {
     opacity: 1;
   }
+}
+
+.tree__element{
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 5px 10px;
 }

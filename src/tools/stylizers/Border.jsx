@@ -60,7 +60,7 @@ const Border = ({ handleChange, configTemplate, configRef }) => {
 }
 
 const BorderSeparated = ({ handleChange, configRef, typeWidth, split, borderPosition, sizeUnit }) => {
-  const borderStyles = useRef({ size: 0, style: "solid", color: "#ffffff", sizeUnit })
+  const borderStyles = useRef({ size: 0, style: "solid", color: "#000000", sizeUnit })
   const [up, setUp] = useState(true)
   const inpRef = useRef(null)
   const borderChange = (e) => {
