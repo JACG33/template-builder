@@ -1,6 +1,7 @@
 import BaseElement from "./BaseElement"
 
 const placeholder = {
+  color:"#000000"
 }
 const Prgph = ({ id,indexItem ,isParentComponent}) => {
   return (

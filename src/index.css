@@ -41,38 +41,64 @@ body {
 
 .wrap__builder {
   overflow: hidden;
+  position: relative;
   /* display: flex; */
 }
 
+.builder__iframe{
+  /* position: absolute; */
+  top: 0px;
+  z-index: -1;
+}
+
 .builder__zone {
-  width: 100%;
+  width: 99%;
   height: calc(100dvh - 60px);
   background-color: #FFF;
   overflow-y: auto;
   margin: 1% auto;
 }
 
-.builder__zone--sm {
-  width: 640px;
+.builder__zone--mobile {
+  min-width: 320px;
+  max-width: 479px;
+  resize: horizontal;
 }
 
-.builder__zone--md {
-  width: 768px;
+.builder__zone--mobile2 {
+  min-width: 480px;
+  max-width: 767px;
+  resize: horizontal;
 }
 
-.builder__zone--lg {
-  width: 1024px;
-  transform: scale(0.9) translate(-36px, 0px);
+.builder__zone--tablet {
+  min-width: 768px;
+  max-width: 991px;
+  resize: horizontal;
+  transform: scale(0.9);
+  position: absolute;
+  inset: 0px 10px;
 }
 
-.builder__zone--xl {
-  width: 1280px;
-  transform: scale(0.72) translate(-225px, 0px);
+.builder__zone--desktop {
+  min-width: 1024px;
+  transform: scale(0.9) translate(-50px, 0px);
+  position: absolute;
+  inset: 0px 10px;
 }
 
-.builder__zone--2xl {
-  width: 1536px;
-  transform: scale(0.6) translate(-480px, 0px);
+.builder__zone--desktopx2 {
+  min-width: 1280px;
+  transform: scale(0.72) translate(-240px, 0px);
+  position: absolute;
+  inset: 0px 10px;
+}
+
+.builder__zone--desktopx3 {
+  min-width: 1440px;
+  transform: scale(0.6) translate(-420px, 0px);
+  position: absolute;
+  inset: 0px 10px;
 }
 
 .element__drag__over {
@@ -95,7 +121,7 @@ body {
   }
 }
 
-.tree__element{
+.tree__element {
   display: flex;
   width: 100%;
   gap: 10px;

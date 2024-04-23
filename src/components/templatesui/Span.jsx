@@ -1,6 +1,7 @@
 import BaseElement from "./BaseElement"
 
 const placeholder = {
+  color:"#000000"
 }
 const Span = ({ id ,indexItem,isParentComponent}) => {
   return (

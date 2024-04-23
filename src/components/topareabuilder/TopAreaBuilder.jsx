@@ -5,12 +5,13 @@ const TopAreaBuilder = () => {
   return (
     <div className="top__area">
       <select name="breackPoint" id="" onChange={e => handleBreackPoint(e.target.value)} value={breackPoint}>
-        {/* <option value="">Select BreackPoint</option> */}
-        <option value="640px">sm : 640px</option>
-        <option value="768px">md : 768px</option>
-        <option value="1024px">lg : 1024px</option>
-        <option value="1280px">xl : 1280px</option>
-        <option value="1536px">2xl : 1536px</option>
+        <option value="">Select BreackPoint</option>
+        <option value="mobile">Mobile : 320px &lt; width &gt; 479px</option>
+        <option value="mobilex2">Mobile : 480px &lt; width &gt; 767px</option>
+        <option value="tablet">Tablet : 768px &lt; width &gt; 991px</option>
+        <option value="desktop">Descktop : 1024px &lt; width</option>
+        <option value="desktopx2">DescktopX2 : 1280px &lt; width</option>
+        <option value="desktopx3">DescktopX3 : 1440px &lt; width</option>
       </select>
     </div>
   )
