@@ -47,7 +47,9 @@ export function DragAndDropProvider({ children }) {
 
     setDragginElement({ e: e.target, sideBar })
 
-    if (id) setIdDragginElement(id)
+    if (e.target.dataset.idcomponent) {
+      setIdDragginElement(Number(e.target.dataset.idcomponent))
+    }
   }
 
   const handleDragEnter = (e) => {
@@ -101,9 +103,9 @@ export function DragAndDropProvider({ children }) {
       impAndSetComponent({ fnState: setSubItemsToTemplate, arrayState: subItemsToTemplate, typeElement, parentId })
     } else {
       const idParent = Number(e.target.dataset.idcomponent);
-      const findComponents = itemsToTemplate.map(ele => ele).filter((ele) => ele.id == idDragginElement);
-      const findSubComponent = subItemsToTemplate.map(ele => ele).filter((ele) => ele.id == idDragginElement);
-      const filteredComponents = itemsToTemplate.map(ele => ele).filter((ele) => ele.id !== idDragginElement);
+      const findComponents = itemsToTemplate.map(ele => ele).filter((ele) => Number(ele.id) == Number(idDragginElement));
+      const findSubComponent = subItemsToTemplate.map(ele => ele).filter((ele) => Number(ele.id) == Number(idDragginElement));
+      const filteredComponents = itemsToTemplate.map(ele => ele).filter((ele) => Number(ele.id) !== Number(idDragginElement));
 
       findComponents.forEach(ele => {
         if (ele.id == idDragginElement) ele.parentId = idParent
@@ -124,6 +126,7 @@ export function DragAndDropProvider({ children }) {
   const handleOver = (e) => {
     e.preventDefault()
     e.stopPropagation()
+    // getPosition(e)
     if (e.target.dataset.dragindex && ctrlKeyPress.current == "control") {
       draggedOverComponent.current = Number(e.target.dataset.dragindex)
       stylesOverElement(e)
@@ -179,7 +182,7 @@ export function DragAndDropProvider({ children }) {
   const sortComponents = ({ originalComponents, currentDragging, currentOverDragging }) => {
     const cloneComponents = Object.assign([], originalComponents)
     const temp = cloneComponents[currentDragging]
-    
+
     cloneComponents[currentDragging] = cloneComponents[currentOverDragging]
     cloneComponents[currentOverDragging] = temp
 
@@ -200,6 +203,24 @@ export function DragAndDropProvider({ children }) {
   const stylesOverElement = (e) => {
     removeStylesOverElement(e)
     e.target.classList.add("element__drag__over")
+  }
+
+  const getPosition = (e) => {
+    let rect = e.target.getBoundingClientRect();
+    // let width = rect.width / 2
+    let x = e.clientX; //x position within the element.
+    let y = e.clientY;  //y position within the element.
+    console.log({ x, y });
+    // removeStylesOverElement(e)
+    // e.target.classList.add("element__drag__over")
+    // if (x > width) {
+    //   e.target.classList.add("element__drag__over--right")
+    //   e.target.style.marginRight = "20px"
+    // }
+    // if (x < width) {
+    //   e.target.classList.add("element__drag__over--left")
+    //   e.target.style.marginLeft = "20px"
+    // }
   }
 
   const removeStylesOverElement = (e = null) => {

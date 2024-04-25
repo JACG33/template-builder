@@ -45,11 +45,6 @@ body {
   /* display: flex; */
 }
 
-.builder__iframe{
-  /* position: absolute; */
-  top: 0px;
-  z-index: -1;
-}
 
 .builder__zone {
   width: 99%;
@@ -63,12 +58,16 @@ body {
   min-width: 320px;
   max-width: 479px;
   resize: horizontal;
+  position: absolute;
+  inset: 0px 10px;
 }
 
 .builder__zone--mobile2 {
   min-width: 480px;
   max-width: 767px;
   resize: horizontal;
+  position: absolute;
+  inset: 0px 10px;
 }
 
 .builder__zone--tablet {
@@ -127,4 +126,8 @@ body {
   gap: 10px;
   justify-content: space-between;
   padding: 5px 10px;
+}
+
+.h-100 {
+  min-height: 100%;
 }

@@ -2,7 +2,8 @@ import BaseElement from "./BaseElement"
 
 const placeholder = {
   backgroundColor: "#cccccc",
-  height: "50px"
+  height: "50px",
+  padding:"10px 0px"
 }
 const Div = ({ id, indexItem ,isParentComponent}) => {
   return (

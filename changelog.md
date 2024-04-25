@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.98 25-ABR-2024
++ Se cambio el comoponente __BuilderArea.jsx__ se añadio un __\<iframe>__ para poder interactuar con los breackpoints.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.95 23-ABR-2024
 + Se modifico el selector de breackpoint
 + Se hicieron otras modificaciones.

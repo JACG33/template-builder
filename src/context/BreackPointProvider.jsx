@@ -1,15 +1,25 @@
 import { createContext, useRef, useState } from "react";
 
 export const BreackPointContext = createContext({
-  breackPoint: null,
+  breackPoint: String,
   setBreackPoint: () => { },
   handleBreackPoint: () => { },
-  builderZoneRef: null
+  builderZoneRef: null,
+  bkpoint: Object
 })
 
 export function BreackPointProvider({ children }) {
   const [breackPoint, setBreackPoint] = useState("mobile")
   const builderZoneRef = useRef(null)
+  const bkpoint = {
+    "": "",
+    "mobile": "builder__zone--mobile",
+    "mobilex2": "builder__zone--mobile2",
+    "tablet": "builder__zone--tablet",
+    "desktop": "builder__zone--desktop",
+    "desktopx2": "builder__zone--desktopx2",
+    "desktopx3": "builder__zone--desktopx3",
+  }
 
   /**
    * Funcion para resetear el width del BuilderZone cuando se cambia el tipo de BrackPoint
@@ -25,7 +35,7 @@ export function BreackPointProvider({ children }) {
 
   return (
     <BreackPointContext.Provider
-      value={{ handleBreackPoint, breackPoint, builderZoneRef }}>
+      value={{ handleBreackPoint, breackPoint, builderZoneRef, bkpoint }}>
       {children}
     </BreackPointContext.Provider>
   )

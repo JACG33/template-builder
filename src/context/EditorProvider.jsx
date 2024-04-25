@@ -14,6 +14,7 @@ export const EditorContext = createContext({
   deleteConfigStyle: () => { },
   getConfigComponent: () => { },
   setAditionalStyles: () => { },
+  cssStylesSheetRef: null,
 })
 
 export function EditorProvider({ children }) {
@@ -22,6 +23,7 @@ export function EditorProvider({ children }) {
   const [actualConfig, setActualConfig] = useState()
   const [openEditor, setOpenEditor] = useState(false)
   const cssStylesRef = useRef()
+  const cssStylesSheetRef = useRef()
   const { breackPoint } = useBraeackPointProvider()
 
   const handleEditComponent = (conf) => {
@@ -99,7 +101,7 @@ export function EditorProvider({ children }) {
 
       let mediaquery = setMediaQuerys();
 
-      cssStyles = mediaquery;
+      cssStyles += mediaquery;
       cssStyles += `.${data[0]} {\n`
       cssStyles += makeCssRule({ toIterate: data[1] })
       cssStyles += `}\n`
@@ -109,6 +111,7 @@ export function EditorProvider({ children }) {
 
       style.innerHTML = cssStyles
       document.querySelector("head").appendChild(style)
+      cssStylesSheetRef.current = cssStyles
     } else {
 
       if (configComponent) {
@@ -139,10 +142,15 @@ export function EditorProvider({ children }) {
         });
 
         document.querySelector("style[data-develope]").innerHTML = cssStyles
+        cssStylesSheetRef.current = cssStyles
       }
     }
-
-    // let ifr= iframeTmp.current.contentWindow || iframeTmp.current.contentDocument.document || iframeTmp.current.contentDocument;
+    // let ifr= iframeRef.current.contentWindow || iframeRef.current.contentDocument.document || iframeRef.current.contentDocument;
+    // let ifr= document.querySelector("#iframezone").contentWindow || document.querySelector("#iframezone").contentDocument.document || document.querySelector("#iframezone").contentDocument;
+    // ifr.document.open()
+    // ifr.document.write(`<style>${cssStyles}</style>`)
+    // // ifr.document.write(builderZoneRef.current.querySelector(".builder__zone").innerHTML)
+    // ifr.document.close()
   }
 
   /**
@@ -185,7 +193,7 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, setAditionalStyles
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, setAditionalStyles, cssStylesSheetRef
       }}
     >
       {children}

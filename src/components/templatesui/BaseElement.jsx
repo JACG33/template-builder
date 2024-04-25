@@ -45,6 +45,8 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
       onDropCapture={e => handleSubDrop(e, id, TypeElement)}
       onDragOver={e => { handleOver(e) }}
       onDragEnd={e => { handleDropEnd(e, isParentComponent) }}
+      onMouseOverCapture={e => { e.target.style.outline = "1px solid red";e.target.style.outlineOffset = "-2px" }}
+      onMouseLeave={e => { e.target.style.outline = null;e.target.style.outlineOffset = null }}
     >
       {children}
       {subItemsToTemplate.length > 0 && subItemsToTemplate.map((Item, indexSubItem) => {
