@@ -5,9 +5,9 @@ const placeholder = {
   height: "50px",
   padding:"10px 0px"
 }
-const Div = ({ id, indexItem ,isParentComponent}) => {
+const Div = ({ id, indexItem ,isParentComponent,dataParent}) => {
   return (
-    <BaseElement TypeElement={"div"} id={id} placeholder={placeholder} dataAttribute={"Div"} indexItem={indexItem} isParentComponent={isParentComponent}/>
+    <BaseElement TypeElement={"div"} id={id} placeholder={placeholder} dataAttribute={"Div"} indexItem={indexItem} isParentComponent={isParentComponent} dataParent={dataParent} />
   )
 }
 

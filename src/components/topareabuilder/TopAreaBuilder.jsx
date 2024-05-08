@@ -5,7 +5,7 @@ const TopAreaBuilder = () => {
   return (
     <div className="top__area">
       <select name="breackPoint" id="" onChange={e => handleBreackPoint(e.target.value)} value={breackPoint}>
-        <option value="">Select BreackPoint</option>
+        {/* <option value="">Select BreackPoint</option> */}
         <option value="mobile">Mobile : 320px &lt; width &gt; 479px</option>
         <option value="mobilex2">Mobile : 480px &lt; width &gt; 767px</option>
         <option value="tablet">Tablet : 768px &lt; width &gt; 991px</option>

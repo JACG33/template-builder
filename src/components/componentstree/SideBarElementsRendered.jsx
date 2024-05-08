@@ -10,6 +10,20 @@ const SideBarElementsRendered = () => {
     handleOpenEditor({ open: false })
   }
 
+  const hoverInElement = ({ cssClass = "" }) => {
+    let ifr = document.querySelector(".builder__zone").contentWindow
+    let elem = ifr.document.querySelector(`.${cssClass}`)
+    elem.style.outline = "1px solid red";
+    elem.style.outlineOffset = "-2px"
+  }
+
+  const hoverOutElement = ({ cssClass = "" }) => {
+    let ifr = document.querySelector(".builder__zone").contentWindow
+    let elem = ifr.document.querySelector(`.${cssClass}`)
+    elem.style.outline = null
+    elem.style.outlineOffset = null
+  }
+
   const handleSetOpenEditor = (id) => {
     const conf = getConfigComponent(id)
     handleOpenEditor({ conf, cssClass: id, open: true })
@@ -21,7 +35,10 @@ const SideBarElementsRendered = () => {
       <div className='my-2 grid gap-2'>
         {itemsToTemplate?.length > 0 && itemsToTemplate.map(ele => {
           return (
-            <div key={ele.id} className='tree__element'>
+            <div key={ele.id} className='tree__element'
+              onMouseOverCapture={e => hoverInElement({ cssClass: `${ele.type}${ele.id}` })}
+              onMouseLeave={e => hoverOutElement({ cssClass: `${ele.type}${ele.id}` })}
+            >
               <button type='button' onClick={e => handleSetOpenEditor(`${ele.type}${ele.id}`)}>{`<${ele.type}>`}</button>
               <ButtonDelete handleDelete={handleDelete} type={ele.type} id={ele.id} />
             </div>
@@ -31,7 +48,10 @@ const SideBarElementsRendered = () => {
 
         {subItemsToTemplate?.length > 0 && subItemsToTemplate.map(ele => {
           return (
-            <div key={ele.id} className='tree__element'>
+            <div key={ele.id} className='tree__element'
+              onMouseOverCapture={e => hoverInElement({ cssClass: `${ele.type}${ele.id}` })}
+              onMouseLeave={e => hoverOutElement({ cssClass: `${ele.type}${ele.id}` })}
+            >
               <button type='button' onClick={e => handleSetOpenEditor(`${ele.type}${ele.id}`)} key={ele.id}>{`<${ele.type}>`}</button>
               <ButtonDelete handleDelete={handleDelete} type={ele.type} id={ele.id} />
             </div>

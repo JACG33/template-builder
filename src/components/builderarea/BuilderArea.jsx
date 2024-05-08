@@ -26,7 +26,7 @@ export const BuilderArea = () => {
             itemsToTemplate.length > 0
             &&
             itemsToTemplate.map((Item, indexItem) =>
-              <Item.component key={Item.id} id={Item.id} indexItem={indexItem} isParentComponent={true} />)
+              <Item.component key={Item.id} id={Item.id} indexItem={indexItem} isParentComponent={true} dataParent={Item} />)
           }
         </div>
       </IFrame>

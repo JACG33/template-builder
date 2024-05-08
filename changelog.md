@@ -1,5 +1,12 @@
 # Template Builder
 
+## Version 0.0.100 08-MAY-2024
++ Ahora la seleccion __Media Query__ o __BreackPoint__ funciona al cambiar los estilos, al exportar se muestran los estilos y las mediaquerys correspondientes al breackpoint actual.
++ Se moficicaron los componentes de la carpeta __templatesui__ se les agrego un nuevo parametro para identificar la jerarquia del componente.
++ Ahora no es necesario presionar la tecla __ctrl__ para cambiar de lugar los componentes.
++ Ahora en la seccion __Rendered Components__ del componente __SideBarElementsRendered__, al hacer hover sobre un item se resalta el componente del __BuilderArea__, para saber que elemento se va a modificar, en una siguiente version se mejorara esta funcion.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.98 25-ABR-2024
 + Se cambio el comoponente __BuilderArea.jsx__ se añadio un __\<iframe>__ para poder interactuar con los breackpoints.
 + Se hicieron otras modificaciones.

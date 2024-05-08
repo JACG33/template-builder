@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useRef, useState } from "react";
 import { useEditorProvider } from "../hoks/useEditorProvider";
 
 export const DragAndDropContext = createContext({
@@ -19,28 +19,13 @@ export const DragAndDropContext = createContext({
 
 export function DragAndDropProvider({ children }) {
   const [dragginElement, setDragginElement] = useState({ e: null, sideBar: false })
-  const [idDragginElement, setIdDragginElement] = useState(null)
+  const [idDragginElement, setIdDragginElement] = useState({ id: null, typeDraggin: "" })
   const [itemsToTemplate, setitemsToTemplate] = useState([])
   const [subItemsToTemplate, setSubItemsToTemplate] = useState([])
   const { deleteConfigStyle } = useEditorProvider()
   const draggedComponent = useRef()
   const draggedOverComponent = useRef()
   const counterComponents = useRef(0)
-  const ctrlKeyPress = useRef(null)
-
-  useEffect(() => {
-    document.addEventListener("keydown", e => {
-      if (e.key == "Control") ctrlKeyPress.current = "control"
-    })
-    document.addEventListener("keyup", e => {
-      if (e.key == "Control") ctrlKeyPress.current = null
-    })
-
-    return () => {
-      document.removeEventListener("keyup", e => { })
-      document.removeEventListener("keydown", e => { })
-    }
-  }, [])
 
   const handleDragginElement = ({ e, sideBar }, id, index) => {
     if (index != undefined) draggedComponent.current = index
@@ -48,7 +33,7 @@ export function DragAndDropProvider({ children }) {
     setDragginElement({ e: e.target, sideBar })
 
     if (e.target.dataset.idcomponent) {
-      setIdDragginElement(Number(e.target.dataset.idcomponent))
+      setIdDragginElement({ id: Number(e.target.dataset.idcomponent), typeDraggin: e.target.dataset.parent })
     }
   }
 
@@ -75,64 +60,71 @@ export function DragAndDropProvider({ children }) {
   const handleDrop = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (ctrlKeyPress.current == "control") return
-    // console.log(idDragginElement);
-    if (idDragginElement == null && dragginElement.sideBar) {
+
+    if (idDragginElement.id == null && dragginElement.sideBar) {
       impAndSetComponent({ fnState: setitemsToTemplate, arrayState: itemsToTemplate })
     } else {
-      const findComponents = [...subItemsToTemplate].filter((ele) => ele.id == idDragginElement);
-      const filteredComponents = [...subItemsToTemplate].filter((ele) => ele.id !== idDragginElement);
+      const findComponents = [...subItemsToTemplate].filter((ele) => ele?.id == idDragginElement.id);
+      const filteredComponents = [...subItemsToTemplate].filter((ele) => ele?.id !== idDragginElement.id);
 
       findComponents.forEach(ele => {
-        if (ele.id == idDragginElement) delete ele.parentId
+        if (ele?.id == idDragginElement.id) delete ele.parentId
       })
       // console.log(findComponents);
       setitemsToTemplate([...itemsToTemplate, ...findComponents]);
       setSubItemsToTemplate(filteredComponents);
+      if (!dragginElement.e.dataset.parent) hndSortComponents(true)
     }
-    setIdDragginElement(null)
-    // removeStylesOverElement(e)
+    setIdDragginElement({ id: null, typeDraggin: "" })
   }
 
   const handleSubDrop = (e, parentId, typeElement) => {
     e.preventDefault()
     e.stopPropagation()
-    if (ctrlKeyPress.current == "control") return
-    // console.log(typeElement);
-    if (idDragginElement == null) {
+
+    if (idDragginElement.id == null) {
       impAndSetComponent({ fnState: setSubItemsToTemplate, arrayState: subItemsToTemplate, typeElement, parentId })
     } else {
       const idParent = Number(e.target.dataset.idcomponent);
-      const findComponents = itemsToTemplate.map(ele => ele).filter((ele) => Number(ele.id) == Number(idDragginElement));
-      const findSubComponent = subItemsToTemplate.map(ele => ele).filter((ele) => Number(ele.id) == Number(idDragginElement));
-      const filteredComponents = itemsToTemplate.map(ele => ele).filter((ele) => Number(ele.id) !== Number(idDragginElement));
+      const findComponents = Object.assign([], itemsToTemplate).map(ele => ele).filter((ele) => Number(ele.id) == Number(idDragginElement.id));
+      const findSubComponent = Object.assign([], subItemsToTemplate).map(ele => ele).filter((ele) => Number(ele?.id) == Number(idDragginElement.id));
+      const filteredComponents = Object.assign([], itemsToTemplate).map(ele => ele).filter((ele) => Number(ele?.id) !== Number(idDragginElement.id));
 
       findComponents.forEach(ele => {
-        if (ele.id == idDragginElement) ele.parentId = idParent
+        if (ele?.id == idDragginElement.id) ele.parentId = idParent
       })
 
       findSubComponent.forEach(ele => {
-        if (ele.id == idDragginElement && ele.parentId != idParent) {
+        if (ele?.id == idDragginElement.id && ele.parentId != idParent) {
           ele.parentId = idParent;
         }
       })
 
       setSubItemsToTemplate([...subItemsToTemplate, ...findComponents]);
       setitemsToTemplate(filteredComponents);
-      setIdDragginElement(null)
+      setIdDragginElement({ id: null, typeDraggin: "" })
+      if (e.target.dataset.parent) hndSortComponents(false)
     }
   }
 
   const handleOver = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    // getPosition(e)
-    if (e.target.dataset.dragindex && ctrlKeyPress.current == "control") {
-      draggedOverComponent.current = Number(e.target.dataset.dragindex)
-      stylesOverElement(e)
-    }
-  }
+    if (idDragginElement.typeDraggin)
+      if (e.target.dataset.parent && e.target.dataset.dragindex) {
+        draggedOverComponent.current = Number(e.target.dataset.dragindex)
+        stylesOverElement({ e: e })
+        return
+      }
+    if (!idDragginElement.typeDraggin)
+      if (!e.target.dataset.parent && e.target.dataset.dragindex && e.target.dataset.idcomponent) {
+        draggedOverComponent.current = Number(e.target.dataset.dragindex)
+        stylesOverElement({ e: e, inline: false })
+        return
+      }
 
+    removeStylesOverElement(e)
+  }
   const handleLeave = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -141,10 +133,9 @@ export function DragAndDropProvider({ children }) {
   const handleDropEnd = (e, isParentComponent) => {
     e.preventDefault()
     e.stopPropagation()
-    if (ctrlKeyPress.current == "control") {
+    if (e.target.dataset.parent) {
       removeStylesOverElement(e)
       hndSortComponents(isParentComponent)
-      ctrlKeyPress.current = null
     }
   }
 
@@ -200,36 +191,36 @@ export function DragAndDropProvider({ children }) {
   }
 
 
-  const stylesOverElement = (e) => {
-    removeStylesOverElement(e)
-    e.target.classList.add("element__drag__over")
-  }
-
-  const getPosition = (e) => {
+  const stylesOverElement = ({ e, inline = true }) => {
     let rect = e.target.getBoundingClientRect();
-    // let width = rect.width / 2
-    let x = e.clientX; //x position within the element.
-    let y = e.clientY;  //y position within the element.
-    console.log({ x, y });
-    // removeStylesOverElement(e)
-    // e.target.classList.add("element__drag__over")
-    // if (x > width) {
-    //   e.target.classList.add("element__drag__over--right")
-    //   e.target.style.marginRight = "20px"
-    // }
-    // if (x < width) {
-    //   e.target.classList.add("element__drag__over--left")
-    //   e.target.style.marginLeft = "20px"
-    // }
+    let width = rect.width / 2
+    let height = rect.height / 2
+    let x = e.clientX - rect.left; //x position within the element.
+    let y = e.clientY - rect.top;  //y position within the element.
+
+    e.target.classList.add("element__drag__over")
+
+    if (inline) {
+      if (x > width) e.target.style.marginRight = "20px"
+      if (x < width) e.target.style.marginLeft = "20px"
+    } else {
+      if (y > height) e.target.style.marginBottom = "20px"
+      if (y < height) e.target.style.marginTop = "20px"
+    }
   }
 
   const removeStylesOverElement = (e = null) => {
-    document.querySelectorAll(".element__drag__over")?.forEach(ele => {
+    let ifr = document.querySelector(".builder__zone").contentWindow
+    Array.from(ifr.document.querySelectorAll(".element__drag__over"))?.forEach(ele => {
+      ele.style.marginRight = null
+      ele.style.marginLeft = null
+      ele.style.marginBottom = null
+      ele.style.marginTop = null
+      e.target.style.marginBottom = null
+      e.target.style.marginTop = null
       ele.classList.remove("element__drag__over")
     })
   }
-
-
 
   return (
     <DragAndDropContext.Provider

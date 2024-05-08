@@ -19,22 +19,55 @@ export const EditorContext = createContext({
 
 export function EditorProvider({ children }) {
 
-  const [configComponent, setConfigComponent] = useState()
+  const [configComponent, setConfigComponent] = useState(
+    {
+      normalStyles: {},
+      mediaQuerys: {}
+    }
+  )
   const [actualConfig, setActualConfig] = useState()
   const [openEditor, setOpenEditor] = useState(false)
-  const cssStylesRef = useRef()
+  const cssStylesRef = useRef({
+    normalStyles: {},
+    mediaQuerys: {}
+  })
   const cssStylesSheetRef = useRef()
   const { breackPoint } = useBraeackPointProvider()
 
   const handleEditComponent = (conf) => {
     if (openEditor == true) {
+      console.log({ conf });
       if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
-        setConfigComponent({ ...configComponent, [breackPoint]: { [actualConfig]: conf } })
-        cssStylesRef.current = { ...configComponent, [breackPoint]: { [actualConfig]: conf } }
+        setConfigComponent(
+          {
+            normalStyles: {
+              ...configComponent.normalStyles
+            },
+            mediaQuerys: {
+              ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: {...configComponent.mediaQuerys[breackPoint]?.[actualConfig],...conf} }
+            }
+          }
+        )
+        cssStylesRef.current = {
+          normalStyles: {
+            ...configComponent.normalStyles
+          },
+          mediaQuerys: {
+            ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: {...configComponent.mediaQuerys[breackPoint]?.[actualConfig],...conf} }
+          }
+        }
         setHeadStyles()
       } else {
-        setConfigComponent({ ...configComponent, [actualConfig]: conf })
-        cssStylesRef.current = { ...configComponent, [actualConfig]: conf }
+        setConfigComponent(
+          {
+            normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
+            mediaQuerys: { ...configComponent.mediaQuerys }
+          }
+        )
+        cssStylesRef.current = {
+          normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
+          mediaQuerys: { ...configComponent.mediaQuerys }
+        }
         setHeadStyles()
       }
     }
@@ -52,27 +85,28 @@ export function EditorProvider({ children }) {
 
   /**
    * Funcion para asignar media querys
+   * @param {String} mq Key de la media query 
    * @returns String con la media query
    */
-  const setMediaQuerys = () => {
+  const setMediaQuerys = (mq) => {
     let mediaQuery = "";
-    if (breackPoint == "mobilex2") {
-      mediaQuery = "@media screen and (width>480px){";
+    if (mq == "mobilex2") {
+      mediaQuery = "@media screen and (width>=480px){";
     }
-    if (breackPoint == "tablet") {
-      mediaQuery = "@media screen and (width>768px){";
+    if (mq == "tablet") {
+      mediaQuery = "@media screen and (width>=768px){";
 
     }
-    if (breackPoint == "desktop") {
-      mediaQuery = "@media screen and (width>1024px){";
+    if (mq == "desktop") {
+      mediaQuery = "@media screen and (width>=1024px){";
 
     }
-    if (breackPoint == "desktopx2") {
-      mediaQuery = "@media screen and (width>1280px){";
+    if (mq == "desktopx2") {
+      mediaQuery = "@media screen and (width>=1280px){";
 
     }
-    if (breackPoint == "desktopx3") {
-      mediaQuery = "@media screen and (width>1440px){";
+    if (mq == "desktopx3") {
+      mediaQuery = "@media screen and (width>=1440px){";
 
     }
     return mediaQuery
@@ -80,7 +114,7 @@ export function EditorProvider({ children }) {
   }
 
   /**
-   * Funcion para generar reglas css.
+   * Funcion que genera el cuerpo de las reglas css.
    * @param {Object} opc Objecto de opciones.
    * @param {Array} opc.toIterate Array a iterar.
    * @returns Regala css
@@ -94,63 +128,53 @@ export function EditorProvider({ children }) {
   const setHeadStyles = (data = null) => {
     let cssStyles = `* {\n  padding: 0px;\n  margin: 0px;\n  box-sizing: border-box;\n}\n`;
 
-    // Setear una etiqueta <style> en el head en el caso de no existir.
-    if (!document.querySelector("style[data-develope]")) {
-      const style = document.createElement("style")
-      style.dataset.develope = true
-
-      let mediaquery = setMediaQuerys();
-
-      cssStyles += mediaquery;
+    if (Object.keys(configComponent.normalStyles).length == 0) {
       cssStyles += `.${data[0]} {\n`
       cssStyles += makeCssRule({ toIterate: data[1] })
       cssStyles += `}\n`
-      if (mediaquery != "")
-        cssStyles += `}\n`
 
-
-      style.innerHTML = cssStyles
-      document.querySelector("head").appendChild(style)
       cssStylesSheetRef.current = cssStyles
+
+      setConfigComponent(
+        {
+          normalStyles: { ...configComponent.normalStyles, [data[0]]: data[1] },
+          mediaQuerys: { ...configComponent.mediaQuerys }
+        }
+      )
+      cssStylesRef.current = {
+        normalStyles: { ...configComponent.normalStyles, [data[0]]: data[1] },
+        mediaQuerys: { ...configComponent.mediaQuerys }
+      }
     } else {
-
       if (configComponent) {
-        let classes = Object.keys(cssStylesRef.current)
+        // Setear estilos que no van dentro de Media Querys
+        let normalClasses = Object.keys(cssStylesRef.current.normalStyles)
 
-        classes?.forEach(classStyle => {
-          let mediaquery = setMediaQuerys();
-
-          cssStyles += `.${classStyle} {\n`
-          cssStyles += makeCssRule({ toIterate: cssStylesRef.current[classStyle] })
+        normalClasses?.forEach(classStyle => {
+          cssStyles += `\n.${classStyle} {\n`
+          cssStyles += makeCssRule({ toIterate: cssStylesRef.current.normalStyles[classStyle] })
           cssStyles += `}\n`
-
-          if (classStyle == "mobilex2" || classStyle == "tablet" || classStyle == "desktop" || classStyle == "desktopx2" || classStyle == "desktopx3") {
-
-            let classMedia = Object.keys(cssStylesRef.current[classStyle])
-
-            classMedia?.forEach(classMQ => {
-              cssStyles += mediaquery;
-              cssStyles += `.${classMQ} {\n`
-              cssStyles += makeCssRule({ toIterate: cssStylesRef.current[classStyle][classMQ] })
-              cssStyles += `}\n`
-              if (mediaquery != "")
-                cssStyles += `}\n`
-            })
-
-          }
-
         });
 
-        document.querySelector("style[data-develope]").innerHTML = cssStyles
+        // Setear Media Querys
+        let mediaQuerysClasses = Object.keys(cssStylesRef.current.mediaQuerys)
+
+        mediaQuerysClasses?.forEach(classStyle => {
+          let mq = setMediaQuerys(classStyle)
+          let innerClasses = Object.keys(cssStylesRef.current.mediaQuerys[classStyle])
+
+          cssStyles += `\n${mq} \n`
+          innerClasses.forEach(innerClass => {
+            cssStyles += ` .${innerClass} {\n`
+            cssStyles += ` ${makeCssRule({ toIterate: cssStylesRef.current.mediaQuerys[classStyle][innerClass] })}`
+            cssStyles += ` }\n`
+          })
+          cssStyles += `}\n`
+        });
+
         cssStylesSheetRef.current = cssStyles
       }
     }
-    // let ifr= iframeRef.current.contentWindow || iframeRef.current.contentDocument.document || iframeRef.current.contentDocument;
-    // let ifr= document.querySelector("#iframezone").contentWindow || document.querySelector("#iframezone").contentDocument.document || document.querySelector("#iframezone").contentDocument;
-    // ifr.document.open()
-    // ifr.document.write(`<style>${cssStyles}</style>`)
-    // // ifr.document.write(builderZoneRef.current.querySelector(".builder__zone").innerHTML)
-    // ifr.document.close()
   }
 
   /**
@@ -163,9 +187,41 @@ export function EditorProvider({ children }) {
   const handleOpenEditor = ({ conf, name, open, cssClass }) => {
     if (open == true) {
       setOpenEditor(true)
-      setConfigComponent({ ...configComponent, [cssClass]: conf })
+      console.log({ conf, cssClass });
+      if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
+        console.log("mq");
+        setConfigComponent(
+          {
+            normalStyles: {
+              ...configComponent.normalStyles
+            },
+            mediaQuerys: {
+              ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: conf }
+            }
+          }
+        )
+        cssStylesRef.current = {
+          normalStyles: {
+            ...configComponent.normalStyles
+          },
+          mediaQuerys: {
+            ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: conf }
+          }
+        }
+      } else {
+        setConfigComponent(
+          {
+            normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
+            mediaQuerys: { ...configComponent.mediaQuerys }
+          }
+        )
+        cssStylesRef.current = {
+          normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
+          mediaQuerys: { ...configComponent.mediaQuerys }
+        }
+      }
+
       handleActualConfig(cssClass)
-      cssStylesRef.current = { ...configComponent, [cssClass]: conf }
       setHeadStyles([cssClass, conf])
     } else {
       setActualConfig(null)

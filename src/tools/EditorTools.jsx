@@ -9,6 +9,7 @@ import FontAndText from './stylizers/FontAndText'
 import StateStyle from './stylizers/StateStyle'
 import Transitions from './stylizers/Transitions'
 import "./editortools.css"
+import { useBraeackPointProvider } from '../hoks/useBreackPointProvider'
 
 const cleanText = ({ text = "", letters = [] }) => {
   let clean = ""
@@ -21,9 +22,15 @@ const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
   const stylesString = useRef();
   const { configComponent, handleEditComponent, actualConfig, handleActualConfig } = useEditorProvider()
+  const { breackPoint } = useBraeackPointProvider()
 
   useEffect(() => {
-    const alterConf = Object.assign({}, configComponent?.[actualConfig] || configTemplate)
+    let alterConf;
+    if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
+      alterConf = Object.assign({}, configComponent?.mediaQuerys?.[actualConfig] || configTemplate)
+    } else {
+      alterConf = Object.assign({}, configComponent?.normalStyles?.[actualConfig] || configTemplate)
+    }
     for (const iterator in alterConf) {
       let style = alterConf[iterator]
       if (typeof alterConf[iterator] == 'string' && (style.includes("px") || style.includes("%") || style.includes("em") || style.includes("rem") || style.includes("vh") || style.includes("vw"))) {
@@ -31,7 +38,11 @@ const EditorTools = () => {
         alterConf[iterator] = cleanText({ text: alterConf[iterator], letters }).split(" ")
       }
     }
-    stylesString.current = Object.assign({}, configComponent?.[actualConfig] || {})
+    if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
+      stylesString.current = Object.assign({}, configComponent?.mediaQuerys?.[actualConfig] || {})
+    } else {
+      stylesString.current = Object.assign({}, configComponent?.normalStyles?.[actualConfig] || {})
+    }
     setConfigTemplate(alterConf)
   }, [configComponent, actualConfig])
 
@@ -40,7 +51,13 @@ const EditorTools = () => {
     const { target } = e
     // 
     if (target.name == "padding") {
-      const padding = Object.assign([], configTemplate?.[target.name] || STYLES.padding)
+      let padding
+      if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
+        padding = Object.assign([], configTemplate?.[target.name] || STYLES.padding)
+      } else {
+        padding = Object.assign([], configTemplate?.[target.name] || STYLES.padding)
+      }
+      console.log({configTemplate});
       let type = target.dataset.sizetype
       let stringSave = ``
       if (target.dataset.type) {
@@ -59,7 +76,12 @@ const EditorTools = () => {
 
     // 
     if (target.name == "margin") {
-      let padding = Object.assign([], configTemplate?.[target.name] || STYLES.margin)
+      let padding
+      if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
+        padding = Object.assign([], configTemplate?.[target.name] || STYLES.margin)
+      } else {
+        padding = Object.assign([], configTemplate?.[target.name] || STYLES.margin)
+      }
       let type = target.dataset.sizetype
       let toSaveString = stylesString.current[target.name]?.split(" ") || STYLES.margin
 
@@ -86,7 +108,12 @@ const EditorTools = () => {
 
     // 
     if (target.name == "borderRadius") {
-      const borderRadius = Object.assign([], configTemplate?.[target.name] || STYLES.borderRadius)
+      let borderRadius
+      if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
+        borderRadius = Object.assign([], configTemplate?.[target.name] || STYLES.borderRadius)
+      } else {
+        borderRadius = Object.assign([], configTemplate?.[target.name] || STYLES.borderRadius)
+      }
       let type = target.dataset.sizetype
       let stringSave = ``
       if (target.dataset.type) {
