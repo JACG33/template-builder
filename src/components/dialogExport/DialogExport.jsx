@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import { useExportImportProvider } from '../../hoks/useExportImportProvider';
 import { ExportIcon } from "../svg";
+import SyntaxHighlight from '../syntaxhighlight/SyntaxHighlight';
 import ButtonRight from "../tooltips/ButtonRight";
 import "./dialogexport.css";
 
@@ -53,20 +53,21 @@ const DialogExport = () => {
           </div>
           <div className='overflow-y-auto rounded-lg dialog__export__wp__code'>
             {actualTab == "html" &&
-              <SyntaxHighlighter language="htmlbars">
+              <SyntaxHighlight languageCss={"language-html"}>
                 {codeToShow.html != "" ? codeToShow.html : "<!-- Html empty -->"}
-              </SyntaxHighlighter>
+              </SyntaxHighlight>
             }
             {actualTab == "css" &&
-              <SyntaxHighlighter language="css">
+              <SyntaxHighlight languageCss={"language-css"}>
                 {codeToShow.css != "" ? codeToShow.css : "/* Styles empty */"}
-              </SyntaxHighlighter>
+              </SyntaxHighlight>
             }
             {actualTab == "js" &&
-              <SyntaxHighlighter language="javascript">
+              <SyntaxHighlight languageCss={"language-javascript"}>
                 {codeToShow.js != "" ? codeToShow.js : "/* Scripts empty */"}
-              </SyntaxHighlighter>
+              </SyntaxHighlight>
             }
+
           </div>
         </div>
       </dialog>

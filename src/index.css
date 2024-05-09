@@ -55,7 +55,7 @@ body {
 }
 
 .builder__zone--mobile {
-  min-width: 320px;
+  min-width: 324px;
   max-width: 479px;
   resize: horizontal;
   position: absolute;
@@ -63,7 +63,7 @@ body {
 }
 
 .builder__zone--mobile2 {
-  min-width: 480px;
+  min-width: 483px;
   max-width: 767px;
   resize: horizontal;
   position: absolute;
@@ -71,7 +71,7 @@ body {
 }
 
 .builder__zone--tablet {
-  min-width: 768px;
+  min-width: 771px;
   max-width: 991px;
   resize: horizontal;
   transform: scale(0.9);

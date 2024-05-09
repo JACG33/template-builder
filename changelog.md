@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.103 09-MAY-2024
++ Remplazo de la dependencia __React Syntax Highlighter__ por __Highlight.js__, para misminuir el peso del componente DialogExpor al realizar build.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.102 09-MAY-2024
 + Correcion de bugs generados en la version __0.0.100 08-MAY-2024__.
 + Se hicieron otras modificaciones.
