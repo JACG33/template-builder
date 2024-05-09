@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.102 09-MAY-2024
++ Correcion de bugs generados en la version __0.0.100 08-MAY-2024__.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.100 08-MAY-2024
 + Ahora la seleccion __Media Query__ o __BreackPoint__ funciona al cambiar los estilos, al exportar se muestran los estilos y las mediaquerys correspondientes al breackpoint actual.
 + Se moficicaron los componentes de la carpeta __templatesui__ se les agrego un nuevo parametro para identificar la jerarquia del componente.

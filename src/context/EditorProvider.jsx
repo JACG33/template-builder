@@ -13,7 +13,6 @@ export const EditorContext = createContext({
   handleActualConfig: () => { },
   deleteConfigStyle: () => { },
   getConfigComponent: () => { },
-  setAditionalStyles: () => { },
   cssStylesSheetRef: null,
 })
 
@@ -21,52 +20,47 @@ export function EditorProvider({ children }) {
 
   const [configComponent, setConfigComponent] = useState(
     {
-      normalStyles: {},
-      mediaQuerys: {}
+      normalStyles: { body: {} },
+      mediaQuerys: { body: {} }
     }
   )
   const [actualConfig, setActualConfig] = useState()
   const [openEditor, setOpenEditor] = useState(false)
   const cssStylesRef = useRef({
-    normalStyles: {},
-    mediaQuerys: {}
+    normalStyles: { body: {} },
+    mediaQuerys: { body: {} }
   })
   const cssStylesSheetRef = useRef()
   const { breackPoint } = useBraeackPointProvider()
 
   const handleEditComponent = (conf) => {
     if (openEditor == true) {
-      console.log({ conf });
       if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
         setConfigComponent(
           {
-            normalStyles: {
-              ...configComponent.normalStyles
-            },
+            ...configComponent,
             mediaQuerys: {
-              ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: {...configComponent.mediaQuerys[breackPoint]?.[actualConfig],...conf} }
+              ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: { ...configComponent.mediaQuerys[breackPoint]?.[actualConfig], ...conf } }
             }
           }
         )
         cssStylesRef.current = {
-          normalStyles: {
-            ...configComponent.normalStyles
-          },
+          ...cssStylesRef.current,
           mediaQuerys: {
-            ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: {...configComponent.mediaQuerys[breackPoint]?.[actualConfig],...conf} }
+            ...cssStylesRef.current.mediaQuerys, [breackPoint]: { [actualConfig]: { ...cssStylesRef.current.mediaQuerys[breackPoint]?.[actualConfig], ...conf } }
           }
         }
         setHeadStyles()
       } else {
         setConfigComponent(
           {
+            ...configComponent,
             normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
-            mediaQuerys: { ...configComponent.mediaQuerys }
           }
         )
         cssStylesRef.current = {
-          normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
-          mediaQuerys: { ...configComponent.mediaQuerys }
+          ...cssStylesRef.current,
+          normalStyles: { ...cssStylesRef.current.normalStyles, [actualConfig]: conf },
         }
         setHeadStyles()
       }
@@ -127,24 +121,14 @@ export function EditorProvider({ children }) {
 
   const setHeadStyles = (data = null) => {
     let cssStyles = `* {\n  padding: 0px;\n  margin: 0px;\n  box-sizing: border-box;\n}\n`;
-
     if (Object.keys(configComponent.normalStyles).length == 0) {
+      console.log(cssStylesRef.current);
       cssStyles += `.${data[0]} {\n`
       cssStyles += makeCssRule({ toIterate: data[1] })
       cssStyles += `}\n`
 
       cssStylesSheetRef.current = cssStyles
 
-      setConfigComponent(
-        {
-          normalStyles: { ...configComponent.normalStyles, [data[0]]: data[1] },
-          mediaQuerys: { ...configComponent.mediaQuerys }
-        }
-      )
-      cssStylesRef.current = {
-        normalStyles: { ...configComponent.normalStyles, [data[0]]: data[1] },
-        mediaQuerys: { ...configComponent.mediaQuerys }
-      }
     } else {
       if (configComponent) {
         // Setear estilos que no van dentro de Media Querys
@@ -169,7 +153,8 @@ export function EditorProvider({ children }) {
             cssStyles += ` ${makeCssRule({ toIterate: cssStylesRef.current.mediaQuerys[classStyle][innerClass] })}`
             cssStyles += ` }\n`
           })
-          cssStyles += `}\n`
+          if (mq)
+            cssStyles += `}\n`
         });
 
         cssStylesSheetRef.current = cssStyles
@@ -187,37 +172,31 @@ export function EditorProvider({ children }) {
   const handleOpenEditor = ({ conf, name, open, cssClass }) => {
     if (open == true) {
       setOpenEditor(true)
-      console.log({ conf, cssClass });
       if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
-        console.log("mq");
         setConfigComponent(
           {
-            normalStyles: {
-              ...configComponent.normalStyles
-            },
+            ...configComponent,
             mediaQuerys: {
-              ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: conf }
+              ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys[breackPoint]?.[cssClass], ...conf }
             }
           }
         )
         cssStylesRef.current = {
-          normalStyles: {
-            ...configComponent.normalStyles
-          },
+          ...cssStylesRef.current,
           mediaQuerys: {
-            ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: conf }
+            ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys[breackPoint]?.[cssClass], ...conf }
           }
         }
       } else {
         setConfigComponent(
           {
-            normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
-            mediaQuerys: { ...configComponent.mediaQuerys }
+            ...configComponent,
+            normalStyles: { ...configComponent.normalStyles, [cssClass]: conf },
           }
         )
         cssStylesRef.current = {
-          normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
-          mediaQuerys: { ...configComponent.mediaQuerys }
+          ...cssStylesRef.current,
+          normalStyles: { ...configComponent.normalStyles, [cssClass]: conf },
         }
       }
 
@@ -230,13 +209,39 @@ export function EditorProvider({ children }) {
   }
 
   const deleteConfigStyle = (id) => {
-    const alter = Object.assign({}, configComponent)
-    delete alter[id]
-    setConfigComponent(alter)
-  }
-
-  const setAditionalStyles = (styles) => {
-    setConfigComponent({ ...configComponent, styles })
+    let alter
+    if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
+      alter = Object.assign({}, configComponent.mediaQuerys[breackPoint])
+      delete alter[id]
+      setConfigComponent({
+        ...configComponent,
+        mediaQuerys: {
+          ...alter
+        }
+      })
+      cssStylesRef.current = {
+        ...cssStylesRef.current,
+        mediaQuerys: {
+          ...alter
+        }
+      }
+    } else {
+      alter = Object.assign({}, configComponent.normalStyles)
+      delete alter[id]
+      setConfigComponent({
+        ...configComponent,
+        normalStyles: {
+          ...alter
+        }
+      })
+      cssStylesRef.current = {
+        ...cssStylesRef.current,
+        normalStyles: {
+          ...alter
+        }
+      }
+      setHeadStyles()
+    }
   }
 
   /**
@@ -244,12 +249,18 @@ export function EditorProvider({ children }) {
    * @param {String|Number} id Nombre/Identidicador de la configuracion del Elemento/Componente elegido.
    * @returns Json de la configuracion del Elemento/Componente elegido.
    */
-  const getConfigComponent = (id) => configComponent?.[id] ? configComponent[id] : {}
+  const getConfigComponent = (id) => {
+    if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
+      return configComponent.mediaQuerys[breackPoint]?.[id] ? configComponent.mediaQuerys[breackPoint][id] : {}
+    } else {
+      return configComponent.normalStyles?.[id] ? configComponent.normalStyles[id] : {}
+    }
+  }
 
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, setAditionalStyles, cssStylesSheetRef
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef
       }}
     >
       {children}

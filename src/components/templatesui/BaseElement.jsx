@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
 import { useEditorProvider } from "../../hoks/useEditorProvider"
 
@@ -6,10 +7,12 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
   const { configComponent, handleOpenEditor } = useEditorProvider()
   const styles = useRef(placeholder)
   const { handleDragginElement, handleSubDrop, subItemsToTemplate, handleOver, handleDropEnd } = useDragAndDropProvider()
+  const { breackPoint } = useBraeackPointProvider()
 
-  useEffect(() => {
-    styles.current = configComponent
-  }, [configComponent])
+  if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3")
+    styles.current = configComponent.mediaQuerys[breackPoint]
+  else
+    styles.current = configComponent.normalStyles
 
   useEffect(() => {
     handleOpenEditor(
@@ -34,7 +37,6 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
           }
         )
       }}
-      // style={configComponent?.[`${TypeElement}${id}`] ? configComponent[`${TypeElement}${id}`] : placeholder}
       className={`${TypeElement}${id}`}
       data-component={dataAttribute}
       data-idcomponent={id}
