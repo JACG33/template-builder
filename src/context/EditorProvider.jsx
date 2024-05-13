@@ -21,14 +21,14 @@ export function EditorProvider({ children }) {
   const [configComponent, setConfigComponent] = useState(
     {
       normalStyles: { body: {} },
-      mediaQuerys: { body: {} }
+      mediaQuerys: {}
     }
   )
   const [actualConfig, setActualConfig] = useState()
   const [openEditor, setOpenEditor] = useState(false)
   const cssStylesRef = useRef({
     normalStyles: { body: {} },
-    mediaQuerys: { body: {} }
+    mediaQuerys: {}
   })
   const cssStylesSheetRef = useRef()
   const { breackPoint } = useBraeackPointProvider()
@@ -40,14 +40,14 @@ export function EditorProvider({ children }) {
           {
             ...configComponent,
             mediaQuerys: {
-              ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: { ...configComponent.mediaQuerys[breackPoint]?.[actualConfig], ...conf } }
+              ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: { ...conf } }
             }
           }
         )
         cssStylesRef.current = {
           ...cssStylesRef.current,
           mediaQuerys: {
-            ...cssStylesRef.current.mediaQuerys, [breackPoint]: { [actualConfig]: { ...cssStylesRef.current.mediaQuerys[breackPoint]?.[actualConfig], ...conf } }
+            ...cssStylesRef.current.mediaQuerys, [breackPoint]: { [actualConfig]: { ...conf } }
           }
         }
         setHeadStyles()
@@ -59,7 +59,7 @@ export function EditorProvider({ children }) {
           }
         )
         cssStylesRef.current = {
-          ...cssStylesRef.current,
+          ...configComponent,
           normalStyles: { ...cssStylesRef.current.normalStyles, [actualConfig]: conf },
         }
         setHeadStyles()
@@ -143,20 +143,23 @@ export function EditorProvider({ children }) {
         // Setear Media Querys
         let mediaQuerysClasses = Object.keys(cssStylesRef.current.mediaQuerys)
 
-        mediaQuerysClasses?.forEach(classStyle => {
-          let mq = setMediaQuerys(classStyle)
-          let innerClasses = Object.keys(cssStylesRef.current.mediaQuerys[classStyle])
+        if (mediaQuerysClasses.length > 0) {
+          mediaQuerysClasses?.forEach(mediaQueryClass => {
+            let mq = setMediaQuerys(mediaQueryClass)
+            let innerClasses = Object.keys(cssStylesRef.current.mediaQuerys[mediaQueryClass])
 
-          cssStyles += `\n${mq} \n`
-          innerClasses.forEach(innerClass => {
-            cssStyles += ` .${innerClass} {\n`
-            cssStyles += ` ${makeCssRule({ toIterate: cssStylesRef.current.mediaQuerys[classStyle][innerClass] })}`
-            cssStyles += ` }\n`
-          })
-          if (mq)
-            cssStyles += `}\n`
-        });
+            if (mq != "") {
+              cssStyles += `\n${mq} \n`
+              innerClasses.forEach(innerClass => {
+                cssStyles += ` .${innerClass} {\n`
+                cssStyles += `${makeCssRule({ toIterate: cssStylesRef.current.mediaQuerys[mediaQueryClass][innerClass] })}`
+                cssStyles += ` }\n`
+              })
+              cssStyles += `}\n`
+            }
+          });
 
+        }
         cssStylesSheetRef.current = cssStyles
       }
     }
@@ -177,14 +180,14 @@ export function EditorProvider({ children }) {
           {
             ...configComponent,
             mediaQuerys: {
-              ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys[breackPoint]?.[cssClass], ...conf }
+              ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys?.[breackPoint], [cssClass]: conf }
             }
           }
         )
         cssStylesRef.current = {
           ...cssStylesRef.current,
           mediaQuerys: {
-            ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys[breackPoint]?.[cssClass], ...conf }
+            ...cssStylesRef.current.mediaQuerys, [breackPoint]: { ...cssStylesRef.current.mediaQuerys?.[breackPoint], [cssClass]: conf }
           }
         }
       } else {
@@ -215,30 +218,22 @@ export function EditorProvider({ children }) {
       delete alter[id]
       setConfigComponent({
         ...configComponent,
-        mediaQuerys: {
-          ...alter
-        }
+        mediaQuerys: { ...alter }
       })
       cssStylesRef.current = {
         ...cssStylesRef.current,
-        mediaQuerys: {
-          ...alter
-        }
+        mediaQuerys: { ...alter }
       }
     } else {
       alter = Object.assign({}, configComponent.normalStyles)
       delete alter[id]
       setConfigComponent({
         ...configComponent,
-        normalStyles: {
-          ...alter
-        }
+        normalStyles: { ...alter }
       })
       cssStylesRef.current = {
         ...cssStylesRef.current,
-        normalStyles: {
-          ...alter
-        }
+        normalStyles: { ...alter }
       }
       setHeadStyles()
     }

@@ -10,6 +10,7 @@ import StateStyle from './stylizers/StateStyle'
 import Transitions from './stylizers/Transitions'
 import "./editortools.css"
 import { useBraeackPointProvider } from '../hoks/useBreackPointProvider'
+import StylesOfComponent from './StylesOfComponent'
 
 const cleanText = ({ text = "", letters = [] }) => {
   let clean = ""
@@ -28,8 +29,10 @@ const EditorTools = () => {
     let alterConf;
     if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
       alterConf = Object.assign({}, configComponent?.mediaQuerys?.[actualConfig] || configTemplate)
+      stylesString.current = Object.assign({}, configComponent?.mediaQuerys?.[breackPoint]?.[actualConfig] || {})
     } else {
       alterConf = Object.assign({}, configComponent?.normalStyles?.[actualConfig] || configTemplate)
+      stylesString.current = Object.assign({}, configComponent?.normalStyles?.[actualConfig] || {})
     }
     for (const iterator in alterConf) {
       let style = alterConf[iterator]
@@ -38,17 +41,28 @@ const EditorTools = () => {
         alterConf[iterator] = cleanText({ text: alterConf[iterator], letters }).split(" ")
       }
     }
-    if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
-      stylesString.current = Object.assign({}, configComponent?.mediaQuerys?.[actualConfig] || {})
-    } else {
-      stylesString.current = Object.assign({}, configComponent?.normalStyles?.[actualConfig] || {})
-    }
+
+
     setConfigTemplate(alterConf)
-  }, [configComponent, actualConfig])
+  }, [configComponent, actualConfig,breackPoint])
 
 
   const handleChange = (e) => {
     const { target } = e
+
+    if (target.value == "") {
+      let tmp=Object.assign({},configTemplate)
+      let tmp2=Object.assign({},stylesString.current)
+      delete tmp[target.name]
+      delete tmp2[target.name]
+
+      setConfigTemplate({ ...tmp })
+      stylesString.current = { ...tmp2 }
+      handleEditComponent({ ...tmp2 })
+      return
+    }
+
+
     // 
     if (target.name == "padding") {
       let padding
@@ -57,7 +71,6 @@ const EditorTools = () => {
       } else {
         padding = Object.assign([], configTemplate?.[target.name] || STYLES.padding)
       }
-      console.log({configTemplate});
       let type = target.dataset.sizetype
       let stringSave = ``
       if (target.dataset.type) {
@@ -132,7 +145,6 @@ const EditorTools = () => {
 
     // 
     if (target.name == "border") {
-      // console.log(target);
       let tmp = Object.assign({}, stylesString.current)
       delete tmp?.["borderTop"]
       delete tmp?.["borderRight"]
@@ -213,6 +225,9 @@ const EditorTools = () => {
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Transitions"}>
         <Transitions configTemplate={configTemplate} handleChange={handleChange} />
+      </WrapperDropDown>
+      <WrapperDropDown secctionName={"Styles Of Component"}>
+        <StylesOfComponent configTemplate={configTemplate} handleChange={handleChange} breackPoint={breackPoint} actualConfig={actualConfig} stylesString={stylesString} />
       </WrapperDropDown>
     </div>
   )

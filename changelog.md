@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.105 13-MAY-2024
++ Nueva Funcionalidad agreaga al editor de estilos, ahora en la nueva seccion __Styles Of Component__ se pueden eliminar los estilos del componente.
++ Ahora se puede eliminar el background y el color del texto.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.103 09-MAY-2024
 + Remplazo de la dependencia __React Syntax Highlighter__ por __Highlight.js__, para misminuir el peso del componente DialogExpor al realizar build.
 + Se hicieron otras modificaciones.
