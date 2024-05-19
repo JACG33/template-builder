@@ -17,9 +17,18 @@ export function ExportImportProvider({ children }) {
   const dialogExport = useRef(null)
   const [codeToShow, setCodeToShow] = useState({ html: "", css: "", js: "" })
 
+
+  const cleanHtmlToExport = () => {
+    console.log()
+    let innerBuilder = document.querySelector("iframe").contentDocument.querySelector("body").querySelector("div[data-builderarea=builderArea]").cloneNode(true)
+    innerBuilder.querySelectorAll("[data-tool=builder]").forEach(ele => ele.remove())
+    console.log(innerBuilder);
+    return innerBuilder.innerHTML
+  }
+
   const handleCloseModal = () => dialogExport.current.close()
 
-  const getHtml = () => builderArea.current.innerHTML
+  const getHtml = () => cleanHtmlToExport()
   const getCss = () => cssStylesSheetRef.current
   const getJs = () => document.querySelector("style[data-develope]").innerHTML
 

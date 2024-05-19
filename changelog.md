@@ -1,6 +1,10 @@
 # Template Builder
 
 ## Version 0.0.110 19-MAY-2024
++ Correccion de bug al exportar la plantilla.
++ Se hicieron otras modificaciones.
+
+## Version 0.0.110 19-MAY-2024
 + Se agrego nueva dependencia __dnd kit__, con el fin de delegar la funcionalidad del __drag and drop__, ya que las implementaciones de forma __vanilla__ no estaban funcionando nuy bien.
 + Se modifico el __Componente BaseElement__ para adapatarlo a la nueva dependencia.
 + Se modifico el __Componente MoldeElement__ para adapatarlo a la nueva dependencia.

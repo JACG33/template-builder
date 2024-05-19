@@ -28,7 +28,7 @@ function IFrame({ children, bkpoint, breackPoint }) {
   const { cssStylesSheetRef } = useEditorProvider()
 
   return (
-    <iframe ref={setRef} className={`builder__zone ${bkpoint[breackPoint]}`}>
+    <iframe ref={setRef} data-iframe="builder" className={`builder__zone ${bkpoint[breackPoint]}`}>
       {head && createPortal(<style>{cssStylesSheetRef.current}</style>, head)}
       {container && createPortal(children, container)}
     </iframe>

@@ -134,18 +134,21 @@ function InteractionAreas({ id, TypeElement, dataParent }) {
         {...topDroppable.listeners}
         {...topDroppable.attributes}
         style={{ position: "absolute", pointerEvents: "none", zIndex: "0", background: topDroppable.isOver ? topDroppable.active?.data.current?.id != topDroppable.over?.data.current?.id ? "red" : "" : "", top: "0px", height: "10px", width: "100%" }}
+        data-tool="builder"
       />
       <div
         ref={centerDroppable.setNodeRef}
         {...centerDroppable.listeners}
         {...centerDroppable.attributes}
         style={{ position: "absolute", pointerEvents: "none", zIndex: "0", background: centerDroppable.isOver ? centerDroppable.active?.data.current?.id != centerDroppable.over?.data.current?.id ? "pink" : "" : "", top: "10px", bottom: "10px", width: "100%" }}
+        data-tool="builder"
       />
       <div
         ref={bottomDroppable.setNodeRef}
         {...bottomDroppable.listeners}
         {...bottomDroppable.attributes}
         style={{ position: "absolute", pointerEvents: "none", zIndex: "0", background: bottomDroppable.isOver ? bottomDroppable.active?.data.current?.id != bottomDroppable.over?.data.current?.id ? "red" : "" : "", bottom: "0px", height: "10px", width: "100%" }}
+        data-tool="builder"
       />
     </>
   )
