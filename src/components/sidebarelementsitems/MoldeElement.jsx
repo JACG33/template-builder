@@ -1,12 +1,37 @@
-import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
+import { useDraggable } from "@dnd-kit/core"
 import "./moldeelement.css"
 
 const MoldeElement = ({ nameComponent, htmlType }) => {
-  const { handleDragginElement } = useDragAndDropProvider()
+
+  const draggableElement = useDraggable({
+    id: nameComponent,
+    data: {
+      component: nameComponent,
+      typehtml: htmlType,
+      sideBar: true
+    }
+  })
   return (
-    <div className="molde__element border rounded-md text-center cursor-pointer" draggable data-component={nameComponent} data-typehtml={htmlType} onDragStartCapture={e=>handleDragginElement({e,sideBar:true})}>
+    <div
+      ref={draggableElement.setNodeRef}
+      {...draggableElement.listeners}
+      {...draggableElement.attributes}
+      className="molde__element border rounded-md text-center cursor-pointer" >
       {htmlType}
     </div>
   )
 }
+
+
+export const MoldeElementOverlay = ({ htmlType }) => {
+
+  return (
+    <div
+      style={{border:"1px solid white",background:"#ccc",textAlign:"center",borderRadius:"8px",padding:"3px 6px"}}
+      className="molde__element border rounded-md text-center cursor-pointer" >
+      {htmlType}
+    </div>
+  )
+}
+
 export default MoldeElement

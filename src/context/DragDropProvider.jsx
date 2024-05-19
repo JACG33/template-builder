@@ -2,165 +2,35 @@ import { createContext, useRef, useState } from "react";
 import { useEditorProvider } from "../hoks/useEditorProvider";
 
 export const DragAndDropContext = createContext({
-  dragginElement: "",
-  setDragginElement: () => { },
   itemsToTemplate: [],
   subItemsToTemplate: [],
-  handleDragEnter: () => { },
-  handleDrop: () => { },
-  handleSubDrop: () => { },
-  handleOver: () => { },
-  handleLeave: () => { },
-  handleDropEnd: () => { },
   handleDeleteComponent: () => { },
   handleDragginElement: () => { },
-  handleSortComponents: () => { },
+  handleDragEnd: () => { },
 })
 
 export function DragAndDropProvider({ children }) {
-  const [dragginElement, setDragginElement] = useState({ e: null, sideBar: false })
-  const [idDragginElement, setIdDragginElement] = useState({ id: null, typeDraggin: "" })
   const [itemsToTemplate, setitemsToTemplate] = useState([])
   const [subItemsToTemplate, setSubItemsToTemplate] = useState([])
   const { deleteConfigStyle } = useEditorProvider()
-  const draggedComponent = useRef()
-  const draggedOverComponent = useRef()
-  const counterComponents = useRef(0)
-
-  const handleDragginElement = ({ e, sideBar }, id, index) => {
-    if (index != undefined) draggedComponent.current = index
-
-    setDragginElement({ e: e.target, sideBar })
-
-    if (e.target.dataset.idcomponent) {
-      setIdDragginElement({ id: Number(e.target.dataset.idcomponent), typeDraggin: e.target.dataset.parent })
-    }
-  }
-
-  const handleDragEnter = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
+  const counterComponents = useRef(1)
 
   /**
-   * Funcion para importar y setea un componente.
+   * Funcion que importa dinamicamente un componente y lo renderiza.
    * @param {Object} opc Objeto de opciones.
    * @param {Function} opc.fnState Funcion para actualizar un estado.
    * @param {Array} opc.arrayState Array del estado a ser actualizado.
    * @param {String} opc.typeElement Tipo de elemento en formato de texto.
    * @param {Number|String} opc.parentId Identificador de un componente padre en caso el componente se encuentre dentro de otro. 
+   * @param {Object} opc.other Objecto de parametros adicionales. 
    */
-  const impAndSetComponent = ({ fnState, arrayState, typeElement, parentId }) => {
-    let Com = dragginElement.e?.dataset?.component
-    let typehtml = dragginElement.e?.dataset?.typehtml || typeElement
+  const impAndSetComponent = ({ fnState, arrayState, typeElement, parentId, other }) => {
+    let Com = other.component
+    let typehtml = other.typehtml || typeElement
     let count = counterComponents.current++
     import("../components/templatesui/").then(res => fnState([...arrayState, { id: count, component: res[Com], type: typehtml, parentId }]))
   }
 
-  const handleDrop = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    if (idDragginElement.id == null && dragginElement.sideBar) {
-      impAndSetComponent({ fnState: setitemsToTemplate, arrayState: itemsToTemplate })
-    } else {
-      const findComponents = [...subItemsToTemplate].filter((ele) => ele?.id == idDragginElement.id);
-      const filteredComponents = [...subItemsToTemplate].filter((ele) => ele?.id !== idDragginElement.id);
-
-      findComponents.forEach(ele => {
-        if (ele?.id == idDragginElement.id) delete ele.parentId
-      })
-      // console.log(findComponents);
-      setitemsToTemplate([...itemsToTemplate, ...findComponents]);
-      setSubItemsToTemplate(filteredComponents);
-      if (!dragginElement.e.dataset.parent) hndSortComponents(true)
-    }
-    setIdDragginElement({ id: null, typeDraggin: "" })
-  }
-
-  const handleSubDrop = (e, parentId, typeElement) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    if (idDragginElement.id == null) {
-      impAndSetComponent({ fnState: setSubItemsToTemplate, arrayState: subItemsToTemplate, typeElement, parentId })
-    } else {
-      const idParent = Number(e.target.dataset.idcomponent);
-      const findComponents = Object.assign([], itemsToTemplate).map(ele => ele).filter((ele) => Number(ele.id) == Number(idDragginElement.id));
-      const findSubComponent = Object.assign([], subItemsToTemplate).map(ele => ele).filter((ele) => Number(ele?.id) == Number(idDragginElement.id));
-      const filteredComponents = Object.assign([], itemsToTemplate).map(ele => ele).filter((ele) => Number(ele?.id) !== Number(idDragginElement.id));
-
-      findComponents.forEach(ele => {
-        if (ele?.id == idDragginElement.id) ele.parentId = idParent
-      })
-
-      findSubComponent.forEach(ele => {
-        if (ele?.id == idDragginElement.id && ele.parentId != idParent) {
-          ele.parentId = idParent;
-        }
-      })
-
-      setSubItemsToTemplate([...subItemsToTemplate, ...findComponents]);
-      setitemsToTemplate(filteredComponents);
-      setIdDragginElement({ id: null, typeDraggin: "" })
-      if (e.target.dataset.parent) hndSortComponents(false)
-    }
-  }
-
-  const handleOver = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (idDragginElement.typeDraggin)
-      if (e.target.dataset.parent && e.target.dataset.dragindex) {
-        draggedOverComponent.current = Number(e.target.dataset.dragindex)
-        stylesOverElement({ e: e })
-        return
-      }
-    if (!idDragginElement.typeDraggin)
-      if (!e.target.dataset.parent && e.target.dataset.dragindex && e.target.dataset.idcomponent) {
-        draggedOverComponent.current = Number(e.target.dataset.dragindex)
-        stylesOverElement({ e: e, inline: false })
-        return
-      }
-
-    removeStylesOverElement(e)
-  }
-  const handleLeave = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
-
-  const handleDropEnd = (e, isParentComponent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.target.dataset.parent) {
-      removeStylesOverElement(e)
-      hndSortComponents(isParentComponent)
-    }
-  }
-
-  const handleSortComponents = (e, isParentComponent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    hndSortComponents(isParentComponent)
-  }
-
-  const hndSortComponents = (isParentComponent) => {
-
-    if (draggedComponent.current != undefined && draggedOverComponent.current != undefined) {
-      if (isParentComponent == true) {
-        const sortedComponents = sortComponents({ originalComponents: itemsToTemplate, currentDragging: draggedComponent.current, currentOverDragging: draggedOverComponent.current })
-
-        setitemsToTemplate(sortedComponents)
-      } else {
-        const sortedComponents = sortComponents({ originalComponents: subItemsToTemplate, currentDragging: draggedComponent.current, currentOverDragging: draggedOverComponent.current })
-
-        setSubItemsToTemplate(sortedComponents)
-      }
-    }
-    draggedComponent.current = undefined
-    draggedOverComponent.current = undefined
-  }
 
   /**
    * Funcion que ordena un array de componentes.
@@ -190,43 +60,129 @@ export function DragAndDropProvider({ children }) {
     setSubItemsToTemplate(filteredSubComponents);
   }
 
+  /**
+   * Funcion que busca index en un array.
+   * @param {String|Number} id Id del elemnto. 
+   * @param {Array} arrayData Array de los elemntos.
+   * @returns Index del elemento encontrado.
+   */
+  const getIndex = (id, arrayData) => arrayData.findIndex(task => task.id === id)
 
-  const stylesOverElement = ({ e, inline = true }) => {
-    let rect = e.target.getBoundingClientRect();
-    let width = rect.width / 2
-    let height = rect.height / 2
-    let x = e.clientX - rect.left; //x position within the element.
-    let y = e.clientY - rect.top;  //y position within the element.
+  const handleDragEnd = (e) => {
+    const { active, over } = e
 
-    e.target.classList.add("element__drag__over")
+    // Drop en el BuilderArea
+    if (over.data.current.typeElement == "builderArea") {
 
-    if (inline) {
-      if (x > width) e.target.style.marginRight = "20px"
-      if (x < width) e.target.style.marginLeft = "20px"
-    } else {
-      if (y > height) e.target.style.marginBottom = "20px"
-      if (y < height) e.target.style.marginTop = "20px"
+      // Si el Componente/Elemento viene del SidaBar
+      if (active.data.current?.sideBar) {
+        impAndSetComponent({
+          fnState: setitemsToTemplate, arrayState: itemsToTemplate, other: {
+            component: active.data.current?.component,
+            typehtml: active.data.current?.typehtml
+          }
+        })
+      } else {
+
+        // Si es un SubComponente/SubElemento
+        if (active.data.current?.parent) {
+          console.log("Extract");
+          const idActive = active.data.current.idIndex
+          const findComponents = [...subItemsToTemplate].filter((ele) => ele?.id == idActive);
+          const filteredComponents = [...subItemsToTemplate].filter((ele) => ele?.id !== idActive);
+
+          findComponents.forEach(ele => ele?.id == idActive ? delete ele.parentId : "")
+          setitemsToTemplate([...itemsToTemplate, ...findComponents]);
+          setSubItemsToTemplate(filteredComponents);
+        } else {
+          console.log("Order to Last");
+          const idActive = active.data.current.idIndex
+
+          const filteredComponent = itemsToTemplate.filter((ele) => ele.id !== idActive);
+          const findComponent = itemsToTemplate.filter((ele) => ele.id == idActive);
+
+          setitemsToTemplate([...filteredComponent, ...findComponent]);
+        }
+
+      }
+
     }
-  }
 
-  const removeStylesOverElement = (e = null) => {
-    let ifr = document.querySelector(".builder__zone").contentWindow
-    Array.from(ifr.document.querySelectorAll(".element__drag__over"))?.forEach(ele => {
-      ele.style.marginRight = null
-      ele.style.marginLeft = null
-      ele.style.marginBottom = null
-      ele.style.marginTop = null
-      e.target.style.marginBottom = null
-      e.target.style.marginTop = null
-      ele.classList.remove("element__drag__over")
-    })
+    // Drop en el Centro de un Componente/Elemento
+    if (over.data.current.typeElement == "centerdroppable") {
+
+      // Si el Drop ocurre sobre si mismo no hacer nada
+      if (active.data.current.idIndex == over.data.current.idIndex) return
+
+      // Si el Componente/Elemento viene del SidaBar
+      if (active.data.current?.sideBar) {
+        impAndSetComponent({
+          fnState: setSubItemsToTemplate, arrayState: subItemsToTemplate, parentId: over.data.current.idIndex, other: {
+            component: active.data.current?.component,
+            typehtml: active.data.current?.typehtml
+          }
+        })
+      } else {
+        const idParent = Number(over.data.current.idIndex);
+        const idActive = active.data.current.idIndex
+        const findComponents = Object.assign([], itemsToTemplate).map(ele => ele).filter((ele) => Number(ele.id) == Number(idActive));
+        const findSubComponent = Object.assign([], subItemsToTemplate).map(ele => ele).filter((ele) => Number(ele?.id) == Number(idActive));
+        const filteredComponents = Object.assign([], itemsToTemplate).map(ele => ele).filter((ele) => Number(ele?.id) !== Number(idActive));
+
+        findComponents.forEach(ele => {
+          if (ele?.id == idActive) ele.parentId = idParent
+        })
+
+        findSubComponent.forEach(ele => {
+          if (ele?.id == idActive && ele.parentId != idParent) {
+            ele.parentId = idParent;
+          }
+        })
+
+        setSubItemsToTemplate([...subItemsToTemplate, ...findComponents]);
+        setitemsToTemplate(filteredComponents);
+      }
+
+    }
+
+    // Drop en el Top/Bottom de un Componente/Elemento
+    if (over.data.current.typeElement == "topdroppable" || over.data.current.typeElement == "bottomdroppable") {
+
+      // Si el Drop ocurre sobre si mismo no hacer nada
+      if (active.data.current.idIndex == over.data.current.idIndex) return
+
+      // Si el Componente/Elemento viene del SidaBar
+      if (active.data.current?.sideBar) {
+        impAndSetComponent({
+          fnState: setitemsToTemplate, arrayState: itemsToTemplate, other: {
+            component: active.data.current?.component,
+            typehtml: active.data.current?.typehtml
+          }
+        })
+      } else {
+        if (active.data.current?.parent) {
+          const original = getIndex(active.data.current.idIndex, subItemsToTemplate)
+          const newp = getIndex(over.data.current.idIndex, subItemsToTemplate)
+
+          const sortedComponents = sortComponents({ originalComponents: subItemsToTemplate, currentDragging: original, currentOverDragging: newp })
+
+          setSubItemsToTemplate(sortedComponents)
+        } else {
+          const original = getIndex(active.data.current.idIndex, itemsToTemplate)
+          const newp = getIndex(over.data.current.idIndex, itemsToTemplate)
+
+          const sortedComponents = sortComponents({ originalComponents: itemsToTemplate, currentDragging: original, currentOverDragging: newp })
+          setitemsToTemplate(sortedComponents)
+        }
+      }
+
+    }
+
   }
 
   return (
     <DragAndDropContext.Provider
-      value={{
-        itemsToTemplate, subItemsToTemplate, handleDragEnter, handleDrop, handleLeave, handleDropEnd, handleOver, handleDeleteComponent, handleDragginElement, dragginElement, handleSubDrop, handleSortComponents
-      }}
+      value={{ itemsToTemplate, subItemsToTemplate, handleDeleteComponent, handleDragEnd }}
     >
       {children}
     </DragAndDropContext.Provider>
