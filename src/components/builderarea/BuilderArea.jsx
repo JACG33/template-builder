@@ -63,7 +63,6 @@ function WrapperComponent({ }) {
         {...builderDroppable.listeners}
         {...builderDroppable.attributes}
 
-
         data-builderarea="builderArea"
         style={{
           minHeight: "100%",
@@ -73,7 +72,6 @@ function WrapperComponent({ }) {
 
         onClickCapture={() => handleOpenEditor({ open: false })}
       >
-        <DragOverlayWrapper />
         {
           itemsToTemplate.length > 0
           &&
@@ -81,13 +79,22 @@ function WrapperComponent({ }) {
             <Item.component key={Item.id} id={Item.id} indexItem={indexItem} isParentComponent={true} dataParent={Item} />)
         }
       </div>
+      <DragOverlayWrapper />
     </>
   )
 }
 function DragOverlayWrapper({ }) {
   const [draggin, setDraggin] = useState(null)
 
-  let node = <div style={{border:"1px solid white",background:"#ccc",textAlign:"center",borderRadius:"8px",padding:"3px 6px",opacity: ".5"}}>Draggin</div>
+  let node = <div
+    style={{
+      background: "#ccc",
+      textAlign: "center",
+      borderRadius: "8px",
+      padding: "1px 6px",
+      opacity: ".5"
+    }}
+  >Draggin</div>
 
   useDndMonitor({
     onDragStart: (e) => {

@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.115 20-MAY-2024
++ Se modifico el __Contex DragDropProvider__ para mejorar la funcionalidad al cambiar de lugar ParententComponents y SubComponents.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.110 19-MAY-2024
 + Correccion de bug al exportar la plantilla.
 + Se hicieron otras modificaciones.
