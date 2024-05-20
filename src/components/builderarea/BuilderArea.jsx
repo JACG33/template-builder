@@ -1,14 +1,12 @@
+import { DragOverlay, useDndMonitor, useDroppable } from '@dnd-kit/core'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from '../../hoks/useDragAndDropProvider'
 import { useEditorProvider } from '../../hoks/useEditorProvider'
-// import { useExportImportProvider } from '../../hoks/useExportImportProvider'
-import { DragOverlay, useDndMonitor, useDroppable } from '@dnd-kit/core'
 import { MoldeElementOverlay } from '../sidebarelementsitems/MoldeElement'
 
 export const BuilderArea = () => {
-  // const { builderArea } = useExportImportProvider()
   const { breackPoint, builderZoneRef, bkpoint } = useBraeackPointProvider()
 
   return (
@@ -41,18 +39,15 @@ function WrapperComponent({ }) {
   const { handleOpenEditor } = useEditorProvider()
   useDndMonitor({
     onDragEnd: (e) => {
-      // console.log("fin", e);
       handleDragEnd(e)
-    },
-    onDragOver: (e) => {
-      // console.log("over", e);
     }
   })
 
 
   const builderDroppable = useDroppable({
     id: "builderArea", data: {
-      typeElement: "builderArea"
+      typeElement: "builderArea",
+      overArea: true
     }
   })
 

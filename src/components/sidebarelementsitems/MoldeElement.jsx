@@ -13,6 +13,7 @@ const MoldeElement = ({ nameComponent, htmlType }) => {
   })
   return (
     <div
+      draggable
       ref={draggableElement.setNodeRef}
       {...draggableElement.listeners}
       {...draggableElement.attributes}

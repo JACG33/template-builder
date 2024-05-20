@@ -32,7 +32,6 @@ export function DragAndDropProvider({ children }) {
   }
 
   const handleDeleteComponent = (id) => {
-    console.log(id);
     let comId = Number(id.replace(/[a-zA-Z]+/, "").replace(".", ""))
     const filteredComponents = itemsToTemplate.filter((ele) => ele.id !== comId);
     const filteredSubComponents = subItemsToTemplate.filter((ele) => ele.id !== comId && ele.parentId !== comId);
@@ -83,7 +82,6 @@ export function DragAndDropProvider({ children }) {
 
         // Si es un SubComponente/SubElemento
         if (active.data.current?.parent) {
-          console.log("Extract");
           const idActive = active.data.current.idIndex
           const findComponents = [...subItemsToTemplate].filter((ele) => ele?.id == idActive);
           const filteredComponents = [...subItemsToTemplate].filter((ele) => ele?.id !== idActive);
@@ -92,7 +90,6 @@ export function DragAndDropProvider({ children }) {
           setitemsToTemplate([...itemsToTemplate, ...findComponents]);
           setSubItemsToTemplate(filteredComponents);
         } else {
-          console.log("Order to Last");
           const idActive = active.data.current.idIndex
 
           const filteredComponent = itemsToTemplate.filter((ele) => ele.id !== idActive);

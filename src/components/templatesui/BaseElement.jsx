@@ -3,7 +3,6 @@ import { useEffect, useRef } from 'react'
 import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
 import { useEditorProvider } from "../../hoks/useEditorProvider"
-import { useState } from 'react'
 
 const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, indexItem, isParentComponent, dataParent }) => {
   const { configComponent, handleOpenEditor } = useEditorProvider()
@@ -46,7 +45,8 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
     data: {
       idIndex: id,
       id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId
+      parent: dataParent?.parentId,
+      overArea:true
     }
   })
 
@@ -101,7 +101,8 @@ function InteractionAreas({ id, TypeElement, dataParent }) {
       typeElement: "topdroppable",
       idIndex: id,
       id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId
+      parent: dataParent?.parentId,
+      overArea:true
     }
   })
 
@@ -112,7 +113,8 @@ function InteractionAreas({ id, TypeElement, dataParent }) {
       typeElement: "bottomdroppable",
       idIndex: id,
       id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId
+      parent: dataParent?.parentId,
+      overArea:true
     }
   })
 
@@ -123,7 +125,8 @@ function InteractionAreas({ id, TypeElement, dataParent }) {
       typeElement: "centerdroppable",
       idIndex: id,
       id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId
+      parent: dataParent?.parentId,
+      overArea:true
     }
   })
 
