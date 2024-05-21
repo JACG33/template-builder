@@ -30,7 +30,7 @@ export function EditorProvider({ children }) {
     normalStyles: { body: {} },
     mediaQuerys: {}
   })
-  const cssStylesSheetRef = useRef()
+  const cssStylesSheetRef = useRef(`* {\n  padding: 0px;\n  margin: 0px;\n  box-sizing: border-box;\n}\n`)
   const { breackPoint } = useBraeackPointProvider()
 
   const handleEditComponent = (conf) => {

@@ -3,12 +3,11 @@ import { useEffect, useRef } from 'react'
 import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
 import { useEditorProvider } from "../../hoks/useEditorProvider"
-import { useState } from 'react'
 
-const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, indexItem, isParentComponent, dataParent }) => {
+const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, dataParent }) => {
   const { configComponent, handleOpenEditor } = useEditorProvider()
   const styles = useRef(placeholder)
-  const { subItemsToTemplate } = useDragAndDropProvider()
+  const { subElements } = useDragAndDropProvider()
   const { breackPoint } = useBraeackPointProvider()
 
   if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3")
@@ -46,7 +45,8 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
     data: {
       idIndex: id,
       id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId
+      parent: dataParent?.parentId,
+      overArea: true
     }
   })
 
@@ -76,16 +76,10 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
         {...droppable.attributes}
 
         className={`${TypeElement}${id}`}
-        data-component={dataAttribute}
-        data-idcomponent={id}
-        data-typehtml={TypeElement}
-        data-dragindex={indexItem}
-        data-parent={dataParent?.parentId}
-
       >
         {children}
-        {subItemsToTemplate.length > 0 && subItemsToTemplate.map((Item, indexSubItem) => {
-          if (Item?.parentId == id) return (<Item.component key={Item.id} id={Item.id} indexItem={indexSubItem} isParentComponent={false} dataParent={Item} />)
+        {subElements.length > 0 && subElements.map((Item) => {
+          if (Item?.parentId == id) return (<Item.component key={Item.id} id={Item.id} dataParent={Item} />)
         })}
       </TypeElement>
     </div>
@@ -93,15 +87,18 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, in
 }
 
 function InteractionAreas({ id, TypeElement, dataParent }) {
-
+  const extraParams = {
+    idIndex: id,
+    id: `${TypeElement}${id}`,
+    parent: dataParent?.parentId,
+    overArea: true
+  }
   // Top Droppable Hook
   const topDroppable = useDroppable({
     id: `${id}-topdroppable`,
     data: {
       typeElement: "topdroppable",
-      idIndex: id,
-      id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId
+      ...extraParams
     }
   })
 
@@ -110,9 +107,7 @@ function InteractionAreas({ id, TypeElement, dataParent }) {
     id: `${id}-bottomdroppable`,
     data: {
       typeElement: "bottomdroppable",
-      idIndex: id,
-      id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId
+      ...extraParams
     }
   })
 
@@ -121,9 +116,7 @@ function InteractionAreas({ id, TypeElement, dataParent }) {
     id: `${id}-centerdroppable`,
     data: {
       typeElement: "centerdroppable",
-      idIndex: id,
-      id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId
+      ...extraParams
     }
   })
 
@@ -134,18 +127,21 @@ function InteractionAreas({ id, TypeElement, dataParent }) {
         {...topDroppable.listeners}
         {...topDroppable.attributes}
         style={{ position: "absolute", pointerEvents: "none", zIndex: "0", background: topDroppable.isOver ? topDroppable.active?.data.current?.id != topDroppable.over?.data.current?.id ? "red" : "" : "", top: "0px", height: "10px", width: "100%" }}
+        data-tool="builder"
       />
       <div
         ref={centerDroppable.setNodeRef}
         {...centerDroppable.listeners}
         {...centerDroppable.attributes}
         style={{ position: "absolute", pointerEvents: "none", zIndex: "0", background: centerDroppable.isOver ? centerDroppable.active?.data.current?.id != centerDroppable.over?.data.current?.id ? "pink" : "" : "", top: "10px", bottom: "10px", width: "100%" }}
+        data-tool="builder"
       />
       <div
         ref={bottomDroppable.setNodeRef}
         {...bottomDroppable.listeners}
         {...bottomDroppable.attributes}
         style={{ position: "absolute", pointerEvents: "none", zIndex: "0", background: bottomDroppable.isOver ? bottomDroppable.active?.data.current?.id != bottomDroppable.over?.data.current?.id ? "red" : "" : "", bottom: "0px", height: "10px", width: "100%" }}
+        data-tool="builder"
       />
     </>
   )

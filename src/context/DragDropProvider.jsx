@@ -1,19 +1,19 @@
-import { createContext, useRef, useState } from "react";
+import { createContext, useState } from "react";
 import { useEditorProvider } from "../hoks/useEditorProvider";
+import { ramdomid } from "../helpers/randomid";
 
 export const DragAndDropContext = createContext({
-  itemsToTemplate: [],
-  subItemsToTemplate: [],
+  parentElements: [],
+  subElements: [],
   handleDeleteComponent: () => { },
   handleDragginElement: () => { },
   handleDragEnd: () => { },
 })
 
 export function DragAndDropProvider({ children }) {
-  const [itemsToTemplate, setitemsToTemplate] = useState([])
-  const [subItemsToTemplate, setSubItemsToTemplate] = useState([])
+  const [parentElements, setParentElements] = useState([])
+  const [subElements, setSubElements] = useState([])
   const { deleteConfigStyle } = useEditorProvider()
-  const counterComponents = useRef(1)
 
   /**
    * Funcion que importa dinamicamente un componente y lo renderiza.
@@ -68,13 +68,12 @@ export function DragAndDropProvider({ children }) {
   }
 
   const handleDeleteComponent = (id) => {
-    console.log(id);
     let comId = Number(id.replace(/[a-zA-Z]+/, "").replace(".", ""))
-    const filteredComponents = itemsToTemplate.filter((ele) => ele.id !== comId);
-    const filteredSubComponents = subItemsToTemplate.filter((ele) => ele.id !== comId && ele.parentId !== comId);
+    const filteredComponents = parentElements.filter((ele) => ele.id !== comId);
+    const filteredSubComponents = subElements.filter((ele) => ele.id !== comId && ele.parentId !== comId);
     deleteConfigStyle(id)
-    setitemsToTemplate(filteredComponents);
-    setSubItemsToTemplate(filteredSubComponents);
+    setParentElements(filteredComponents);
+    setSubElements(filteredSubComponents);
   }
 
   /**
@@ -85,6 +84,22 @@ export function DragAndDropProvider({ children }) {
    */
   const getIndex = (id, arrayData) => arrayData.findIndex(task => task.id === id)
 
+  /**
+   * Funcion que ordena los ParentComponents y SubComponents
+   * @param {Object} opc Objetos de parametros. 
+   * @param {Function} opc.fntState Funcion modificadora del State. 
+   * @param {Number} opc.overIndex Indice del array del Over Element. 
+   * @param {Object} opc.componentToSet Objecto del componente a ser agregado. 
+   * @param {Number} opc.idActive Id del elemento que se esta moviendo. 
+   */
+  const changePositionOfComponents = ({ fnState, overIndex, componentToSet, idActive }) => {
+    fnState(prev => {
+      const newEle = [...prev.filter(ele => ele.id != idActive)];
+      newEle.splice(overIndex, 0, ...componentToSet)
+      return newEle
+    })
+  }
+
   const handleDragEnd = (e) => {
     const { active, over } = e
 
@@ -94,7 +109,7 @@ export function DragAndDropProvider({ children }) {
       // Si el Componente/Elemento viene del SidaBar
       if (active.data.current?.sideBar) {
         impAndSetComponent({
-          fnState: setitemsToTemplate, arrayState: itemsToTemplate, other: {
+          fnState: setParentElements, arrayState: parentElements, other: {
             component: active.data.current?.component,
             typehtml: active.data.current?.typehtml,
             componentUi: active.data.current?.componentUi,
@@ -105,22 +120,20 @@ export function DragAndDropProvider({ children }) {
 
         // Si es un SubComponente/SubElemento
         if (active.data.current?.parent) {
-          console.log("Extract");
           const idActive = active.data.current.idIndex
-          const findComponents = [...subItemsToTemplate].filter((ele) => ele?.id == idActive);
-          const filteredComponents = [...subItemsToTemplate].filter((ele) => ele?.id !== idActive);
+          const findComponents = [...subElements].filter((ele) => ele?.id == idActive);
+          const filteredComponents = [...subElements].filter((ele) => ele?.id !== idActive);
 
           findComponents.forEach(ele => ele?.id == idActive ? delete ele.parentId : "")
-          setitemsToTemplate([...itemsToTemplate, ...findComponents]);
-          setSubItemsToTemplate(filteredComponents);
+          setParentElements([...parentElements, ...findComponents]);
+          setSubElements(filteredComponents);
         } else {
-          console.log("Order to Last");
           const idActive = active.data.current.idIndex
 
-          const filteredComponent = itemsToTemplate.filter((ele) => ele.id !== idActive);
-          const findComponent = itemsToTemplate.filter((ele) => ele.id == idActive);
+          const filteredComponent = parentElements.filter((ele) => ele.id !== idActive);
+          const findComponent = parentElements.filter((ele) => ele.id == idActive);
 
-          setitemsToTemplate([...filteredComponent, ...findComponent]);
+          setParentElements([...filteredComponent, ...findComponent]);
         }
 
       }
@@ -136,7 +149,7 @@ export function DragAndDropProvider({ children }) {
       // Si el Componente/Elemento viene del SidaBar
       if (active.data.current?.sideBar) {
         impAndSetComponent({
-          fnState: setSubItemsToTemplate, arrayState: subItemsToTemplate, parentId: over.data.current.idIndex, other: {
+          fnState: setSubElements, arrayState: subElements, parentId: over.data.current.idIndex, other: {
             component: active.data.current?.component,
             typehtml: active.data.current?.typehtml
           }
@@ -144,9 +157,9 @@ export function DragAndDropProvider({ children }) {
       } else {
         const idParent = Number(over.data.current.idIndex);
         const idActive = active.data.current.idIndex
-        const findComponents = Object.assign([], itemsToTemplate).map(ele => ele).filter((ele) => Number(ele.id) == Number(idActive));
-        const findSubComponent = Object.assign([], subItemsToTemplate).map(ele => ele).filter((ele) => Number(ele?.id) == Number(idActive));
-        const filteredComponents = Object.assign([], itemsToTemplate).map(ele => ele).filter((ele) => Number(ele?.id) !== Number(idActive));
+        const findComponents = Object.assign([], parentElements).map(ele => ele).filter((ele) => Number(ele.id) == Number(idActive));
+        const findSubComponent = Object.assign([], subElements).map(ele => ele).filter((ele) => Number(ele?.id) == Number(idActive));
+        const filteredComponents = Object.assign([], parentElements).map(ele => ele).filter((ele) => Number(ele?.id) !== Number(idActive));
 
         findComponents.forEach(ele => {
           if (ele?.id == idActive) ele.parentId = idParent
@@ -158,8 +171,8 @@ export function DragAndDropProvider({ children }) {
           }
         })
 
-        setSubItemsToTemplate([...subItemsToTemplate, ...findComponents]);
-        setitemsToTemplate(filteredComponents);
+        setSubElements([...subElements, ...findComponents]);
+        setParentElements(filteredComponents);
       }
 
     }
@@ -170,38 +183,112 @@ export function DragAndDropProvider({ children }) {
       // Si el Drop ocurre sobre si mismo no hacer nada
       if (active.data.current.idIndex == over.data.current.idIndex) return
 
-      // Si el Componente/Elemento viene del SidaBar
+      // Si el Componente/Elemento viene del SideBar
       if (active.data.current?.sideBar) {
         impAndSetComponent({
-          fnState: setitemsToTemplate, arrayState: itemsToTemplate, other: {
+          fnState: setParentElements, arrayState: parentElements, other: {
             component: active.data.current?.component,
             typehtml: active.data.current?.typehtml
           }
         })
       } else {
+        // Si es un SubComponent
         if (active.data.current?.parent) {
-          const original = getIndex(active.data.current.idIndex, subItemsToTemplate)
-          const newp = getIndex(over.data.current.idIndex, subItemsToTemplate)
 
-          const sortedComponents = sortComponents({ originalComponents: subItemsToTemplate, currentDragging: original, currentOverDragging: newp })
+          // Si el SubComponent se quiere extraer de un componente y colocarlo en el top/bottom de un ParentElement
+          if (!over.data.current?.parent) {
+            const overIndex = getIndex(over.data.current.idIndex, parentElements)
 
-          setSubItemsToTemplate(sortedComponents)
+            const idActive = active.data.current.idIndex
+            const findComponent = Object.assign([], subElements).map(ele => ele).filter((ele) => Number(ele.id) == Number(idActive));
+
+            // Drop en el Top
+            if (over.data.current.typeElement == "topdroppable") {
+              changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex })
+            }
+
+            // Drop en el Bottom
+            if (over.data.current.typeElement == "bottomdroppable") {
+              changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
+            }
+
+            // Eliminar SubComponent
+            const filteredSubComponents = subElements.filter((ele) => ele.id !== idActive && ele.parentId !== idActive);
+            setSubElements(filteredSubComponents)
+          } else {
+
+            const activeIndex = getIndex(active.data.current.idIndex, subElements)
+            const overIndex = getIndex(over.data.current.idIndex, subElements)
+
+            const idActive = active.data.current.idIndex
+            const findComponent = Object.assign([], subElements).map(ele => ele).filter((ele) => Number(ele.id) == Number(idActive));
+
+            // Drop en el Top
+            if (over.data.current.typeElement == "topdroppable") {
+              // Si el activeIndex es menor al overIndex colocar el nuevo elemento antes del overElement, de lo contrario colocarlo en la posicion del overElement
+              if (activeIndex < overIndex)
+                changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex: overIndex - 1 })
+              else
+                changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex })
+            }
+
+            // Drop en el Bottom
+            if (over.data.current.typeElement == "bottomdroppable") {
+              changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
+            }
+          }
         } else {
-          const original = getIndex(active.data.current.idIndex, itemsToTemplate)
-          const newp = getIndex(over.data.current.idIndex, itemsToTemplate)
 
-          const sortedComponents = sortComponents({ originalComponents: itemsToTemplate, currentDragging: original, currentOverDragging: newp })
-          setitemsToTemplate(sortedComponents)
+          // Si el ParentElement se quiere incluir dentro de un componente y colocarlo en el top/bottom de un SubComponent
+          if (over.data.current?.parent) {
+            const overIndex = getIndex(over.data.current.idIndex, subElements)
+
+            const idActive = active.data.current.idIndex
+            const findComponent = Object.assign([], parentElements).map(ele => ele).filter((ele) => Number(ele.id) == Number(idActive));
+            findComponent[0].parentId = over.data.current.parent
+
+            // Drop en el Top
+            if (over.data.current.typeElement == "topdroppable") {
+              changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex })
+            }
+
+            // Drop en el Bottom
+            if (over.data.current.typeElement == "bottomdroppable") {
+              changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
+            }
+
+            // Eliminar ParentElement
+            const filteredComponents = parentElements.filter((ele) => ele.id !== idActive);
+            setParentElements(filteredComponents)
+          } else {
+            const activeIndex = getIndex(active.data.current.idIndex, parentElements)
+            const overIndex = getIndex(over.data.current.idIndex, parentElements)
+
+            const idActive = active.data.current.idIndex
+            const findComponent = Object.assign([], parentElements).map(ele => ele).filter((ele) => Number(ele.id) == Number(idActive));
+
+            // Drop en el Top
+            if (over.data.current.typeElement == "topdroppable") {
+              // Si el activeIndex es menor al overIndex colocar el nuevo elemento antes del overElement, de lo contrario colocarlo en la posicion del overElement
+              if (activeIndex < overIndex)
+                changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex: overIndex - 1 })
+              else
+                changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex })
+            }
+
+            // Drop en el Bottom
+            if (over.data.current.typeElement == "bottomdroppable") {
+              changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
+            }
+          }
         }
       }
-
     }
-
   }
 
   return (
     <DragAndDropContext.Provider
-      value={{ itemsToTemplate, subItemsToTemplate, handleDeleteComponent, handleDragEnd }}
+      value={{ parentElements, subElements, handleDeleteComponent, handleDragEnd }}
     >
       {children}
     </DragAndDropContext.Provider>
