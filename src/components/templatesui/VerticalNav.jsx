@@ -6,9 +6,16 @@ const placeholder = {
   backgroundColor: "#ffcc22"
 }
 
-const VerticalNav = ({ id ,indexItem,isParentComponent,dataParent}) => {
+/**
+ * Componente VerticalNav
+ * @param {Object} opc Objeto de parametros. 
+ * @param {String|Number} opc.id Identificador del componente. 
+ * @param {Boolean} opc.dataParent Identificador del ParentElement. 
+ * @returns 
+ */
+const VerticalNav = ({ id, dataParent, children }) => {
 
-  return (<BaseElement TypeElement={"nav"} id={id} placeholder={placeholder} dataAttribute={"VerticalNav"} indexItem={indexItem} isParentComponent={isParentComponent} dataParent={ dataParent} />)
+  return (<BaseElement TypeElement={"nav"} id={id} placeholder={placeholder} dataAttribute={"VerticalNav"} dataParent={dataParent} >{children}</BaseElement>)
 }
 
 export default VerticalNav

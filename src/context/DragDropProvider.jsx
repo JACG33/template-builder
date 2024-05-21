@@ -27,27 +27,44 @@ export function DragAndDropProvider({ children }) {
   const impAndSetComponent = ({ fnState, arrayState, typeElement, parentId, other }) => {
     let Com = other.component
     let typehtml = other.typehtml || typeElement
-    let count = counterComponents.current++
-    import("../components/templatesui/").then(res => fnState([...arrayState, { id: count, component: res[Com], type: typehtml, parentId }]))
-  }
+    let idComponent = Number(ramdomid())
+
+    const importSub = ({ res, tmpSubComponents, subs, id }) => {
+      subs.forEach(subCom => {
+        const subId = Number(ramdomid())
+        tmpSubComponents.push({ id: subId, component: res[subCom.name], type: subCom.type, parentId: id })
+        if (subCom?.subs?.length > 0)
+          importSub({ res, tmpSubComponents, subs: subCom.subs, id:subId })
+      })
+    }
 
 
-  /**
-   * Funcion que ordena un array de componentes.
-   * @param {Object} opc Objeto de opcoines.
-   * @param {Array} opc.originaComponets Array con las informacion de todos los components.
-   * @param {Strin|Number} opc.currentDragging Identificador del componente que se esta arrastrando. 
-   * @param {Strin|Number} opc.currentOverDragging Identificador del componente por el cual esta pasando/flotando el componente que se esta arrastrando. 
-   * @returns Array de componentes ordenados.
-   */
-  const sortComponents = ({ originalComponents, currentDragging, currentOverDragging }) => {
-    const cloneComponents = Object.assign([], originalComponents)
-    const temp = cloneComponents[currentDragging]
 
-    cloneComponents[currentDragging] = cloneComponents[currentOverDragging]
-    cloneComponents[currentOverDragging] = temp
+    if (other?.componentUi == true) {
+      import("../components/templatesui/").then(res => {
 
-    return cloneComponents
+        fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId }])
+
+        let tmpSubComponents = []
+
+        other.subElements.forEach(subCom => {
+          const subId = Number(ramdomid())
+          tmpSubComponents.push({ id: subId, component: res[subCom.name], type: subCom.type, parentId: idComponent })
+          if (subCom?.subs?.length > 0)
+            importSub({ res, tmpSubComponents, subs: subCom.subs, id:subId })
+        })
+
+
+        // importSub(res, tmpSubComponents)
+        setSubElements([...subElements, ...tmpSubComponents])
+
+      })
+
+      console.log(other.subElements);
+
+    }
+    else
+      import("../components/templatesui/").then(res => fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId }]))
   }
 
   const handleDeleteComponent = (id) => {
@@ -79,7 +96,9 @@ export function DragAndDropProvider({ children }) {
         impAndSetComponent({
           fnState: setitemsToTemplate, arrayState: itemsToTemplate, other: {
             component: active.data.current?.component,
-            typehtml: active.data.current?.typehtml
+            typehtml: active.data.current?.typehtml,
+            componentUi: active.data.current?.componentUi,
+            subElements: active.data.current?.subElements,
           }
         })
       } else {
