@@ -27,10 +27,44 @@ export function DragAndDropProvider({ children }) {
   const impAndSetComponent = ({ fnState, arrayState, typeElement, parentId, other }) => {
     let Com = other.component
     let typehtml = other.typehtml || typeElement
-    if (other?.componentUi)
-      import("../components/templatescomponents/").then(res => fnState([...arrayState, { id: ramdomid(), component: res[Com], type: typehtml, parentId }]))
+    let idComponent = Number(ramdomid())
+
+    const importSub = ({ res, tmpSubComponents, subs, id }) => {
+      subs.forEach(subCom => {
+        const subId = Number(ramdomid())
+        tmpSubComponents.push({ id: subId, component: res[subCom.name], type: subCom.type, parentId: id })
+        if (subCom?.subs?.length > 0)
+          importSub({ res, tmpSubComponents, subs: subCom.subs, id:subId })
+      })
+    }
+
+
+
+    if (other?.componentUi == true) {
+      import("../components/templatesui/").then(res => {
+
+        fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId }])
+
+        let tmpSubComponents = []
+
+        other.subElements.forEach(subCom => {
+          const subId = Number(ramdomid())
+          tmpSubComponents.push({ id: subId, component: res[subCom.name], type: subCom.type, parentId: idComponent })
+          if (subCom?.subs?.length > 0)
+            importSub({ res, tmpSubComponents, subs: subCom.subs, id:subId })
+        })
+
+
+        // importSub(res, tmpSubComponents)
+        setSubElements([...subElements, ...tmpSubComponents])
+
+      })
+
+      console.log(other.subElements);
+
+    }
     else
-      import("../components/templatesui/").then(res => fnState([...arrayState, { id: ramdomid(), component: res[Com], type: typehtml, parentId }]))
+      import("../components/templatesui/").then(res => fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId }]))
   }
 
   const handleDeleteComponent = (id) => {
@@ -78,7 +112,8 @@ export function DragAndDropProvider({ children }) {
           fnState: setParentElements, arrayState: parentElements, other: {
             component: active.data.current?.component,
             typehtml: active.data.current?.typehtml,
-            componentUi: active.data.current?.componentUi
+            componentUi: active.data.current?.componentUi,
+            subElements: active.data.current?.subElements,
           }
         })
       } else {
