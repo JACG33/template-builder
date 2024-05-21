@@ -1,14 +1,15 @@
 import { useDraggable } from "@dnd-kit/core"
 import "./moldeelement.css"
 
-const MoldeElement = ({ nameComponent, htmlType }) => {
+const MoldeElement = ({ nameComponent, htmlType ,componentUi=false}) => {
 
   const draggableElement = useDraggable({
     id: nameComponent,
     data: {
       component: nameComponent,
       typehtml: htmlType,
-      sideBar: true
+      sideBar: true,
+      componentUi
     }
   })
   return (

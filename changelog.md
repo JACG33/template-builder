@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.116 21-MAY-2024
++ Se reestructuran diferentes componentes y contextos para implementar, __UI__ prediseñadas.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.115 20-MAY-2024
 + Se modifico el __Contex DragDropProvider__ para mejorar la funcionalidad al cambiar de lugar ParententComponents y SubComponents.
 + Se hicieron otras modificaciones.

@@ -2,7 +2,7 @@ import { useDragAndDropProvider } from '../../hoks/useDragAndDropProvider'
 import { useEditorProvider } from '../../hoks/useEditorProvider'
 
 const SideBarElementsRendered = () => {
-  const { itemsToTemplate, subItemsToTemplate, handleDeleteComponent } = useDragAndDropProvider()
+  const { parentElements, subElements, handleDeleteComponent } = useDragAndDropProvider()
   const { handleOpenEditor, getConfigComponent } = useEditorProvider()
 
   const handleDelete = (configNmae = "") => {
@@ -33,7 +33,7 @@ const SideBarElementsRendered = () => {
     <>
       <span className='text-center'>Rendered Components</span>
       <div className='my-2 grid gap-2'>
-        {itemsToTemplate?.length > 0 && itemsToTemplate.map(ele => {
+        {parentElements?.length > 0 && parentElements.map(ele => {
           return (
             <div key={ele.id} className='tree__element'
               onMouseOverCapture={e => hoverInElement({ cssClass: `${ele.type}${ele.id}` })}
@@ -46,7 +46,7 @@ const SideBarElementsRendered = () => {
         }
         )}
 
-        {subItemsToTemplate?.length > 0 && subItemsToTemplate.map(ele => {
+        {subElements?.length > 0 && subElements.map(ele => {
           return (
             <div key={ele.id} className='tree__element'
               onMouseOverCapture={e => hoverInElement({ cssClass: `${ele.type}${ele.id}` })}

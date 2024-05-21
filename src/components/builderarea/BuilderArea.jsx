@@ -35,7 +35,7 @@ function IFrame({ children, bkpoint, breackPoint }) {
 
 
 function WrapperComponent({ }) {
-  const { itemsToTemplate, handleDragEnd } = useDragAndDropProvider()
+  const { parentElements, handleDragEnd } = useDragAndDropProvider()
   const { handleOpenEditor } = useEditorProvider()
   useDndMonitor({
     onDragEnd: (e) => {
@@ -68,9 +68,9 @@ function WrapperComponent({ }) {
         onClickCapture={() => handleOpenEditor({ open: false })}
       >
         {
-          itemsToTemplate.length > 0
+          parentElements.length > 0
           &&
-          itemsToTemplate.map((Item, indexItem) =>
+          parentElements.map((Item, indexItem) =>
             <Item.component key={Item.id} id={Item.id} indexItem={indexItem} isParentComponent={true} dataParent={Item} />)
         }
       </div>
