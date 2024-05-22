@@ -79,7 +79,7 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, da
       >
         {children}
         {subElements.length > 0 && subElements.map((Item) => {
-          if (Item?.parentId == id) return (<Item.component key={Item.id} id={Item.id} dataParent={Item} />)
+          if (Item?.parentId == id) return (<Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} />)
         })}
       </TypeElement>
     </div>

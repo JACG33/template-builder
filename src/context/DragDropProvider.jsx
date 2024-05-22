@@ -32,9 +32,9 @@ export function DragAndDropProvider({ children }) {
     const importSub = ({ res, tmpSubComponents, subs, id }) => {
       subs.forEach(subCom => {
         const subId = Number(ramdomid())
-        tmpSubComponents.push({ id: subId, component: res[subCom.name], type: subCom.type, parentId: id })
+        tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, parentId: id })
         if (subCom?.subs?.length > 0)
-          importSub({ res, tmpSubComponents, subs: subCom.subs, id:subId })
+          importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId })
       })
     }
 
@@ -42,16 +42,15 @@ export function DragAndDropProvider({ children }) {
 
     if (other?.componentUi == true) {
       import("../components/templatesui/").then(res => {
-
-        fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId }])
+        fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }])
 
         let tmpSubComponents = []
 
         other.subElements.forEach(subCom => {
           const subId = Number(ramdomid())
-          tmpSubComponents.push({ id: subId, component: res[subCom.name], type: subCom.type, parentId: idComponent })
+          tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, parentId: idComponent })
           if (subCom?.subs?.length > 0)
-            importSub({ res, tmpSubComponents, subs: subCom.subs, id:subId })
+            importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId })
         })
 
 
@@ -114,6 +113,7 @@ export function DragAndDropProvider({ children }) {
             typehtml: active.data.current?.typehtml,
             componentUi: active.data.current?.componentUi,
             subElements: active.data.current?.subElements,
+            styles: active.data.current?.styles
           }
         })
       } else {

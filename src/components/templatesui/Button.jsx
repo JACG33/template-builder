@@ -13,9 +13,9 @@ const placeholder = {
  * @param {Boolean} opc.dataParent Identificador del ParentElement. 
  * @returns 
  */
-const Button = ({ id, dataParent }) => {
+const Button = ({ id, dataParent , children, styles = {}}) => {
   return (
-    <BaseElement TypeElement={"button"} id={id} placeholder={placeholder} dataAttribute={"Button"} dataParent={dataParent}>Click</BaseElement>
+    <BaseElement TypeElement={"button"} id={id} placeholder={{...placeholder,...styles}} dataAttribute={"Button"} dataParent={dataParent}>Click</BaseElement>
   )
 }
 

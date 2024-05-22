@@ -2,7 +2,7 @@ import { useDraggable } from "@dnd-kit/core"
 import "./moldeelement.css"
 import { ramdomid } from "../../helpers/randomid"
 
-const MoldeElement = ({ nameComponent, htmlType ,componentUi=false,subElements=null,other}) => {
+const MoldeElement = ({ nameComponent, htmlType, componentUi = false, subElements = null, other, styles }) => {
 
   const draggableElement = useDraggable({
     id: other,
@@ -11,7 +11,8 @@ const MoldeElement = ({ nameComponent, htmlType ,componentUi=false,subElements=n
       typehtml: htmlType,
       sideBar: true,
       componentUi,
-      subElements
+      subElements,
+      styles
     }
   })
   return (
@@ -30,7 +31,7 @@ export const MoldeElementOverlay = ({ htmlType }) => {
 
   return (
     <div
-      style={{border:"1px solid white",background:"#ccc",textAlign:"center",borderRadius:"8px",padding:"3px 6px"}}
+      style={{ border: "1px solid white", background: "#ccc", textAlign: "center", borderRadius: "8px", padding: "3px 6px" }}
       className="molde__element border rounded-md text-center cursor-pointer" >
       {htmlType}
     </div>

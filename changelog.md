@@ -1,5 +1,8 @@
 # Template Builder
 
+## Version 0.0.117 22-MAY-2024
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.116 21-MAY-2024
 + Se reestructuran diferentes componentes y contextos para implementar, __UI__ prediseñadas.
 + Se hicieron otras modificaciones.

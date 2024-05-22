@@ -13,9 +13,9 @@ const placeholder = {
  * @param {Boolean} opc.dataParent Identificador del ParentElement. 
  * @returns 
  */
-const VerticalNav = ({ id, dataParent, children }) => {
+const VerticalNav = ({ id, dataParent, children, styles = {} }) => {
 
-  return (<BaseElement TypeElement={"nav"} id={id} placeholder={placeholder} dataAttribute={"VerticalNav"} dataParent={dataParent} >{children}</BaseElement>)
+  return (<BaseElement TypeElement={"nav"} id={id} placeholder={{ ...placeholder, ...styles }} dataAttribute={"VerticalNav"} dataParent={dataParent} >{children}</BaseElement>)
 }
 
 export default VerticalNav
