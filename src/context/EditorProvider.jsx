@@ -7,13 +7,14 @@ export const EditorContext = createContext({
   handleEditComponent: () => { },
   openEditor: false,
   setOpenEditor: () => { },
-  handleOpenEditor: ({ conf, name, open, cssClass }) => { },
+  handleOpenEditor: ({ conf, name, open, cssClass, setUi }) => { },
   actualConfig: false,
   setActualConfig: () => { },
   handleActualConfig: () => { },
   deleteConfigStyle: () => { },
   getConfigComponent: () => { },
   cssStylesSheetRef: null,
+  setUiStyles: ({ uiStyles }) => { }
 })
 
 export function EditorProvider({ children }) {
@@ -40,14 +41,14 @@ export function EditorProvider({ children }) {
           {
             ...configComponent,
             mediaQuerys: {
-              ...configComponent.mediaQuerys, [breackPoint]: { [actualConfig]: { ...conf } }
+              ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys[breackPoint], [actualConfig]: { ...conf } }
             }
           }
         )
         cssStylesRef.current = {
           ...cssStylesRef.current,
           mediaQuerys: {
-            ...cssStylesRef.current.mediaQuerys, [breackPoint]: { [actualConfig]: { ...conf } }
+            ...cssStylesRef.current.mediaQuerys, [breackPoint]: { ...cssStylesRef.current.mediaQuerys[breackPoint], [actualConfig]: { ...conf } }
           }
         }
         setHeadStyles()
@@ -172,8 +173,8 @@ export function EditorProvider({ children }) {
    * @param {String|Number} opciones.name Nombre/Identidicador de la configuracion del Elemento/Componente elegido.
    * @param {Boolean} opciones.open Boolean que identifica si esta o no abierto el editor de estilos del Elemento/Componente elegido.
    */
-  const handleOpenEditor = ({ conf, name, open, cssClass }) => {
-    if (open == true) {
+  const handleOpenEditor = ({ conf, name, open, cssClass, setUi = false }) => {
+    if (open == true || setUi == true) {
       setOpenEditor(true)
       if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
         setConfigComponent(
@@ -209,6 +210,25 @@ export function EditorProvider({ children }) {
       setActualConfig(null)
       setOpenEditor(false)
     }
+  }
+
+  /**
+   * Funcion que asigna los estilos css de un componente/template UI.
+   * @param {Object} opc Objeto de opciones. 
+   * @param {Object} opc.uiStyles Objeto de estilos css. 
+   */
+  const setUiStyles = ({ uiStyles }) => {
+    setConfigComponent(
+      {
+        ...configComponent,
+        normalStyles: { ...configComponent.normalStyles, ...uiStyles },
+      }
+    )
+    cssStylesRef.current = {
+      ...cssStylesRef.current,
+      normalStyles: { ...configComponent.normalStyles, ...uiStyles },
+    }
+    setHeadStyles()
   }
 
   const deleteConfigStyle = (id) => {
@@ -255,7 +275,7 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles
       }}
     >
       {children}

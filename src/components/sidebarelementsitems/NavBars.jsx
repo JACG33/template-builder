@@ -1,3 +1,4 @@
+import { ButtonStyles, DivStyles, VerticalNavStyles } from "../../constants/baseStyle";
 import { WrapperComponents } from "../../layouts/WrapperComponents";
 import MoldeElement from "./MoldeElement";
 
@@ -15,6 +16,7 @@ export default NavBars
 
 function NavBarUi() {
   const placeholderUi = {
+    ...VerticalNavStyles,
     display: "flex",
     gap: "10px",
     alignItems: "center",
@@ -23,16 +25,19 @@ function NavBarUi() {
   const subElements = [
     {
       name: "Button",
-      type: "button"
+      type: "button",
+      styles:{...ButtonStyles}
     },
     {
       name: "Button",
-      type: "button"
+      type: "button",
+      styles:{...ButtonStyles}
     },
     {
       name: "Div",
       type: "div",
       styles: {
+        ...DivStyles,
         display: "flex",
         gap: "10px",
         alignItems: "center"
@@ -40,11 +45,13 @@ function NavBarUi() {
       subs: [
         {
           name: "Button",
-          type: "button"
+          type: "button",
+          styles:{...ButtonStyles}
         },
         {
           name: "Button",
-          type: "button"
+          type: "button",
+          styles:{...ButtonStyles}
         },
       ]
     },

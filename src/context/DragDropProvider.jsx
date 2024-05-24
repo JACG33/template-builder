@@ -13,7 +13,7 @@ export const DragAndDropContext = createContext({
 export function DragAndDropProvider({ children }) {
   const [parentElements, setParentElements] = useState([])
   const [subElements, setSubElements] = useState([])
-  const { deleteConfigStyle } = useEditorProvider()
+  const { deleteConfigStyle, setUiStyles } = useEditorProvider()
 
   /**
    * Funcion que importa dinamicamente un componente y lo renderiza.
@@ -29,37 +29,50 @@ export function DragAndDropProvider({ children }) {
     let typehtml = other.typehtml || typeElement
     let idComponent = Number(ramdomid())
 
-    const importSub = ({ res, tmpSubComponents, subs, id }) => {
+    /**
+     * Funcion recursiva que modifica el tmpSubComponents.
+     * @param {Object} opc Objecto de opciones. 
+     * @param {Response} opc.res Responce del import de componentes. 
+     * @param {Array} opc.tmpSubComponents Array de subComponents para modifica el state. 
+     * @param {Array} opc.subs Array de subComponents. 
+     * @param {Number} opc.id Identificador del parentElement. 
+     * @param {Object} opc.uiStyles Objeto de estilos. 
+     */
+    const importSub = ({ res, tmpSubComponents, subs, id, uiStyles }) => {
       subs.forEach(subCom => {
         const subId = Number(ramdomid())
         tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, parentId: id })
+        if (subCom.styles != undefined) {
+          uiStyles[`${subCom.type}${subId}`] = subCom.styles
+        }
         if (subCom?.subs?.length > 0)
-          importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId })
+          importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles })
       })
     }
 
-
-
     if (other?.componentUi == true) {
       import("../components/templatesui/").then(res => {
+        let uiStyles = {}
+        let tmpSubComponents = []
+
         fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }])
 
-        let tmpSubComponents = []
+
+        uiStyles[`${typehtml}${idComponent}`] = other.styles
 
         other.subElements.forEach(subCom => {
           const subId = Number(ramdomid())
           tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, parentId: idComponent })
+          if (subCom.styles != undefined) {
+            uiStyles[`${subCom.type}${subId}`] = subCom.styles
+          }
           if (subCom?.subs?.length > 0)
-            importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId })
+            importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles })
         })
-
-
-        // importSub(res, tmpSubComponents)
+        setUiStyles({ uiStyles })
         setSubElements([...subElements, ...tmpSubComponents])
 
       })
-
-      console.log(other.subElements);
 
     }
     else
@@ -197,6 +210,7 @@ export function DragAndDropProvider({ children }) {
 
           // Si el SubComponent se quiere extraer de un componente y colocarlo en el top/bottom de un ParentElement
           if (!over.data.current?.parent) {
+            const activeIndex = getIndex(over.data.current.idIndex, parentElements)
             const overIndex = getIndex(over.data.current.idIndex, parentElements)
 
             const idActive = active.data.current.idIndex
@@ -204,12 +218,20 @@ export function DragAndDropProvider({ children }) {
 
             // Drop en el Top
             if (over.data.current.typeElement == "topdroppable") {
-              changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex })
+              // Si el activeIndex es menor al overIndex colocar el nuevo elemento antes del overElement, de lo contrario colocarlo en la posicion del overElement
+              if (activeIndex < overIndex)
+                changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex: overIndex - 1 })
+              else
+                changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex })
             }
 
-            // Drop en el Bottom
-            if (over.data.current.typeElement == "bottomdroppable") {
-              changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
+            // Drop en el Top
+            if (over.data.current.typeElement == "topdroppable") {
+              // Si el activeIndex es menor al overIndex colocar el nuevo elemento antes del overElement, de lo contrario colocarlo en la posicion del overElement
+              if (activeIndex < overIndex)
+                changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex: overIndex - 1 })
+              else
+                changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex })
             }
 
             // Eliminar SubComponent
@@ -234,13 +256,18 @@ export function DragAndDropProvider({ children }) {
 
             // Drop en el Bottom
             if (over.data.current.typeElement == "bottomdroppable") {
-              changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
+              // Si el activeIndex es menor al overIndex colocar el nuevo elemento en la posicion del overElement, de lo contrario colocarlo despues de la posicion del overElement
+              if (activeIndex < overIndex)
+                changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex })
+              else
+                changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
             }
           }
         } else {
 
           // Si el ParentElement se quiere incluir dentro de un componente y colocarlo en el top/bottom de un SubComponent
           if (over.data.current?.parent) {
+            const activeIndex = getIndex(active.data.current.idIndex, parentElements)
             const overIndex = getIndex(over.data.current.idIndex, subElements)
 
             const idActive = active.data.current.idIndex
@@ -254,7 +281,11 @@ export function DragAndDropProvider({ children }) {
 
             // Drop en el Bottom
             if (over.data.current.typeElement == "bottomdroppable") {
-              changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
+              // Si el activeIndex es menor al overIndex colocar el nuevo elemento en la posicion del overElement, de lo contrario colocarlo despues de la posicion del overElement
+              if (activeIndex < overIndex)
+                changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex })
+              else
+                changePositionOfComponents({ fnState: setSubElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
             }
 
             // Eliminar ParentElement
@@ -278,7 +309,11 @@ export function DragAndDropProvider({ children }) {
 
             // Drop en el Bottom
             if (over.data.current.typeElement == "bottomdroppable") {
-              changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
+              // Si el activeIndex es menor al overIndex colocar el nuevo elemento en la posicion del overElement, de lo contrario colocarlo despues de la posicion del overElement
+              if (activeIndex < overIndex)
+                changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex })
+              else
+                changePositionOfComponents({ fnState: setParentElements, idActive, componentToSet: findComponent, overIndex: overIndex + 1 })
             }
           }
         }

@@ -1,10 +1,5 @@
+import { VerticalNavStyles } from "../../constants/baseStyle"
 import BaseElement from "./BaseElement"
-
-const placeholder = {
-  padding: "15px 0px 15px 0px",
-  width: "100%",
-  backgroundColor: "#ffcc22"
-}
 
 /**
  * Componente VerticalNav
@@ -15,7 +10,7 @@ const placeholder = {
  */
 const VerticalNav = ({ id, dataParent, children, styles = {} }) => {
 
-  return (<BaseElement TypeElement={"nav"} id={id} placeholder={{ ...placeholder, ...styles }} dataAttribute={"VerticalNav"} dataParent={dataParent} >{children}</BaseElement>)
+  return (<BaseElement TypeElement={"nav"} id={id} placeholder={{ ...VerticalNavStyles, ...styles }} dataAttribute={"VerticalNav"} dataParent={dataParent} >{children}</BaseElement>)
 }
 
 export default VerticalNav

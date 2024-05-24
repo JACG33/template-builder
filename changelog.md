@@ -1,5 +1,64 @@
 # Template Builder
 
+## Version 0.0.120 24-MAY-2024
++ Se Modifico en __Contex DragDropProvider__ ahora el organizar los elementos es mas dinamico, y se corrigieron bugs al ordenar elementos.
++ Se quitaron/remplazaron paramatros de los componentes de la carpeta templateui para ajustarse a la nueva funcionalidad del drag and drop, no se comento en la version anterior pero estocambios tambien se aplicarion en el BuilderArea.
++ Se extrajeron los estilos base/placeholder de los componentes de la carpeta templateui y se colocaron en el archivo __baseStyles.js__ para reutilizarlos en otros componentes.
++ Se estan agreagando componentes prediseñados, hasta ahora solo esta disponible un NavBar.
+  + Los estilos y componentes se ordenan en un __JSON__ con la siguiente descripcion:
+
+  ```js
+  // Estos seran los estilos del ParentElement.
+  const placeholderUi = {
+    ...VerticalNavStyles,
+    display: "flex",
+    gap: "10px",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  }
+  // Estos seran los SubElements.
+  // Cada Objeto tendra un name que hace referencia al nombre del Componente JSX.
+  // type describre el tipo de elemento a renderizar.
+  // styles son los estilos que tendra el SubElement, estos "instancias" unos estilos base.
+  // subs seran los SubElements de uno de estos SubElements.
+  const subElements = [
+    {
+      name: "Button",
+      type: "button",
+      styles:{...ButtonStyles}
+    },
+    {
+      name: "Button",
+      type: "button",
+      styles:{...ButtonStyles}
+    },
+    {
+      name: "Div",
+      type: "div",
+      styles: {
+        ...DivStyles,
+        display: "flex",
+        gap: "10px",
+        alignItems: "center"
+      },
+      subs: [
+        {
+          name: "Button",
+          type: "button",
+          styles:{...ButtonStyles}
+        },
+        {
+          name: "Button",
+          type: "button",
+          styles:{...ButtonStyles}
+        },
+      ]
+    },
+  ]
+
+  ```
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.117 22-MAY-2024
 + Se hicieron otras modificaciones.
 

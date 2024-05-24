@@ -1,10 +1,5 @@
+import { DivStyles } from "../../constants/baseStyle"
 import BaseElement from "./BaseElement"
-
-const placeholder = {
-  backgroundColor: "#cccccc",
-  height: "50px",
-  padding: "10px 0px"
-}
 
 /**
  * Componente Div
@@ -15,7 +10,7 @@ const placeholder = {
  */
 const Div = ({ id, dataParent, children, styles = {} }) => {
   return (
-    <BaseElement TypeElement={"div"} id={id} placeholder={{ ...placeholder, ...styles }} dataAttribute={"Div"} dataParent={dataParent} />
+    <BaseElement TypeElement={"div"} id={id} placeholder={{ ...DivStyles, ...styles }} dataAttribute={"Div"} dataParent={dataParent} />
   )
 }
 
