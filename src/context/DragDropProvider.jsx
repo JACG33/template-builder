@@ -37,39 +37,81 @@ export function DragAndDropProvider({ children }) {
      * @param {Array} opc.subs Array de subComponents. 
      * @param {Number} opc.id Identificador del parentElement. 
      * @param {Object} opc.uiStyles Objeto de estilos. 
+     * @param {Object} opc.uiStylesMediaquerys Objeto de estilos mediaquiery. 
      */
-    const importSub = ({ res, tmpSubComponents, subs, id, uiStyles }) => {
+    const importSub = ({ res, tmpSubComponents, subs, id, uiStyles, uiStylesMediaquerys }) => {
       subs.forEach(subCom => {
         const subId = Number(ramdomid())
-        tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, parentId: id })
+        tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, moreParams: subCom?.moreParams, parentId: id })
+        // Estilos
         if (subCom.styles != undefined) {
           uiStyles[`${subCom.type}${subId}`] = subCom.styles
         }
+
+        // Estilos Modificadores
+        if (subCom.stylesModifiers != undefined) {
+          uiStyles[`${subCom.type}${subId}`] = subCom.styles
+          let keys = Object.keys(subCom.stylesModifiers)
+          keys.forEach(key => {
+            uiStyles[`${subCom.type}${subId}${key}`] = subCom.stylesModifiers[key]
+          })
+        }
+
+        // MediaQuerys
+        if (subCom.mediaQuerys != undefined) {
+          let keys = Object.keys(subCom.mediaQuerys)
+          keys.forEach(key => {
+            uiStylesMediaquerys[key] = { ...uiStylesMediaquerys[key], [`${subCom.type}${subId}`]: subCom.mediaQuerys[key] }
+          })
+        }
+
+        // SubComponentes
         if (subCom?.subs?.length > 0)
-          importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles })
+          importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles, uiStylesMediaquerys })
       })
     }
 
     if (other?.componentUi == true) {
       import("../components/templatesui/").then(res => {
         let uiStyles = {}
+        let uiStylesMediaquerys = {}
         let tmpSubComponents = []
 
         fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }])
-
 
         uiStyles[`${typehtml}${idComponent}`] = other.styles
 
         other.subElements.forEach(subCom => {
           const subId = Number(ramdomid())
-          tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, parentId: idComponent })
+          tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, moreParams: subCom?.moreParams, parentId: idComponent })
+          // Estilos
           if (subCom.styles != undefined) {
             uiStyles[`${subCom.type}${subId}`] = subCom.styles
           }
+
+          // Estilos Modificadores
+          if (subCom.stylesModifiers != undefined) {
+            uiStyles[`${subCom.type}${subId}`] = subCom.styles
+            let keys = Object.keys(subCom.stylesModifiers)
+            keys.forEach(key => {
+              uiStyles[`${key}`] = subCom.stylesModifiers[key]
+            })
+          }
+
+          // MediaQuerys
+          if (subCom.mediaQuerys != undefined) {
+            let keys = Object.keys(subCom.mediaQuerys)
+            keys.forEach(key => {
+              uiStylesMediaquerys[key] = { ...uiStylesMediaquerys[key], [`${subCom.type}${subId}`]: subCom.mediaQuerys[key] }
+            })
+          }
+
+          // SubComponentes
           if (subCom?.subs?.length > 0)
-            importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles })
+            importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles, uiStylesMediaquerys })
         })
-        setUiStyles({ uiStyles })
+        // console.log(uiStylesMediaquerys);
+        setUiStyles({ uiStyles, uiStylesMediaquerys,scripts:other.scripts })
         setSubElements([...subElements, ...tmpSubComponents])
 
       })
@@ -126,7 +168,8 @@ export function DragAndDropProvider({ children }) {
             typehtml: active.data.current?.typehtml,
             componentUi: active.data.current?.componentUi,
             subElements: active.data.current?.subElements,
-            styles: active.data.current?.styles
+            styles: active.data.current?.styles,
+            scripts: active.data.current?.scripts,
           }
         })
       } else {

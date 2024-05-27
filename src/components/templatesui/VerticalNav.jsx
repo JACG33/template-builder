@@ -8,9 +8,9 @@ import BaseElement from "./BaseElement"
  * @param {Boolean} opc.dataParent Identificador del ParentElement. 
  * @returns 
  */
-const VerticalNav = ({ id, dataParent, children, styles = {} }) => {
+const VerticalNav = ({ id, dataParent, children, styles = {}, moreParams = {} }) => {
 
-  return (<BaseElement TypeElement={"nav"} id={id} placeholder={{ ...VerticalNavStyles, ...styles }} dataAttribute={"VerticalNav"} dataParent={dataParent} >{children}</BaseElement>)
+  return (<BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"nav"} id={id} placeholder={{ ...VerticalNavStyles, ...styles }} dataAttribute={"VerticalNav"} dataParent={dataParent} >{children}</BaseElement>)
 }
 
 export default VerticalNav

@@ -1,7 +1,8 @@
-import { ButtonStyles, DivStyles, VerticalNavStyles } from "../../constants/baseStyle";
+import { ButtonStyles, DivStyles, LinkSyles, VerticalNavStyles } from "../../constants/baseStyle";
+import { ramdomid } from "../../helpers/randomid";
 import { WrapperComponents } from "../../layouts/WrapperComponents";
 import MoldeElement from "./MoldeElement";
-
+let dataId=ramdomid()
 const NavBars = () => {
   return (
     <WrapperComponents secctionName={"NavBars"}>
@@ -24,40 +25,113 @@ function NavBarUi() {
   }
   const subElements = [
     {
-      name: "Button",
-      type: "button",
-      styles:{...ButtonStyles}
-    },
-    {
-      name: "Button",
-      type: "button",
-      styles:{...ButtonStyles}
+      name: "Link",
+      type: "a",
+      styles: { ...LinkSyles },
+      moreParams: {
+        href: "#"
+      }
     },
     {
       name: "Div",
       type: "div",
       styles: {
         ...DivStyles,
-        display: "flex",
-        gap: "10px",
-        alignItems: "center"
+        visibility: "hidden",
+        position: "fixed",
+        transition: "all 250ms ease",
+        opacity: 0.01,
+        inset: "-70px 0px auto 0px",
+      },
+      stylesModifiers: {
+        "container__links--show": {
+          opacity: 1,
+          visibility: "visible",
+          inset: "74px 0px auto 0px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          height: "fit-content"
+        }
+      },
+      mediaQuerys: {
+        "mobilex2": {
+          visibility: "visible",
+          display: "flex",
+          flexDirection: "row",
+          gap: "10px",
+          alignItems: "center",
+          position: "initial",
+          opacity:1
+        }
+      },
+      moreParams: {
+        "data-links":dataId
       },
       subs: [
         {
           name: "Button",
           type: "button",
-          styles:{...ButtonStyles}
+          styles: { ...ButtonStyles }
         },
         {
           name: "Button",
           type: "button",
-          styles:{...ButtonStyles}
+          styles: { ...ButtonStyles }
+        },
+        {
+          name: "Button",
+          type: "button",
+          styles: { ...ButtonStyles }
+        },
+        {
+          name: "Button",
+          type: "button",
+          styles: { ...ButtonStyles }
         },
       ]
     },
+    {
+      name: "Button",
+      type: "button",
+      styles: { ...ButtonStyles },
+      mediaQuerys: {
+        "mobilex2": {
+          display: "none"
+        }
+      },
+      moreParams: {
+        icon: "Menu2",
+        id: "toggle"
+      }
+    }
   ]
 
+  const scripts = `  
+  
+  // document.addEventListener("DOMContentLoaded", e => {
+    // alert("test")
+    let $buttons = document.querySelector("#buttons");
+    document.addEventListener("click", e => {
+      const { target } = e
+      
+      if (target.closest("#toggle")) {
+          document.querySelector("[data-links='${dataId}']").classList.toggle("container__links--show")
+        }
+  
+      })
+  // })
+  `
+
+
   return (
-    <MoldeElement htmlType={"nav"} nameComponent={"VerticalNav"} other={"navbarui"} componentUi={true} subElements={subElements} styles={placeholderUi} />)
+    <MoldeElement htmlType={"nav"} nameComponent={"VerticalNav"} other={"navbarui"} componentUi={true} subElements={subElements} styles={placeholderUi} scripts={scripts} />)
 
 }
+
+
+/* "mobilex2"
+"tablet"
+"desktop"
+"desktopx2"
+"desktopx3" */

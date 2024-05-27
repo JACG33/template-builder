@@ -5,11 +5,14 @@ export const BreackPointContext = createContext({
   setBreackPoint: () => { },
   handleBreackPoint: () => { },
   builderZoneRef: null,
-  bkpoint: Object
+  bkpoint: Object,
+  previewMode: null,
+  handlePreviewMode:()=>{},
 })
 
 export function BreackPointProvider({ children }) {
   const [breackPoint, setBreackPoint] = useState("mobile")
+  const [previewMode,setPreviewMode]=useState(false)
   const builderZoneRef = useRef(null)
   const bkpoint = {
     "": "",
@@ -33,9 +36,11 @@ export function BreackPointProvider({ children }) {
     setBreackPoint(bkpoint)
   }
 
+  const handlePreviewMode=()=>setPreviewMode(!previewMode)
+
   return (
     <BreackPointContext.Provider
-      value={{ handleBreackPoint, breackPoint, builderZoneRef, bkpoint }}>
+      value={{ handleBreackPoint, breackPoint, builderZoneRef, bkpoint,previewMode,handlePreviewMode }}>
       {children}
     </BreackPointContext.Provider>
   )

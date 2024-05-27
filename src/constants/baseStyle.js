@@ -1,7 +1,8 @@
 export const ButtonStyles = {
   borderRadius: "8px",
   padding: "8px 10px 8px 10px",
-  backgroundColor: "#499a2c"
+  backgroundColor: "#499a2c",
+  cursor:"pointer"
 }
 
 export const DivStyles = {
@@ -22,4 +23,9 @@ export const VerticalNavStyles = {
   padding: "15px 0px 15px 0px",
   width: "100%",
   backgroundColor: "#ffcc22"
+}
+
+export const LinkSyles = {
+  textDecoration: "none",
+  cursor:"pointer"
 }

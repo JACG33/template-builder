@@ -4,7 +4,7 @@ import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
 import { useEditorProvider } from "../../hoks/useEditorProvider"
 
-const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, dataParent }) => {
+const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, dataParent,aditionalAttributes }) => {
   const { configComponent, handleOpenEditor } = useEditorProvider()
   const styles = useRef(placeholder)
   const { subElements } = useDragAndDropProvider()
@@ -76,10 +76,11 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, da
         {...droppable.attributes}
 
         className={`${TypeElement}${id}`}
+        {...aditionalAttributes}
       >
         {children}
         {subElements.length > 0 && subElements.map((Item) => {
-          if (Item?.parentId == id) return (<Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} />)
+          if (Item?.parentId == id) return (<Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} moreParams={Item?.moreParams} />)
         })}
       </TypeElement>
     </div>

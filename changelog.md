@@ -1,5 +1,11 @@
 # Template Builder
 
+## Version 0.0.122 27-MAY-2024
++ Se han agregado mas funcionalidades para la implementacion de __UI__ prediseñadas.
++ Se agrego un botton __previewmode__ para esta en un modo de previsulizacion pero aun no funciona del todo bien, el objetivo es cancelar la actulizacion de estados evintando el re-renderizado del __BuilderArea__.
++ Se añdio funcionalida __JavaScript__ para la __UI__ prediseñada, pero no funciona del todo bien, antes de crear el portal para rendirizar en el __iframe__ se elimina la etiqueta script y se crea una nuvea y se añade al portal, pero quizas se guarda en memoria la declaracion previa de algunas variables y en la consola de muestra un erro al intentar redeclarar las variables.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.120 24-MAY-2024
 + Se Modifico en __Contex DragDropProvider__ ahora el organizar los elementos es mas dinamico, y se corrigieron bugs al ordenar elementos.
 + Se quitaron/remplazaron paramatros de los componentes de la carpeta templateui para ajustarse a la nueva funcionalidad del drag and drop, no se comento en la version anterior pero estocambios tambien se aplicarion en el BuilderArea.

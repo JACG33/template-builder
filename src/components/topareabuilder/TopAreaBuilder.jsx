@@ -1,7 +1,7 @@
 import { useBraeackPointProvider } from "../../hoks/useBreackPointProvider"
 
 const TopAreaBuilder = () => {
-  const { breackPoint, handleBreackPoint } = useBraeackPointProvider()
+  const { breackPoint, handleBreackPoint, handlePreviewMode } = useBraeackPointProvider()
   return (
     <div className="top__area">
       <select name="breackPoint" id="" onChange={e => handleBreackPoint(e.target.value)} value={breackPoint}>
@@ -13,6 +13,7 @@ const TopAreaBuilder = () => {
         <option value="desktopx2">DescktopX2 : 1280px &lt; width</option>
         <option value="desktopx3">DescktopX3 : 1440px &lt; width</option>
       </select>
+      <button type="button" onClick={e => handlePreviewMode()}>PreviewMode</button>
     </div>
   )
 }

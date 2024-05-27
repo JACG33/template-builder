@@ -19,11 +19,20 @@ export const BuilderArea = () => {
 }
 
 function IFrame({ children, bkpoint, breackPoint }) {
+  const { cssStylesSheetRef, scripstRef } = useEditorProvider()
   const [ref, setRef] = useState();
+
   const container = ref?.contentWindow?.document?.body;
   const head = ref?.contentWindow?.document?.head
 
-  const { cssStylesSheetRef } = useEditorProvider()
+  container?.querySelector("[data-script]")?.remove()
+
+  const tagScript = document.createElement("script");
+  tagScript.type = "text/javascript"
+  tagScript.dataset.script = "true"
+  tagScript.textContent = scripstRef.current
+  if (!container?.querySelector("[data-script]"))
+    container?.appendChild(tagScript)
 
   return (
     <iframe ref={setRef} data-iframe="builder" className={`builder__zone ${bkpoint[breackPoint]}`}>
@@ -71,7 +80,7 @@ function WrapperComponent({ }) {
           parentElements.length > 0
           &&
           parentElements.map((Item) =>
-            <Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} />)
+            <Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} moreParams={Item?.moreParams} />)
         }
       </div>
       <DragOverlayWrapper />

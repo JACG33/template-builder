@@ -1,6 +1,6 @@
 import { ButtonStyles } from "../../constants/baseStyle"
+import * as Icons from "../svg"
 import BaseElement from "./BaseElement"
-
 /**
  * Componente Button
  * @param {Object} opc Objeto de parametros. 
@@ -8,9 +8,13 @@ import BaseElement from "./BaseElement"
  * @param {Boolean} opc.dataParent Identificador del ParentElement. 
  * @returns 
  */
-const Button = ({ id, dataParent , children, styles = {}}) => {
+const Button = ({ id, dataParent, children, styles = {}, moreParams }) => {
+  let nameIcon = moreParams?.icon ? moreParams?.icon : ""
   return (
-    <BaseElement TypeElement={"button"} id={id} placeholder={{...ButtonStyles,...styles}} dataAttribute={"Button"} dataParent={dataParent}>Click</BaseElement>
+    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"button"} id={id} placeholder={{ ...ButtonStyles, ...styles }} dataAttribute={"Button"} dataParent={dataParent}>
+      {nameIcon == "" && ("Click")}
+      {nameIcon == "Menu2" && <Icons.Menu2 />}
+    </BaseElement>
   )
 }
 

@@ -12,7 +12,7 @@ export const ExportImportContext = createContext({
 
 export function ExportImportProvider({ children }) {
 
-  const { cssStylesSheetRef } = useEditorProvider()
+  const { cssStylesSheetRef, scripstRef } = useEditorProvider()
   const builderArea = useRef(null)
   const dialogExport = useRef(null)
   const [codeToShow, setCodeToShow] = useState({ html: "", css: "", js: "" })
@@ -28,10 +28,10 @@ export function ExportImportProvider({ children }) {
 
   const getHtml = () => cleanHtmlToExport()
   const getCss = () => cssStylesSheetRef.current
-  const getJs = () => document.querySelector("style[data-develope]").innerHTML
+  const getJs = () => scripstRef?.current || ""
 
   const handleExport = () => {
-    setCodeToShow({ ...codeToShow, html: getHtml(), css: getCss() })
+    setCodeToShow({ ...codeToShow, html: getHtml(), css: getCss(), js: getJs() })
     dialogExport.current.showModal()
   }
 
