@@ -2,7 +2,7 @@ import { ButtonStyles, DivStyles, LinkSyles, VerticalNavStyles } from "../../con
 import { ramdomid } from "../../helpers/randomid";
 import { WrapperComponents } from "../../layouts/WrapperComponents";
 import MoldeElement from "./MoldeElement";
-let dataId=ramdomid()
+
 const NavBars = () => {
   return (
     <WrapperComponents secctionName={"NavBars"}>
@@ -14,8 +14,9 @@ const NavBars = () => {
 
 export default NavBars
 
-
 function NavBarUi() {
+  let dataId = ramdomid()
+
   const placeholderUi = {
     ...VerticalNavStyles,
     display: "flex",
@@ -62,11 +63,11 @@ function NavBarUi() {
           gap: "10px",
           alignItems: "center",
           position: "initial",
-          opacity:1
+          opacity: 1
         }
       },
       moreParams: {
-        "data-links":dataId
+        "data-links": dataId
       },
       subs: [
         {
@@ -108,30 +109,14 @@ function NavBarUi() {
   ]
 
   const scripts = `  
-  
-  // document.addEventListener("DOMContentLoaded", e => {
-    // alert("test")
-    let $buttons = document.querySelector("#buttons");
-    document.addEventListener("click", e => {
-      const { target } = e
-      
-      if (target.closest("#toggle")) {
-          document.querySelector("[data-links='${dataId}']").classList.toggle("container__links--show")
-        }
-  
-      })
-  // })
+  document.addEventListener("click", e => {
+    const { target } = e
+    if (target.closest("#toggle")) {
+      document.querySelector("[data-links='${dataId}']").classList.toggle("container__links--show")
+    }
+  })
   `
-
-
   return (
     <MoldeElement htmlType={"nav"} nameComponent={"VerticalNav"} other={"navbarui"} componentUi={true} subElements={subElements} styles={placeholderUi} scripts={scripts} />)
 
 }
-
-
-/* "mobilex2"
-"tablet"
-"desktop"
-"desktopx2"
-"desktopx3" */

@@ -15,7 +15,7 @@ export const EditorContext = createContext({
   getConfigComponent: () => { },
   cssStylesSheetRef: null,
   setUiStyles: ({ uiStyles, uiStylesMediaquerys, scripts }) => { },
-  scripstRef:{}
+  scripstRef: {}
 })
 
 export function EditorProvider({ children }) {
@@ -32,12 +32,12 @@ export function EditorProvider({ children }) {
     normalStyles: { body: {} },
     mediaQuerys: {}
   })
-  const scripstRef=useRef("")
+  const scripstRef = useRef("")
   const cssStylesSheetRef = useRef(`* {\n  padding: 0px;\n  margin: 0px;\n  box-sizing: border-box;\n}\n`)
-  const { breackPoint ,previewMode} = useBraeackPointProvider()
+  const { breackPoint, previewMode } = useBraeackPointProvider()
 
   const handleEditComponent = (conf) => {
-    if(previewMode==true)return
+    if (previewMode == true) return
     if (openEditor == true) {
       if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
         setConfigComponent(
@@ -177,7 +177,7 @@ export function EditorProvider({ children }) {
    * @param {Boolean} opciones.open Boolean que identifica si esta o no abierto el editor de estilos del Elemento/Componente elegido.
    */
   const handleOpenEditor = ({ conf, name, open, cssClass, setUi = false }) => {
-    if(previewMode==true)return
+    if (previewMode == true) return
     if (open == true || setUi == true) {
       setOpenEditor(true)
       if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
@@ -223,20 +223,19 @@ export function EditorProvider({ children }) {
    * @param {Object} opc.uiStylesMediaquerys Objeto de estilos css mediaquery. 
    * @param {Object} opc.scripts Scripts. 
    */
-  const setUiStyles = ({ uiStyles, uiStylesMediaquerys,scripts }) => {
+  const setUiStyles = ({ uiStyles, uiStylesMediaquerys, scripts }) => {
     setConfigComponent(
       {
-        ...configComponent,
-        mediaQuerys: { ...uiStylesMediaquerys },
+        mediaQuerys: { ...configComponent.mediaQuerys, mobilex2: { ...configComponent.mediaQuerys?.mobilex2, ...uiStylesMediaquerys?.mobilex2 }, tablet: { ...configComponent.mediaQuerys?.tablet, ...uiStylesMediaquerys?.tablet }, desktop: { ...configComponent.mediaQuerys?.desktop, ...uiStylesMediaquerys?.desktop }, desktopx2: { ...configComponent.mediaQuerys?.desktopx2, ...uiStylesMediaquerys?.desktopx2 }, desktopx3: { ...configComponent.mediaQuerys?.desktopx3, ...uiStylesMediaquerys?.desktopx3 } },
         normalStyles: { ...configComponent.normalStyles, ...uiStyles },
       }
     )
     cssStylesRef.current = {
-      ...cssStylesRef.current,
-      mediaQuerys: { ...uiStylesMediaquerys },
+      mediaQuerys: { ...cssStylesRef.current.mediaQuerys, mobilex2: { ...cssStylesRef.current.mediaQuerys?.mobilex2, ...uiStylesMediaquerys?.mobilex2 }, tablet: { ...cssStylesRef.current.mediaQuerys?.tablet, ...uiStylesMediaquerys?.tablet }, desktop: { ...cssStylesRef.current.mediaQuerys?.desktop, ...uiStylesMediaquerys?.desktop }, desktopx2: { ...cssStylesRef.current.mediaQuerys?.desktopx2, ...uiStylesMediaquerys?.desktopx2 }, desktopx3: { ...cssStylesRef.current.mediaQuerys?.desktopx3, ...uiStylesMediaquerys?.desktopx3 } },
       normalStyles: { ...configComponent.normalStyles, ...uiStyles },
     }
-    scripstRef.current = scripts
+    console.log(cssStylesRef.current.mediaQuerys);
+    scripstRef.current = { ...scripstRef.current, ...scripts }
     setHeadStyles()
   }
 
@@ -284,7 +283,7 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles,scripstRef
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef
       }}
     >
       {children}

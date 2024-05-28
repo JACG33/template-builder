@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.125 28-MAY-2024
++ Se corrigio la funcionalidad __JavaScript__ para la __UI__ prediseñada, ya no muestra error de redeclaracion de variables.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.122 27-MAY-2024
 + Se han agregado mas funcionalidades para la implementacion de __UI__ prediseñadas.
 + Se agrego un botton __previewmode__ para esta en un modo de previsulizacion pero aun no funciona del todo bien, el objetivo es cancelar la actulizacion de estados evintando el re-renderizado del __BuilderArea__.

@@ -28,7 +28,7 @@ export function ExportImportProvider({ children }) {
 
   const getHtml = () => cleanHtmlToExport()
   const getCss = () => cssStylesSheetRef.current
-  const getJs = () => scripstRef?.current || ""
+  const getJs = () => { let tmp = ""; for (const key in scripstRef?.current) { tmp += scripstRef?.current[key] } return tmp }
 
   const handleExport = () => {
     setCodeToShow({ ...codeToShow, html: getHtml(), css: getCss(), js: getJs() })

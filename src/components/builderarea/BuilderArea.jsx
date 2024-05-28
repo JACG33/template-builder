@@ -25,14 +25,24 @@ function IFrame({ children, bkpoint, breackPoint }) {
   const container = ref?.contentWindow?.document?.body;
   const head = ref?.contentWindow?.document?.head
 
-  container?.querySelector("[data-script]")?.remove()
-
   const tagScript = document.createElement("script");
   tagScript.type = "text/javascript"
   tagScript.dataset.script = "true"
-  tagScript.textContent = scripstRef.current
+  if (scripstRef.current) {
+    for (const key in scripstRef.current) {
+      tagScript.textContent = scripstRef.current[key]
+    }
+  }
   if (!container?.querySelector("[data-script]"))
-    container?.appendChild(tagScript)
+    container?.insertAdjacentElement('beforeend', tagScript)
+  else {
+    container.querySelector("[data-script]").textContent = null
+    if (scripstRef.current) {
+      for (const key in scripstRef.current) {
+        container.querySelector("[data-script]").textContent += scripstRef.current[key]
+      }
+    }
+  }
 
   return (
     <iframe ref={setRef} data-iframe="builder" className={`builder__zone ${bkpoint[breackPoint]}`}>

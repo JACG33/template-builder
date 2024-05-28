@@ -75,11 +75,13 @@ export function DragAndDropProvider({ children }) {
       import("../components/templatesui/").then(res => {
         let uiStyles = {}
         let uiStylesMediaquerys = {}
+        let scripts={}
         let tmpSubComponents = []
 
         fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }])
 
         uiStyles[`${typehtml}${idComponent}`] = other.styles
+        scripts[`${typehtml}${idComponent}`] = other.scripts
 
         other.subElements.forEach(subCom => {
           const subId = Number(ramdomid())
@@ -111,7 +113,7 @@ export function DragAndDropProvider({ children }) {
             importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles, uiStylesMediaquerys })
         })
         // console.log(uiStylesMediaquerys);
-        setUiStyles({ uiStyles, uiStylesMediaquerys,scripts:other.scripts })
+        setUiStyles({ uiStyles, uiStylesMediaquerys,scripts })
         setSubElements([...subElements, ...tmpSubComponents])
 
       })
