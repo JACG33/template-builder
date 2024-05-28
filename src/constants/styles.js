@@ -9,5 +9,8 @@ export const STYLES = {
   flexDirection: "",
   justifyContent: "",
   alignItems: "",
-  gap: 0
+  gap: 0,
+  inset:"",
+  position: "",
+  opacity:""
 }

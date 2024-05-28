@@ -11,8 +11,9 @@ const SizeComponent = ({ text, handleChange, configTemplate, sizeName, configRef
   }
 
   const clickBtnDialog = (e) => {
-    setSizeType({ size: e.target.dataset.value })
     dialogRef.current.close()
+    if(!e.target.dataset.value)return
+    setSizeType({ size: e.target.dataset.value })
 
     const { value, name, dataset, id } = inp.current
     const target = {

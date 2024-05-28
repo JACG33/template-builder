@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.127 28-MAY-2024
++ Se agregaron nuevos __stylizers__.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.125 28-MAY-2024
 + Se corrigio la funcionalidad __JavaScript__ para la __UI__ prediseñada, ya no muestra error de redeclaracion de variables.
 + Se hicieron otras modificaciones.

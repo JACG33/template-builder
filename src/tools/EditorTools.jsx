@@ -11,6 +11,10 @@ import Transitions from './stylizers/Transitions'
 import "./editortools.css"
 import { useBraeackPointProvider } from '../hoks/useBreackPointProvider'
 import StylesOfComponent from './StylesOfComponent'
+import Inset from './stylizers/Inset'
+import Position from './stylizers/Position'
+import Opacity from './stylizers/Opacity'
+import Visibility from './stylizers/Visibility'
 
 const cleanText = ({ text = "", letters = [] }) => {
   let clean = ""
@@ -44,15 +48,15 @@ const EditorTools = () => {
 
 
     setConfigTemplate(alterConf)
-  }, [configComponent, actualConfig,breackPoint])
+  }, [configComponent, actualConfig, breackPoint])
 
 
   const handleChange = (e) => {
     const { target } = e
 
     if (target.value == "") {
-      let tmp=Object.assign({},configTemplate)
-      let tmp2=Object.assign({},stylesString.current)
+      let tmp = Object.assign({}, configTemplate)
+      let tmp2 = Object.assign({}, stylesString.current)
       delete tmp[target.name]
       delete tmp2[target.name]
 
@@ -88,7 +92,8 @@ const EditorTools = () => {
     }
 
     // 
-    if (target.name == "margin") {
+    if (target.name == "margin"
+      || target.name == "inset") {
       let padding
       if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
         padding = Object.assign([], configTemplate?.[target.name] || STYLES.margin)
@@ -106,7 +111,7 @@ const EditorTools = () => {
     }
 
     // 
-    if (target.name == "display" || target.name == "justifyContent" || target.name == "alignItems" || target.name == "flexDirection" || target.name == "backgroundColor" || target.name == "textAlign" || target.name == "textWrap" || target.name == "fontWeight" || target.name == "color") {
+    if (target.name == "display" || target.name == "justifyContent" || target.name == "alignItems" || target.name == "flexDirection" || target.name == "backgroundColor" || target.name == "textAlign" || target.name == "textWrap" || target.name == "fontWeight" || target.name == "color" || target.name == "position"|| target.name == "visibility") {
       let display = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [display] })
       stylesString.current = { ...stylesString.current, [target.name]: `${display}` }
@@ -181,7 +186,7 @@ const EditorTools = () => {
     }
 
     // 
-    if (target.name == "transition") {
+    if (target.name == "transition" || target.name == "opacity" ) {
       let transitions = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [transitions] })
       stylesString.current = { ...stylesString.current, [target.name]: transitions }
@@ -213,9 +218,17 @@ const EditorTools = () => {
         <Padding configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
         <Margin configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
       </WrapperDropDown>
+      <WrapperDropDown secctionName={"Position"}>
+        <Position configTemplate={configTemplate} handleChange={handleChange} />
+        <Inset configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+      </WrapperDropDown>
       <WrapperDropDown secctionName={"Border"}>
         <BorderRadius configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
         <Border configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+      </WrapperDropDown>
+      <WrapperDropDown secctionName={"Opacity"}>
+        <Opacity configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+        <Visibility configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Background"}>
         <BackgroundColor configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />

@@ -8,9 +8,10 @@ const StateStyle = ({ setState}) => {
   }
 
   const clickBtnDialog = (e) => {
+    dialogRef.current.close()
+    if(!e.target.dataset.value)return
     setStateType({ state: e.target.dataset.value })
     setState(e.target.dataset.value)
-    dialogRef.current.close()
   }
 
   return (

@@ -11,8 +11,9 @@ const SpacingComponent = ({ text, handleChange, configTemplate, sizeName, config
   }
 
   const clickBtnDialog = (e) => {
-    setSizeType({ size: e.target.dataset.value })
     dialogRef.current.close()
+    if(!e.target.dataset.value)return
+    setSizeType({ size: e.target.dataset.value })
 
     const { value, name, dataset, id } = inp.current
     const target = {
