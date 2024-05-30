@@ -11,7 +11,7 @@ export const EditorContext = createContext({
   actualConfig: false,
   setActualConfig: () => { },
   handleActualConfig: () => { },
-  deleteConfigStyle: () => { },
+  deleteConfigStyle: (ids = []) => { },
   getConfigComponent: () => { },
   cssStylesSheetRef: null,
   setUiStyles: ({ uiStyles, uiStylesMediaquerys, scripts }) => { },
@@ -234,37 +234,40 @@ export function EditorProvider({ children }) {
       mediaQuerys: { ...cssStylesRef.current.mediaQuerys, mobilex2: { ...cssStylesRef.current.mediaQuerys?.mobilex2, ...uiStylesMediaquerys?.mobilex2 }, tablet: { ...cssStylesRef.current.mediaQuerys?.tablet, ...uiStylesMediaquerys?.tablet }, desktop: { ...cssStylesRef.current.mediaQuerys?.desktop, ...uiStylesMediaquerys?.desktop }, desktopx2: { ...cssStylesRef.current.mediaQuerys?.desktopx2, ...uiStylesMediaquerys?.desktopx2 }, desktopx3: { ...cssStylesRef.current.mediaQuerys?.desktopx3, ...uiStylesMediaquerys?.desktopx3 } },
       normalStyles: { ...configComponent.normalStyles, ...uiStyles },
     }
-    console.log(cssStylesRef.current.mediaQuerys);
     scripstRef.current = { ...scripstRef.current, ...scripts }
     setHeadStyles()
   }
 
-  const deleteConfigStyle = (id) => {
-    let alter
-    if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
-      alter = Object.assign({}, configComponent.mediaQuerys[breackPoint])
-      delete alter[id]
-      setConfigComponent({
-        ...configComponent,
-        mediaQuerys: { ...alter }
+  /**
+   * Funcion que elimina la configuracion css del State y Ref.
+   * @param {Array} ids Id a eliminar.
+   */
+  const deleteConfigStyle = (ids = []) => {
+    let normal = Object.assign({}, configComponent.normalStyles)
+    let cssQuerys = Object.assign({}, configComponent.mediaQuerys[breackPoint])
+
+    let keysQuerys = Object.keys(cssQuerys)
+
+    // Eliminar la configuracion
+    ids.forEach(ele => {
+      delete normal[ele]
+      keysQuerys.forEach(key => {
+        delete cssQuerys[key][ele]
       })
-      cssStylesRef.current = {
-        ...cssStylesRef.current,
-        mediaQuerys: { ...alter }
-      }
-    } else {
-      alter = Object.assign({}, configComponent.normalStyles)
-      delete alter[id]
-      setConfigComponent({
-        ...configComponent,
-        normalStyles: { ...alter }
-      })
-      cssStylesRef.current = {
-        ...cssStylesRef.current,
-        normalStyles: { ...alter }
-      }
-      setHeadStyles()
+    })
+
+    // Actualizar State y Ref
+    setConfigComponent({
+      ...configComponent,
+      normalStyles: { ...normal },
+      mediaQuerys: { cssQuerys }
+    })
+    cssStylesRef.current = {
+      ...cssStylesRef.current,
+      normalStyles: { ...normal },
+      mediaQuerys: { cssQuerys }
     }
+    setHeadStyles()
   }
 
   /**

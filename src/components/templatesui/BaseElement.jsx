@@ -4,7 +4,7 @@ import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
 import { useEditorProvider } from "../../hoks/useEditorProvider"
 
-const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, dataParent,aditionalAttributes }) => {
+const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, dataParent, aditionalAttributes }) => {
   const { configComponent, handleOpenEditor } = useEditorProvider()
   const styles = useRef(placeholder)
   const { subElements } = useDragAndDropProvider()
@@ -62,9 +62,10 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, da
 
       <TypeElement
         onClickCapture={e => {
+          e.preventDefault()
           handleOpenEditor(
             {
-              conf: styles.current?.[`${TypeElement}${id}`] ? styles.current[`${TypeElement}${id}`] : placeholder,
+              conf: styles.current?.[`${TypeElement}${id}`] ? styles.current[`${TypeElement}${id}`] : {},
               name: id,
               open: true,
               cssClass: `${TypeElement}${id}`

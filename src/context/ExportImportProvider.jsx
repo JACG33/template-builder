@@ -21,7 +21,17 @@ export function ExportImportProvider({ children }) {
   const cleanHtmlToExport = () => {
     let innerBuilder = document.querySelector("iframe").contentDocument.querySelector("body").querySelector("div[data-builderarea=builderArea]").cloneNode(true)
     innerBuilder.querySelectorAll("[data-tool=builder]").forEach(ele => ele.remove())
-    return innerBuilder.innerHTML
+
+    let tmp = innerBuilder.innerHTML
+    let newHtml = ``
+
+    for (let i = 0; i < tmp.length; i++) {
+      newHtml += tmp[i]
+      if (tmp[i] == ">")
+        newHtml += `\n`
+    }
+    
+    return newHtml
   }
 
   const handleCloseModal = () => dialogExport.current.close()

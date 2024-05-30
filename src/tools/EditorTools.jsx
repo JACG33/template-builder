@@ -15,6 +15,7 @@ import Inset from './stylizers/Inset'
 import Position from './stylizers/Position'
 import Opacity from './stylizers/Opacity'
 import Visibility from './stylizers/Visibility'
+import TextDecoration from './stylizers/TextDecoration'
 
 const cleanText = ({ text = "", letters = [] }) => {
   let clean = ""
@@ -186,7 +187,7 @@ const EditorTools = () => {
     }
 
     // 
-    if (target.name == "transition" || target.name == "opacity" ) {
+    if (target.name == "transition" || target.name == "opacity" || target.name == "textDecoration" ) {
       let transitions = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [transitions] })
       stylesString.current = { ...stylesString.current, [target.name]: transitions }
@@ -233,8 +234,9 @@ const EditorTools = () => {
       <WrapperDropDown secctionName={"Background"}>
         <BackgroundColor configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
       </WrapperDropDown>
-      <WrapperDropDown secctionName={"Font"}>
+      <WrapperDropDown secctionName={"Font and Text"}>
         <FontAndText configRef={stylesString} configTemplate={configTemplate} handleChange={handleChange} />
+        <TextDecoration configRef={stylesString} configTemplate={configTemplate} handleChange={handleChange}/>
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Transitions"}>
         <Transitions configTemplate={configTemplate} handleChange={handleChange} />

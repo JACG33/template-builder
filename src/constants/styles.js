@@ -12,5 +12,6 @@ export const STYLES = {
   gap: 0,
   inset:"",
   position: "",
-  opacity:""
+  opacity: "",
+  textDecoration:""
 }

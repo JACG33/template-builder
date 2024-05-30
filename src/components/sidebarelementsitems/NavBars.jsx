@@ -103,7 +103,7 @@ function NavBarUi() {
       },
       moreParams: {
         icon: "Menu2",
-        id: "toggle"
+        id: `toggle${dataId}`
       }
     }
   ]
@@ -111,7 +111,7 @@ function NavBarUi() {
   const scripts = `  
   document.addEventListener("click", e => {
     const { target } = e
-    if (target.closest("#toggle")) {
+    if (target.closest("#toggle${dataId}")) {
       document.querySelector("[data-links='${dataId}']").classList.toggle("container__links--show")
     }
   })

@@ -24,7 +24,7 @@ export function DragAndDropProvider({ children }) {
    * @param {Number|String} opc.parentId Identificador de un componente padre en caso el componente se encuentre dentro de otro. 
    * @param {Object} opc.other Objecto de parametros adicionales. 
    */
-  const impAndSetComponent = ({ fnState, arrayState, typeElement, parentId, other }) => {
+  const impAndSetComponent = ({ fnState, arrayState, typeElement, parentId = undefined, other }) => {
     let Com = other.component
     let typehtml = other.typehtml || typeElement
     let idComponent = Number(ramdomid())
@@ -75,10 +75,15 @@ export function DragAndDropProvider({ children }) {
       import("../components/templatesui/").then(res => {
         let uiStyles = {}
         let uiStylesMediaquerys = {}
-        let scripts={}
+        let scripts = {}
         let tmpSubComponents = []
+        let parentElement = []
 
-        fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }])
+        // Si no existe un parentId es un componente ParentElement, de lo contrario es un SubComponent
+        if (parentId == undefined)
+          fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }])
+        else
+          parentElement = [{ id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }]
 
         uiStyles[`${typehtml}${idComponent}`] = other.styles
         scripts[`${typehtml}${idComponent}`] = other.scripts
@@ -113,8 +118,8 @@ export function DragAndDropProvider({ children }) {
             importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles, uiStylesMediaquerys })
         })
         // console.log(uiStylesMediaquerys);
-        setUiStyles({ uiStyles, uiStylesMediaquerys,scripts })
-        setSubElements([...subElements, ...tmpSubComponents])
+        setUiStyles({ uiStyles, uiStylesMediaquerys, scripts })
+        setSubElements([...subElements, ...parentElement, ...tmpSubComponents])
 
       })
 
@@ -123,11 +128,24 @@ export function DragAndDropProvider({ children }) {
       import("../components/templatesui/").then(res => fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId }]))
   }
 
+  /**
+   * Funcion que elimina ParentElement/SubComponent
+   * @param {String|Number} id Identificador
+   */
   const handleDeleteComponent = (id) => {
     let comId = Number(id.replace(/[a-zA-Z]+/, "").replace(".", ""))
     const filteredComponents = parentElements.filter((ele) => ele.id !== comId);
     const filteredSubComponents = subElements.filter((ele) => ele.id !== comId && ele.parentId !== comId);
-    deleteConfigStyle(id)
+    let ids = []
+    subElements.map(ele => {
+      if (ele.parentId == comId)
+        ids.push(`${ele.type}${ele.id}`)
+      subElements.map(ele2 => {
+        if (ele2.parentId == ele.id)
+          ids.push(`${ele2.type}${ele2.id}`)
+      })
+    })
+    deleteConfigStyle([id, ...ids])
     setParentElements(filteredComponents);
     setSubElements(filteredSubComponents);
   }
@@ -209,7 +227,11 @@ export function DragAndDropProvider({ children }) {
         impAndSetComponent({
           fnState: setSubElements, arrayState: subElements, parentId: over.data.current.idIndex, other: {
             component: active.data.current?.component,
-            typehtml: active.data.current?.typehtml
+            typehtml: active.data.current?.typehtml,
+            componentUi: active.data.current?.componentUi,
+            subElements: active.data.current?.subElements,
+            styles: active.data.current?.styles,
+            scripts: active.data.current?.scripts,
           }
         })
       } else {
@@ -243,10 +265,14 @@ export function DragAndDropProvider({ children }) {
 
       // Si el Componente/Elemento viene del SideBar
       if (active.data.current?.sideBar) {
-        impAndSetComponent({
+         impAndSetComponent({
           fnState: setParentElements, arrayState: parentElements, other: {
             component: active.data.current?.component,
-            typehtml: active.data.current?.typehtml
+            typehtml: active.data.current?.typehtml,
+            componentUi: active.data.current?.componentUi,
+            subElements: active.data.current?.subElements,
+            styles: active.data.current?.styles,
+            scripts: active.data.current?.scripts,
           }
         })
       } else {
