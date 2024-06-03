@@ -1,7 +1,7 @@
-import { useBraeackPointProvider } from "../../hoks/useBreackPointProvider"
+import { useEditorProvider } from "../../hoks/useEditorProvider"
 
 const TopAreaBuilder = () => {
-  const { breackPoint, handleBreackPoint, handlePreviewMode } = useBraeackPointProvider()
+  const { breackPoint, handleBreackPoint, handlePreviewMode } = useEditorProvider()
   return (
     <div className="top__area">
       <select name="breackPoint" id="" onChange={e => handleBreackPoint(e.target.value)} value={breackPoint}>

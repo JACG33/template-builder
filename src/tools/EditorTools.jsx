@@ -9,7 +9,6 @@ import FontAndText from './stylizers/FontAndText'
 import StateStyle from './stylizers/StateStyle'
 import Transitions from './stylizers/Transitions'
 import "./editortools.css"
-import { useBraeackPointProvider } from '../hoks/useBreackPointProvider'
 import StylesOfComponent from './StylesOfComponent'
 import Inset from './stylizers/Inset'
 import Position from './stylizers/Position'
@@ -29,9 +28,8 @@ const cleanText = ({ text = "", letters = [] }) => {
 const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
   const stylesString = useRef();
-  const { configComponent, handleEditComponent, actualConfig, handleActualConfig } = useEditorProvider()
+  const { configComponent, handleEditComponent, actualConfig, handleActualConfig,breackPoint } = useEditorProvider()
   const { setNewCssSelector } = useDragAndDropProvider()
-  const { breackPoint } = useBraeackPointProvider()
 
   useEffect(() => {
     let alterConf;

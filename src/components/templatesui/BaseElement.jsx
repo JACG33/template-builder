@@ -1,14 +1,12 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { useEffect, useRef } from 'react'
-import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
 import { useEditorProvider } from "../../hoks/useEditorProvider"
 
 const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, dataParent, aditionalAttributes, cssSelector = [] }) => {
-  const { configComponent, handleOpenEditor } = useEditorProvider()
+  const { configComponent, handleOpenEditor, breackPoint } = useEditorProvider()
   const styles = useRef(placeholder)
   const { subElements } = useDragAndDropProvider()
-  const { breackPoint } = useBraeackPointProvider()
 
   if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3")
     styles.current = configComponent.mediaQuerys[breackPoint]

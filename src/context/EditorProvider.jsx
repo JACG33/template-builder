@@ -1,5 +1,4 @@
 import { createContext, useState, useRef } from "react";
-import { useBraeackPointProvider } from "../hoks/useBreackPointProvider";
 
 export const EditorContext = createContext({
   configComponent: false,
@@ -16,11 +15,21 @@ export const EditorContext = createContext({
   cssStylesSheetRef: null,
   setUiStyles: ({ uiStyles, uiStylesMediaquerys, scripts }) => { },
   scripstRef: {},
-  componentCssSelectors: []
+  componentCssSelectors: [],
+
+
+
+  breackPoint: String,
+  setBreackPoint: () => { },
+  handleBreackPoint: () => { },
+  builderZoneRef: null,
+  bkpoint: Object,
+  previewMode: null,
+  handlePreviewMode: () => { },
 })
 
 export function EditorProvider({ children }) {
-
+  // Variables para el editor
   const [configComponent, setConfigComponent] = useState(
     {
       normalStyles: { body: {} },
@@ -36,7 +45,20 @@ export function EditorProvider({ children }) {
   })
   const scripstRef = useRef("")
   const cssStylesSheetRef = useRef(`* {\n  padding: 0px;\n  margin: 0px;\n  box-sizing: border-box;\n}\n`)
-  const { breackPoint, previewMode } = useBraeackPointProvider()
+
+  // Variables para los breackpoints
+  const [breackPoint, setBreackPoint] = useState("mobile")
+  const [previewMode, setPreviewMode] = useState(false)
+  const builderZoneRef = useRef(null)
+  const bkpoint = {
+    "": "",
+    "mobile": "builder__zone--mobile",
+    "mobilex2": "builder__zone--mobile2",
+    "tablet": "builder__zone--tablet",
+    "desktop": "builder__zone--desktop",
+    "desktopx2": "builder__zone--desktopx2",
+    "desktopx3": "builder__zone--desktopx3",
+  }
 
   const handleEditComponent = (conf) => {
     if (previewMode == true) return
@@ -301,10 +323,33 @@ export function EditorProvider({ children }) {
     }
   }
 
+
+  /* 
+    ************
+    Funcionalidades para los breackpoints
+    ************
+  */
+  /**
+   * Funcion para resetear el width del BuilderZone cuando se cambia el tipo de BrackPoint
+   */
+  const reseteSizeBuilderZone = () => {
+    builderZoneRef.current.querySelector(".builder__zone").style.width = null
+  }
+
+  const handleBreackPoint = (bkpoint) => {
+    reseteSizeBuilderZone()
+    setBreackPoint(bkpoint)
+  }
+
+  const handlePreviewMode = () => setPreviewMode(!previewMode)
+
+
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef, componentCssSelectors
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef, componentCssSelectors,
+
+        handleBreackPoint, breackPoint, builderZoneRef, bkpoint, previewMode, handlePreviewMode
       }}
     >
       {children}

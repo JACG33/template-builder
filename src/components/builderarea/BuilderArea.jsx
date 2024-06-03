@@ -1,13 +1,12 @@
 import { DragOverlay, useDndMonitor, useDroppable } from '@dnd-kit/core'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from '../../hoks/useDragAndDropProvider'
 import { useEditorProvider } from '../../hoks/useEditorProvider'
 import { MoldeElementOverlay } from '../sidebarelementsitems/MoldeElement'
 
 export const BuilderArea = () => {
-  const { breackPoint, builderZoneRef, bkpoint } = useBraeackPointProvider()
+  const { breackPoint, builderZoneRef, bkpoint } = useEditorProvider()
 
   return (
     <div className='wrap__builder' ref={builderZoneRef}>

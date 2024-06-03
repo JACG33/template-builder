@@ -3,6 +3,7 @@
 ## Version 0.0.135 03-JUN-2024
 + Se añadio una nueva funcionalidad, ahora se puede elegir entre los diferentes selectores css de un componente.
 + Se modificaron los componentes de la carpeta __templatesui__ para ajustarse a la nueva funcionalidad.
++ Se migro la funcionalidad el __Contex BreackPoint__ al __Contex EditorProvider__.
 + Se hicieron otras modificaciones.
 
 ## Version 0.0.130 30-MAY-2024
