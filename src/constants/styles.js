@@ -13,5 +13,6 @@ export const STYLES = {
   inset:"",
   position: "",
   opacity: "",
-  textDecoration:""
+  textDecoration: "",
+  cursor:""
 }

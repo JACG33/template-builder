@@ -1,5 +1,13 @@
 # Template Builder
 
+## Version 0.0.137 03-JUN-2024
++ Ahora se pueden añadir nuevos selectores.
++ Se añadio un nuevo __stylizer__ y se modificaron otros.
++ Se añadio un nuevo icono al index de la carpeta __svg__.
++ Ahora por defecto se cargan todas las clases css de un componente, quizas deba regresar a como estaba antes del cambio.
++ Se movio a un archivo la funcionalidad __cleanText__, a la carpeta __helpers__ con el nombre __cleanLettersOfText.js__.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.135 03-JUN-2024
 + Se añadio una nueva funcionalidad, ahora se puede elegir entre los diferentes selectores css de un componente.
 + Se modificaron los componentes de la carpeta __templatesui__ para ajustarse a la nueva funcionalidad.

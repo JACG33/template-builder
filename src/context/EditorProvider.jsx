@@ -16,7 +16,7 @@ export const EditorContext = createContext({
   setUiStyles: ({ uiStyles, uiStylesMediaquerys, scripts }) => { },
   scripstRef: {},
   componentCssSelectors: [],
-
+  setComponentCssSelectors:()=>{},
 
 
   breackPoint: String,
@@ -300,12 +300,12 @@ export function EditorProvider({ children }) {
     setConfigComponent({
       ...configComponent,
       normalStyles: { ...normal },
-      mediaQuerys: { cssQuerys }
+      mediaQuerys: { ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys?.[breackPoint], ...cssQuerys } }
     })
     cssStylesRef.current = {
       ...cssStylesRef.current,
       normalStyles: { ...normal },
-      mediaQuerys: { cssQuerys }
+      mediaQuerys: { ...cssStylesRef.current.mediaQuerys, [breackPoint]: { ...cssStylesRef.current.mediaQuerys?.[breackPoint], ...cssQuerys } }
     }
     setHeadStyles()
   }
@@ -347,7 +347,7 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef, componentCssSelectors,
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef, componentCssSelectors,setComponentCssSelectors,
 
         handleBreackPoint, breackPoint, builderZoneRef, bkpoint, previewMode, handlePreviewMode
       }}

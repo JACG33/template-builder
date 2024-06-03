@@ -8,13 +8,14 @@ export const DragAndDropContext = createContext({
   handleDeleteComponent: (id) => { },
   handleDragginElement: () => { },
   handleDragEnd: (e) => { },
-  setNewCssSelector: ({ id, isSubComponent, newCssSelector }) => { }
+  setNewCssSelector: ({ id, isSubComponent, newCssSelector }) => { },
+  deleteCssSelector: ({ id, isSubComponent, cssSelector }) => { },
 })
 
 export function DragAndDropProvider({ children }) {
   const [parentElements, setParentElements] = useState([])
   const [subElements, setSubElements] = useState([])
-  const { deleteConfigStyle, setUiStyles } = useEditorProvider()
+  const { deleteConfigStyle, setUiStyles, setComponentCssSelectors } = useEditorProvider()
 
   /**
    * Funcion que importa dinamicamente un componente y lo renderiza.
@@ -194,17 +195,54 @@ export function DragAndDropProvider({ children }) {
    */
   const setNewCssSelector = ({ id, isSubComponent, newCssSelector }) => {
     let component = {}
-    
+
     if (isSubComponent) {
       component = subElements.filter(ele => ele.id == id)[0]
       let find = component.otherCssClases.find(ele => ele == newCssSelector)
       if (!find) component.otherCssClases.push(newCssSelector)
-  } else {
-    component = parentElements.filter(ele => ele.id = id)[0]
-    let find = component.otherCssClases.find(ele => ele == newCssSelector)
-    if (!find) component.otherCssClases.push(newCssSelector)
+    } else {
+      component = parentElements.filter(ele => ele.id == id)[0]
+      let find = component.otherCssClases.find(ele => ele == newCssSelector)
+      if (!find) component.otherCssClases.push(newCssSelector)
     }
 
+  }
+
+  /**
+   * Funcion que elimina selectores css del array de selectores.
+   * @param {Object} opc Objeto de parametros. 
+   * @param {Number|String} opc.id Identificador del ParentElement/SubElement. 
+   * @param {Boolean} opc.isSubComponent Booleano que determina si es un SubElement. 
+   * @param {String} opc.cssSelector Selector css a eliminar. 
+   */
+  const deleteCssSelector = ({ id, isSubComponent, cssSelector }) => {
+    let component = {}
+    let selectors = []
+    
+    if (isSubComponent) {
+      component = subElements.filter(ele => ele.id == id)[0]
+      selectors = component.otherCssClases.filter(ele => ele !== cssSelector)
+      setSubElements(subElements.map(subElement => {
+        if (subElement.id == id) {
+          subElement.otherCssClases = selectors
+          return subElement
+        } else {
+          return subElement
+        }
+      }))
+    } else {
+      component = parentElements.filter(ele => ele.id == id)[0]
+      selectors = component.otherCssClases.filter(ele => ele !== cssSelector)
+      setParentElements(parentElements.map(parentElement => {
+        if (parentElement.id == id) {
+          parentElement.otherCssClases = selectors
+          return parentElement
+        } else {
+          return parentElement
+        }
+      }))
+    }
+    setComponentCssSelectors(selectors)
   }
 
   /**
@@ -454,7 +492,7 @@ export function DragAndDropProvider({ children }) {
 
   return (
     <DragAndDropContext.Provider
-      value={{ parentElements, subElements, handleDeleteComponent, handleDragEnd, setNewCssSelector }}
+      value={{ parentElements, subElements, handleDeleteComponent, handleDragEnd, setNewCssSelector, deleteCssSelector }}
     >
       {children}
     </DragAndDropContext.Provider>

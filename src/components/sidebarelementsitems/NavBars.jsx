@@ -25,15 +25,6 @@ function NavBarUi() {
     justifyContent: "space-evenly",
   }
   const stylesModifiers = {
-    "container__links--sh": {
-      opacity: 1,
-      visibility: "visible",
-      inset: "74px 0px auto 0px",
-      display: "flex",
-      flexDirection: "column",
-      gap: "10px",
-      height: "fit-content"
-    }
   }
   const subElements = [
     {

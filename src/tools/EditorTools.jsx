@@ -1,35 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 import { STYLES } from '../constants/styles'
+import { cleanLettersOfText } from '../helpers/cleanLettersOfText'
+import { useDragAndDropProvider } from '../hoks/useDragAndDropProvider'
 import { useEditorProvider } from '../hoks/useEditorProvider'
 import EditorToolsHeader from './EditorToolsHeader'
-import WrapperDropDown from './WrapperDropDown'
-import { BackgroundColor, BorderRadius, Display, Height, Margin, Padding, Width } from './stylizers'
-import Border from './stylizers/Border'
-import FontAndText from './stylizers/FontAndText'
-import StateStyle from './stylizers/StateStyle'
-import Transitions from './stylizers/Transitions'
-import "./editortools.css"
 import StylesOfComponent from './StylesOfComponent'
-import Inset from './stylizers/Inset'
-import Position from './stylizers/Position'
-import Opacity from './stylizers/Opacity'
-import Visibility from './stylizers/Visibility'
-import TextDecoration from './stylizers/TextDecoration'
-import StyleSelector from './stylizers/StyleSelector'
-import { useDragAndDropProvider } from '../hoks/useDragAndDropProvider'
-
-const cleanText = ({ text = "", letters = [] }) => {
-  let clean = ""
-  letters.forEach(letter => { if (text.includes(letter)) clean = text.replaceAll(letter, "") })
-  return clean
-}
-
+import WrapperDropDown from './WrapperDropDown'
+import "./editortools.css"
+import { BackgroundColor, Border, BorderRadius, Cursor, Display, FontAndText, Height, Inset, Margin, Opacity, Padding, Position, StateStyle, StyleSelector, TextDecoration, Transitions, Visibility, Width } from './stylizers'
 
 const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
   const stylesString = useRef();
-  const { configComponent, handleEditComponent, actualConfig, handleActualConfig,breackPoint } = useEditorProvider()
-  const { setNewCssSelector } = useDragAndDropProvider()
+  const { configComponent, handleEditComponent, actualConfig, handleActualConfig, breackPoint, deleteConfigStyle } = useEditorProvider()
+  const { setNewCssSelector, deleteCssSelector } = useDragAndDropProvider()
 
   useEffect(() => {
     let alterConf;
@@ -44,11 +28,9 @@ const EditorTools = () => {
       let style = alterConf[iterator]
       if (typeof alterConf[iterator] == 'string' && (style.includes("px") || style.includes("%") || style.includes("em") || style.includes("rem") || style.includes("vh") || style.includes("vw"))) {
         let letters = ["px", "%", "em", "rem", "vh", "vw"]
-        alterConf[iterator] = cleanText({ text: alterConf[iterator], letters }).split(" ")
+        alterConf[iterator] = cleanLettersOfText({ text: alterConf[iterator], letters }).split(" ")
       }
     }
-
-
     setConfigTemplate(alterConf)
   }, [configComponent, actualConfig, breackPoint])
 
@@ -113,7 +95,7 @@ const EditorTools = () => {
     }
 
     // 
-    if (target.name == "display" || target.name == "justifyContent" || target.name == "alignItems" || target.name == "flexDirection" || target.name == "backgroundColor" || target.name == "textAlign" || target.name == "textWrap" || target.name == "fontWeight" || target.name == "color" || target.name == "position" || target.name == "visibility") {
+    if (target.name == "display" || target.name == "justifyContent" || target.name == "alignItems" || target.name == "flexDirection" || target.name == "backgroundColor" || target.name == "textAlign" || target.name == "textWrap" || target.name == "fontWeight" || target.name == "color" || target.name == "position" || target.name == "visibility" || target.name == "cursor") {
       let display = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [display] })
       stylesString.current = { ...stylesString.current, [target.name]: `${display}` }
@@ -194,7 +176,6 @@ const EditorTools = () => {
       stylesString.current = { ...stylesString.current, [target.name]: transitions }
     }
 
-
     handleEditComponent({ ...stylesString.current })
   }
 
@@ -216,13 +197,20 @@ const EditorTools = () => {
       setNewCssSelector({ id: actualConfig.id, isSubComponent: actualConfig.isSubComponent, newCssSelector: `${state}` })
       handleActualConfig({ nameConfig: `${state}`, id: actualConfig.id, isSubComponent: actualConfig.isSubComponent })
     }
+    if (typeSelect == "deleteCssSelector") {
+      deleteConfigStyle([state])
+      deleteCssSelector({ id: actualConfig.id, isSubComponent: actualConfig.isSubComponent, cssSelector: `${state}` })
+      handleActualConfig({ nameConfig: `${state}`, id: actualConfig.id, isSubComponent: actualConfig.isSubComponent })
+    }
   }
 
   return (
     <div className='px-2'>
       <EditorToolsHeader cssClass={actualConfig.nameConfig} />
       <StateStyle setState={setState} />
-      <StyleSelector setState={setState} />
+      <WrapperDropDown secctionName={"Css Selector"}>
+        <StyleSelector setState={setState} idActualConfig={actualConfig.id} defaultName={`${actualConfig.nameConfig}`} />
+      </WrapperDropDown>
       <WrapperDropDown secctionName={"Display"}>
         <Display configTemplate={configTemplate} handleChange={handleChange} />
       </WrapperDropDown>
@@ -245,6 +233,9 @@ const EditorTools = () => {
       <WrapperDropDown secctionName={"Opacity"}>
         <Opacity configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
         <Visibility configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
+      </WrapperDropDown>
+      <WrapperDropDown secctionName={"Cursor"}>
+        <Cursor configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Background"}>
         <BackgroundColor configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
