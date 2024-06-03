@@ -90,7 +90,7 @@ function WrapperComponent({ }) {
           parentElements.length > 0
           &&
           parentElements.map((Item) =>
-            <Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} moreParams={Item?.moreParams} />)
+            <Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} moreParams={Item?.moreParams} cssSelector={Item.otherCssClases} />)
         }
       </div>
       <DragOverlayWrapper />

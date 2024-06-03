@@ -24,6 +24,17 @@ function NavBarUi() {
     alignItems: "center",
     justifyContent: "space-evenly",
   }
+  const stylesModifiers = {
+    "container__links--sh": {
+      opacity: 1,
+      visibility: "visible",
+      inset: "74px 0px auto 0px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      height: "fit-content"
+    }
+  }
   const subElements = [
     {
       name: "Link",
@@ -117,6 +128,6 @@ function NavBarUi() {
   })
   `
   return (
-    <MoldeElement htmlType={"nav"} nameComponent={"VerticalNav"} other={"navbarui"} componentUi={true} subElements={subElements} styles={placeholderUi} scripts={scripts} />)
+    <MoldeElement htmlType={"nav"} nameComponent={"VerticalNav"} other={"navbarui"} componentUi={true} subElements={subElements} styles={placeholderUi} stylesModifiers={stylesModifiers} scripts={scripts} />)
 
 }

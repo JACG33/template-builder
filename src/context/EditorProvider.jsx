@@ -7,15 +7,16 @@ export const EditorContext = createContext({
   handleEditComponent: () => { },
   openEditor: false,
   setOpenEditor: () => { },
-  handleOpenEditor: ({ conf, name, open, cssClass, setUi }) => { },
+  handleOpenEditor: ({ conf, id, isSubComponent, open, cssClass, cssSelector = [], setUi = false }) => { },
   actualConfig: false,
   setActualConfig: () => { },
-  handleActualConfig: () => { },
+  handleActualConfig: ({ nameConfig, id, isSubComponent }) => { },
   deleteConfigStyle: (ids = []) => { },
   getConfigComponent: () => { },
   cssStylesSheetRef: null,
   setUiStyles: ({ uiStyles, uiStylesMediaquerys, scripts }) => { },
-  scripstRef: {}
+  scripstRef: {},
+  componentCssSelectors: []
 })
 
 export function EditorProvider({ children }) {
@@ -26,8 +27,9 @@ export function EditorProvider({ children }) {
       mediaQuerys: {}
     }
   )
-  const [actualConfig, setActualConfig] = useState()
+  const [actualConfig, setActualConfig] = useState({ nameConfig: "", isSubComponent: false, idComponent: null })
   const [openEditor, setOpenEditor] = useState(false)
+  const [componentCssSelectors, setComponentCssSelectors] = useState([])
   const cssStylesRef = useRef({
     normalStyles: { body: {} },
     mediaQuerys: {}
@@ -44,14 +46,14 @@ export function EditorProvider({ children }) {
           {
             ...configComponent,
             mediaQuerys: {
-              ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys[breackPoint], [actualConfig]: { ...conf } }
+              ...configComponent.mediaQuerys, [breackPoint]: { ...configComponent.mediaQuerys[breackPoint], [actualConfig.nameConfig]: { ...conf } }
             }
           }
         )
         cssStylesRef.current = {
           ...cssStylesRef.current,
           mediaQuerys: {
-            ...cssStylesRef.current.mediaQuerys, [breackPoint]: { ...cssStylesRef.current.mediaQuerys[breackPoint], [actualConfig]: { ...conf } }
+            ...cssStylesRef.current.mediaQuerys, [breackPoint]: { ...cssStylesRef.current.mediaQuerys[breackPoint], [actualConfig.nameConfig]: { ...conf } }
           }
         }
         setHeadStyles()
@@ -59,19 +61,27 @@ export function EditorProvider({ children }) {
         setConfigComponent(
           {
             ...configComponent,
-            normalStyles: { ...configComponent.normalStyles, [actualConfig]: conf },
+            normalStyles: { ...configComponent.normalStyles, [actualConfig.nameConfig]: conf },
           }
         )
         cssStylesRef.current = {
           ...configComponent,
-          normalStyles: { ...cssStylesRef.current.normalStyles, [actualConfig]: conf },
+          normalStyles: { ...cssStylesRef.current.normalStyles, [actualConfig.nameConfig]: conf },
         }
         setHeadStyles()
       }
     }
   }
 
-  const handleActualConfig = (nameConfig) => setActualConfig(nameConfig)
+  /**
+   * Funcion que asigna una configuracion de estilos.
+   * @param {Object} opc Objeto de opciones.
+   * @param {String} opc.nameConfig Nombre de la Configuracion/EstiloCss.
+   * @param {String|Number} opc.id Identificador del componete.
+   * @param {Boolean} opc.isSubComponent Booleano que determina si es un SubElelement. 
+   * @returns 
+   */
+  const handleActualConfig = ({ nameConfig, id, isSubComponent }) => setActualConfig({ nameConfig, id, isSubComponent })
 
   /**
    * Funcion para tranformar texto de camelCase a lowercase y separar con guion medio (-).
@@ -139,9 +149,12 @@ export function EditorProvider({ children }) {
         let normalClasses = Object.keys(cssStylesRef.current.normalStyles)
 
         normalClasses?.forEach(classStyle => {
-          cssStyles += `\n.${classStyle} {\n`
-          cssStyles += makeCssRule({ toIterate: cssStylesRef.current.normalStyles[classStyle] })
-          cssStyles += `}\n`
+          // Evitar colocar selectores vacios
+          if (Object.keys(cssStylesRef.current.normalStyles[classStyle]).length > 0) {
+            cssStyles += `\n.${classStyle} {\n`
+            cssStyles += makeCssRule({ toIterate: cssStylesRef.current.normalStyles[classStyle] })
+            cssStyles += `}\n`
+          }
         });
 
         // Setear Media Querys
@@ -155,9 +168,12 @@ export function EditorProvider({ children }) {
             if (mq != "") {
               cssStyles += `\n${mq} \n`
               innerClasses.forEach(innerClass => {
-                cssStyles += ` .${innerClass} {\n`
-                cssStyles += `${makeCssRule({ toIterate: cssStylesRef.current.mediaQuerys[mediaQueryClass][innerClass] })}`
-                cssStyles += ` }\n`
+                // Evitar colocar selectores vacios
+                if (Object.keys(cssStylesRef.current.mediaQuerys[mediaQueryClass][innerClass]).length > 0) {
+                  cssStyles += ` .${innerClass} {\n`
+                  cssStyles += `${makeCssRule({ toIterate: cssStylesRef.current.mediaQuerys[mediaQueryClass][innerClass] })}`
+                  cssStyles += ` }\n`
+                }
               })
               cssStyles += `}\n`
             }
@@ -173,10 +189,10 @@ export function EditorProvider({ children }) {
    * Funcion para abrir el editor de estilos del Elemento/Componente elegido.
    * @param {Object} opciones Json de opiones.
    * @param {Object} opcoines.conf Json de la configuracion del Elemento/Componente elegido.
-   * @param {String|Number} opciones.name Nombre/Identidicador de la configuracion del Elemento/Componente elegido.
+   * @param {String|Number} opciones.id Nombre/Identidicador de la configuracion del Elemento/Componente elegido.
    * @param {Boolean} opciones.open Boolean que identifica si esta o no abierto el editor de estilos del Elemento/Componente elegido.
    */
-  const handleOpenEditor = ({ conf, name, open, cssClass, setUi = false }) => {
+  const handleOpenEditor = ({ conf, id, isSubComponent, open, cssClass, cssSelector = [], setUi = false }) => {
     if (previewMode == true) return
     if (open == true || setUi == true) {
       setOpenEditor(true)
@@ -207,11 +223,13 @@ export function EditorProvider({ children }) {
           normalStyles: { ...configComponent.normalStyles, [cssClass]: conf },
         }
       }
-
-      handleActualConfig(cssClass)
+      if (cssSelector.length > 0)
+        setComponentCssSelectors(cssSelector)
+      handleActualConfig({ nameConfig: cssClass, id, isSubComponent })
       setHeadStyles([cssClass, conf])
     } else {
-      setActualConfig(null)
+      setComponentCssSelectors([])
+      setActualConfig({ idComponent: null, isSubComponent: false, nameConfig: null })
       setOpenEditor(false)
     }
   }
@@ -286,7 +304,7 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef, componentCssSelectors
       }}
     >
       {children}

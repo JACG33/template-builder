@@ -8,10 +8,10 @@ import BaseElement from "./BaseElement"
  * @param {Boolean} opc.dataParent Identificador del ParentElement. 
  * @returns 
  */
-const Button = ({ id, dataParent, children, styles = {}, moreParams }) => {
+const Button = ({ id, dataParent, children, styles = {}, moreParams, cssSelector = [] }) => {
   let nameIcon = moreParams?.icon ? moreParams?.icon : ""
   return (
-    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"button"} id={id} placeholder={{ ...ButtonStyles, ...styles }} dataAttribute={"Button"} dataParent={dataParent}>
+    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"button"} id={id} placeholder={{ ...ButtonStyles, ...styles }} dataAttribute={"Button"} dataParent={dataParent} cssSelector={cssSelector}>
       {nameIcon == "" && ("Click")}
       {nameIcon == "Menu2" && <Icons.Menu2 />}
     </BaseElement>

@@ -16,6 +16,8 @@ import Position from './stylizers/Position'
 import Opacity from './stylizers/Opacity'
 import Visibility from './stylizers/Visibility'
 import TextDecoration from './stylizers/TextDecoration'
+import StyleSelector from './stylizers/StyleSelector'
+import { useDragAndDropProvider } from '../hoks/useDragAndDropProvider'
 
 const cleanText = ({ text = "", letters = [] }) => {
   let clean = ""
@@ -28,16 +30,17 @@ const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
   const stylesString = useRef();
   const { configComponent, handleEditComponent, actualConfig, handleActualConfig } = useEditorProvider()
+  const { setNewCssSelector } = useDragAndDropProvider()
   const { breackPoint } = useBraeackPointProvider()
 
   useEffect(() => {
     let alterConf;
     if (breackPoint == "mobilex2" || breackPoint == "tablet" || breackPoint == "desktop" || breackPoint == "desktopx2" || breackPoint == "desktopx3") {
-      alterConf = Object.assign({}, configComponent?.mediaQuerys?.[actualConfig] || configTemplate)
-      stylesString.current = Object.assign({}, configComponent?.mediaQuerys?.[breackPoint]?.[actualConfig] || {})
+      alterConf = Object.assign({}, configComponent?.mediaQuerys?.[actualConfig.nameConfig] || configTemplate)
+      stylesString.current = Object.assign({}, configComponent?.mediaQuerys?.[breackPoint]?.[actualConfig.nameConfig] || {})
     } else {
-      alterConf = Object.assign({}, configComponent?.normalStyles?.[actualConfig] || configTemplate)
-      stylesString.current = Object.assign({}, configComponent?.normalStyles?.[actualConfig] || {})
+      alterConf = Object.assign({}, configComponent?.normalStyles?.[actualConfig.nameConfig] || configTemplate)
+      stylesString.current = Object.assign({}, configComponent?.normalStyles?.[actualConfig.nameConfig] || {})
     }
     for (const iterator in alterConf) {
       let style = alterConf[iterator]
@@ -112,7 +115,7 @@ const EditorTools = () => {
     }
 
     // 
-    if (target.name == "display" || target.name == "justifyContent" || target.name == "alignItems" || target.name == "flexDirection" || target.name == "backgroundColor" || target.name == "textAlign" || target.name == "textWrap" || target.name == "fontWeight" || target.name == "color" || target.name == "position"|| target.name == "visibility") {
+    if (target.name == "display" || target.name == "justifyContent" || target.name == "alignItems" || target.name == "flexDirection" || target.name == "backgroundColor" || target.name == "textAlign" || target.name == "textWrap" || target.name == "fontWeight" || target.name == "color" || target.name == "position" || target.name == "visibility") {
       let display = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [display] })
       stylesString.current = { ...stylesString.current, [target.name]: `${display}` }
@@ -187,7 +190,7 @@ const EditorTools = () => {
     }
 
     // 
-    if (target.name == "transition" || target.name == "opacity" || target.name == "textDecoration" ) {
+    if (target.name == "transition" || target.name == "opacity" || target.name == "textDecoration") {
       let transitions = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [transitions] })
       stylesString.current = { ...stylesString.current, [target.name]: transitions }
@@ -197,17 +200,31 @@ const EditorTools = () => {
     handleEditComponent({ ...stylesString.current })
   }
 
-  const setState = (state) => {
-    let confname = actualConfig
-    if (actualConfig?.includes(":"))
-      confname = actualConfig.split(":")[0]
-    handleActualConfig(`${confname}${state}`)
+  /**
+   * Funcion para estable la configuracion actual.
+   * @param {Object} opc Objeto de opciones. 
+   * @param {String} opc.state Tipo de estado, el estado puede ser :hover,:active, etc, o puede ser el nombre del selector css. 
+   * @param {String} opc.typeSelect Tipo de select, para identificar si es un estado o un selector css. 
+   */
+  const setState = ({ state, typeSelect = "state" }) => {
+    let confname = actualConfig.nameConfig
+    if (actualConfig.nameConfig?.includes(":"))
+      confname = actualConfig.nameConfig.split(":")[0]
+    if (typeSelect == "state") {
+      setNewCssSelector({ id: actualConfig.id, isSubComponent: actualConfig.isSubComponent, newCssSelector: `${confname}${state}` })
+      handleActualConfig({ nameConfig: `${confname}${state}`, id: actualConfig.id, isSubComponent: actualConfig.isSubComponent })
+    }
+    if (typeSelect == "cssSelector") {
+      setNewCssSelector({ id: actualConfig.id, isSubComponent: actualConfig.isSubComponent, newCssSelector: `${state}` })
+      handleActualConfig({ nameConfig: `${state}`, id: actualConfig.id, isSubComponent: actualConfig.isSubComponent })
+    }
   }
 
   return (
     <div className='px-2'>
-      <EditorToolsHeader cssClass={actualConfig} />
+      <EditorToolsHeader cssClass={actualConfig.nameConfig} />
       <StateStyle setState={setState} />
+      <StyleSelector setState={setState} />
       <WrapperDropDown secctionName={"Display"}>
         <Display configTemplate={configTemplate} handleChange={handleChange} />
       </WrapperDropDown>
@@ -236,13 +253,13 @@ const EditorTools = () => {
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Font and Text"}>
         <FontAndText configRef={stylesString} configTemplate={configTemplate} handleChange={handleChange} />
-        <TextDecoration configRef={stylesString} configTemplate={configTemplate} handleChange={handleChange}/>
+        <TextDecoration configRef={stylesString} configTemplate={configTemplate} handleChange={handleChange} />
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Transitions"}>
         <Transitions configTemplate={configTemplate} handleChange={handleChange} />
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Styles Of Component"}>
-        <StylesOfComponent configTemplate={configTemplate} handleChange={handleChange} breackPoint={breackPoint} actualConfig={actualConfig} stylesString={stylesString} />
+        <StylesOfComponent configTemplate={configTemplate} handleChange={handleChange} breackPoint={breackPoint} actualConfig={actualConfig.nameConfig} stylesString={stylesString} />
       </WrapperDropDown>
     </div>
   )

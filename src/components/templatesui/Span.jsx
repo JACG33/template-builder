@@ -8,9 +8,9 @@ import BaseElement from "./BaseElement"
  * @param {Boolean} opc.dataParent Identificador del ParentElement. 
  * @returns 
  */
-const Span = ({ id, dataParent, children, styles = {},moreParams={} }) => {
+const Span = ({ id, dataParent, children, styles = {},moreParams={},cssSelector=[] }) => {
   return (
-    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"span"} id={id} placeholder={{ ...SpanStyles, ...styles }} dataAttribute={"Span"} dataParent={dataParent}>
+    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"span"} id={id} placeholder={{ ...SpanStyles, ...styles }} dataAttribute={"Span"} dataParent={dataParent} cssSelector={cssSelector}>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus assumenda illo laudantium maiores earum, non placeat rem numquam molestias laboriosam aliquid ut alias velit ipsam asperiores ducimus ratione quisquam quia.
     </BaseElement>
   )

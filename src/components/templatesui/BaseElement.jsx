@@ -4,7 +4,7 @@ import { useBraeackPointProvider } from '../../hoks/useBreackPointProvider'
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider"
 import { useEditorProvider } from "../../hoks/useEditorProvider"
 
-const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, dataParent, aditionalAttributes }) => {
+const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, dataParent, aditionalAttributes, cssSelector = [] }) => {
   const { configComponent, handleOpenEditor } = useEditorProvider()
   const styles = useRef(placeholder)
   const { subElements } = useDragAndDropProvider()
@@ -19,9 +19,11 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, da
     handleOpenEditor(
       {
         conf: styles.current?.[`${TypeElement}${id}`] ? styles.current[`${TypeElement}${id}`] : placeholder,
-        name: id,
+        id,
+        isSubComponent: dataParent?.parentId ? true : false,
         open: true,
-        cssClass: `${TypeElement}${id}`
+        cssClass: `${TypeElement}${id}`,
+        cssSelector
       }
     )
   }, [])
@@ -66,9 +68,11 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, da
           handleOpenEditor(
             {
               conf: styles.current?.[`${TypeElement}${id}`] ? styles.current[`${TypeElement}${id}`] : {},
-              name: id,
+              id,
+              isSubComponent: dataParent?.parentId ? true : false,
               open: true,
-              cssClass: `${TypeElement}${id}`
+              cssClass: `${TypeElement}${id}`,
+              cssSelector
             }
           )
         }}
@@ -81,7 +85,7 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, da
       >
         {children}
         {subElements.length > 0 && subElements.map((Item) => {
-          if (Item?.parentId == id) return (<Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} moreParams={Item?.moreParams} />)
+          if (Item?.parentId == id) return (<Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} moreParams={Item?.moreParams} cssSelector={Item.otherCssClases} />)
         })}
       </TypeElement>
     </div>

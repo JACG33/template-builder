@@ -8,9 +8,9 @@ import BaseElement from "./BaseElement"
  * @param {Boolean} opc.dataParent Identificador del ParentElement. 
  * @returns 
  */
-const Div = ({ id, dataParent, children, styles = {}, moreParams = {} }) => {
+const Div = ({ id, dataParent, children, styles = {}, moreParams = {},cssSelector=[] }) => {
   return (
-    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"div"} id={id} placeholder={{ ...DivStyles, ...styles }} dataAttribute={"Div"} dataParent={dataParent} />
+    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"div"} id={id} placeholder={{ ...DivStyles, ...styles }} dataAttribute={"Div"} dataParent={dataParent} cssSelector={cssSelector} />
   )
 }
 

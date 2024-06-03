@@ -3,7 +3,7 @@ import { useEditorProvider } from '../../hoks/useEditorProvider'
 
 const SideBarElementsRendered = () => {
   const { parentElements, subElements, handleDeleteComponent } = useDragAndDropProvider()
-  const { handleOpenEditor, getConfigComponent } = useEditorProvider()
+  const { handleOpenEditor, getConfigComponent, componentCssSelectors } = useEditorProvider()
 
   const handleDelete = (configNmae = "") => {
     handleDeleteComponent(configNmae)
@@ -24,9 +24,9 @@ const SideBarElementsRendered = () => {
     elem.style.outlineOffset = null
   }
 
-  const handleSetOpenEditor = (id) => {
+  const handleSetOpenEditor = ({ id, cssSelector = [] }) => {
     const conf = getConfigComponent(id)
-    handleOpenEditor({ conf, cssClass: id, open: true })
+    handleOpenEditor({ conf, cssClass: id, open: true, cssSelector })
   }
 
   const tree = [];
@@ -65,7 +65,11 @@ const SideBarElementsRendered = () => {
                 onMouseOverCapture={e => hoverInElement({ cssClass: `${parent.elemen.type}${parent.elemen.id}` })}
                 onMouseLeave={e => hoverOutElement({ cssClass: `${parent.elemen.type}${parent.elemen.id}` })}
               >
-                <button type='button' onClick={e => handleSetOpenEditor(`${parent.elemen.type}${parent.elemen.id}`)} key={parent.elemen.id}>{`<${parent.elemen.type}>`}</button>
+                <button
+                  type='button'
+                  key={parent.elemen.id}
+                  onClick={e => handleSetOpenEditor({id:`${parent.elemen.type}${parent.elemen.id}`,cssSelector:parent.elemen.otherCssClases})}
+                >{`<${parent.elemen.type}>`}</button>
                 <ButtonDelete handleDelete={handleDelete} type={parent.elemen.type} id={parent.elemen.id} />
               </div>
 
@@ -102,7 +106,11 @@ const SubComponent = ({ subComponent = [], hoverInElement, hoverOutElement, hand
                 onMouseOverCapture={e => hoverInElement({ cssClass: `${sub.type}${sub.id}` })}
                 onMouseLeave={e => hoverOutElement({ cssClass: `${sub.type}${sub.id}` })}
               >
-                <button type='button' onClick={e => handleSetOpenEditor(`${sub.type}${sub.id}`)} key={sub.id}>{`<${sub.type}>`}</button>
+                <button
+                  type='button'
+                  key={sub.id}
+                  onClick={e => handleSetOpenEditor({id:`${sub.type}${sub.id}`,cssSelector:sub.otherCssClases})}
+                >{`<${sub.type}>`}</button>
                 <ButtonDelete handleDelete={handleDelete} type={sub.type} id={sub.id} />
               </div>
             </div>

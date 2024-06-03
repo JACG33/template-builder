@@ -2,7 +2,7 @@ import { useDraggable } from "@dnd-kit/core"
 import "./moldeelement.css"
 import { ramdomid } from "../../helpers/randomid"
 
-const MoldeElement = ({ nameComponent, htmlType, componentUi = false, subElements = null, other, styles=null,scripts=null }) => {
+const MoldeElement = ({ nameComponent, htmlType, componentUi = false, subElements = {}, other, styles = {}, stylesModifiers = {}, scripts = null }) => {
 
   const draggableElement = useDraggable({
     id: other,
@@ -13,6 +13,7 @@ const MoldeElement = ({ nameComponent, htmlType, componentUi = false, subElement
       componentUi,
       subElements,
       styles,
+      stylesModifiers,
       scripts
     }
   })

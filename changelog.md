@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.135 03-JUN-2024
++ Se añadio una nueva funcionalidad, ahora se puede elegir entre los diferentes selectores css de un componente.
++ Se modificaron los componentes de la carpeta __templatesui__ para ajustarse a la nueva funcionalidad.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.130 30-MAY-2024
 + Se modifico el __SideBarElementsRendered__ para representar mejor los componentes y sus sub componentes (solo de nivel 1).
 + Se ajusto el __DragDropProvider__ para mejorar el drag and drop considerando los nuevos __ComponentsUI__.

@@ -5,9 +5,10 @@ import { ramdomid } from "../helpers/randomid";
 export const DragAndDropContext = createContext({
   parentElements: [],
   subElements: [],
-  handleDeleteComponent: () => { },
+  handleDeleteComponent: (id) => { },
   handleDragginElement: () => { },
-  handleDragEnd: () => { },
+  handleDragEnd: (e) => { },
+  setNewCssSelector: ({ id, isSubComponent, newCssSelector }) => { }
 })
 
 export function DragAndDropProvider({ children }) {
@@ -28,6 +29,7 @@ export function DragAndDropProvider({ children }) {
     let Com = other.component
     let typehtml = other.typehtml || typeElement
     let idComponent = Number(ramdomid())
+    let otherCssClases = [`${typehtml}${idComponent}`, Object.keys(other?.stylesModifiers)].flat()
 
     /**
      * Funcion recursiva que modifica el tmpSubComponents.
@@ -42,7 +44,15 @@ export function DragAndDropProvider({ children }) {
     const importSub = ({ res, tmpSubComponents, subs, id, uiStyles, uiStylesMediaquerys }) => {
       subs.forEach(subCom => {
         const subId = Number(ramdomid())
-        tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, moreParams: subCom?.moreParams, parentId: id })
+        tmpSubComponents.push({
+          id: subId,
+          component: res[subCom.name],
+          styles: subCom.styles,
+          otherCssClases: subCom.stylesModifiers != undefined ? [`${subCom.type}${subId}`, Object.keys(subCom.stylesModifiers)].flat() : [`${subCom.type}${subId}`],
+          type: subCom.type,
+          moreParams: subCom?.moreParams,
+          parentId: id
+        })
         // Estilos
         if (subCom.styles != undefined) {
           uiStyles[`${subCom.type}${subId}`] = subCom.styles
@@ -81,16 +91,39 @@ export function DragAndDropProvider({ children }) {
 
         // Si no existe un parentId es un componente ParentElement, de lo contrario es un SubComponent
         if (parentId == undefined)
-          fnState([...arrayState, { id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }])
+          fnState([...arrayState,
+          {
+            id: idComponent,
+            component: res[Com],
+            type: typehtml,
+            parentId,
+            otherCssClases,
+            styles: other.styles
+          }])
         else
-          parentElement = [{ id: idComponent, component: res[Com], type: typehtml, parentId, styles: other.styles }]
+          parentElement = [{
+            id: idComponent,
+            component: res[Com],
+            type: typehtml,
+            parentId,
+            otherCssClases,
+            styles: other.styles
+          }]
 
         uiStyles[`${typehtml}${idComponent}`] = other.styles
         scripts[`${typehtml}${idComponent}`] = other.scripts
 
         other.subElements.forEach(subCom => {
           const subId = Number(ramdomid())
-          tmpSubComponents.push({ id: subId, component: res[subCom.name], styles: subCom.styles, type: subCom.type, moreParams: subCom?.moreParams, parentId: idComponent })
+          tmpSubComponents.push({
+            id: subId,
+            component: res[subCom.name],
+            styles: subCom.styles,
+            otherCssClases: subCom.stylesModifiers != undefined ? [`${subCom.type}${subId}`, Object.keys(subCom.stylesModifiers)].flat() : [`${subCom.type}${subId}`],
+            type: subCom.type,
+            moreParams: subCom?.moreParams,
+            parentId: idComponent
+          })
           // Estilos
           if (subCom.styles != undefined) {
             uiStyles[`${subCom.type}${subId}`] = subCom.styles
@@ -118,7 +151,7 @@ export function DragAndDropProvider({ children }) {
             importSub({ res, tmpSubComponents, subs: subCom.subs, id: subId, uiStyles, uiStylesMediaquerys })
         })
         // console.log(uiStylesMediaquerys);
-        setUiStyles({ uiStyles, uiStylesMediaquerys, scripts })
+        setUiStyles({ uiStyles: { ...uiStyles, ...other?.stylesModifiers }, uiStylesMediaquerys, scripts })
         setSubElements([...subElements, ...parentElement, ...tmpSubComponents])
 
       })
@@ -136,6 +169,7 @@ export function DragAndDropProvider({ children }) {
     let comId = Number(id.replace(/[a-zA-Z]+/, "").replace(".", ""))
     const filteredComponents = parentElements.filter((ele) => ele.id !== comId);
     const filteredSubComponents = subElements.filter((ele) => ele.id !== comId && ele.parentId !== comId);
+
     let ids = []
     subElements.map(ele => {
       if (ele.parentId == comId)
@@ -145,9 +179,32 @@ export function DragAndDropProvider({ children }) {
           ids.push(`${ele2.type}${ele2.id}`)
       })
     })
+
     deleteConfigStyle([id, ...ids])
     setParentElements(filteredComponents);
     setSubElements(filteredSubComponents);
+  }
+
+  /**
+   * Funcion que asigna nuevos selectores si no existe en el array de selectores.
+   * @param {Object} opc Objeto de parametros. 
+   * @param {Number|String} opc.id Identificador del ParentElement/SubElement. 
+   * @param {Boolean} opc.isSubComponent Booleano que determina si es un SubElement. 
+   * @param {String} opc.newCssSelector Nuevo selector css. 
+   */
+  const setNewCssSelector = ({ id, isSubComponent, newCssSelector }) => {
+    let component = {}
+    
+    if (isSubComponent) {
+      component = subElements.filter(ele => ele.id == id)[0]
+      let find = component.otherCssClases.find(ele => ele == newCssSelector)
+      if (!find) component.otherCssClases.push(newCssSelector)
+  } else {
+    component = parentElements.filter(ele => ele.id = id)[0]
+    let find = component.otherCssClases.find(ele => ele == newCssSelector)
+    if (!find) component.otherCssClases.push(newCssSelector)
+    }
+
   }
 
   /**
@@ -189,6 +246,7 @@ export function DragAndDropProvider({ children }) {
             componentUi: active.data.current?.componentUi,
             subElements: active.data.current?.subElements,
             styles: active.data.current?.styles,
+            stylesModifiers: active.data.current?.stylesModifiers,
             scripts: active.data.current?.scripts,
           }
         })
@@ -231,6 +289,7 @@ export function DragAndDropProvider({ children }) {
             componentUi: active.data.current?.componentUi,
             subElements: active.data.current?.subElements,
             styles: active.data.current?.styles,
+            stylesModifiers: active.data.current?.stylesModifiers,
             scripts: active.data.current?.scripts,
           }
         })
@@ -265,13 +324,14 @@ export function DragAndDropProvider({ children }) {
 
       // Si el Componente/Elemento viene del SideBar
       if (active.data.current?.sideBar) {
-         impAndSetComponent({
+        impAndSetComponent({
           fnState: setParentElements, arrayState: parentElements, other: {
             component: active.data.current?.component,
             typehtml: active.data.current?.typehtml,
             componentUi: active.data.current?.componentUi,
             subElements: active.data.current?.subElements,
             styles: active.data.current?.styles,
+            stylesModifiers: active.data.current?.stylesModifiers,
             scripts: active.data.current?.scripts,
           }
         })
@@ -394,7 +454,7 @@ export function DragAndDropProvider({ children }) {
 
   return (
     <DragAndDropContext.Provider
-      value={{ parentElements, subElements, handleDeleteComponent, handleDragEnd }}
+      value={{ parentElements, subElements, handleDeleteComponent, handleDragEnd, setNewCssSelector }}
     >
       {children}
     </DragAndDropContext.Provider>
