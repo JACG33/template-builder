@@ -16,7 +16,7 @@ export const EditorContext = createContext({
   setUiStyles: ({ uiStyles, uiStylesMediaquerys, scripts }) => { },
   scripstRef: {},
   componentCssSelectors: [],
-  setComponentCssSelectors:()=>{},
+  setComponentCssSelectors: () => { },
 
 
   breackPoint: String,
@@ -43,7 +43,7 @@ export function EditorProvider({ children }) {
     normalStyles: { body: {} },
     mediaQuerys: {}
   })
-  const scripstRef = useRef("")
+  const scripstRef = useRef({})
   const cssStylesSheetRef = useRef(`* {\n  padding: 0px;\n  margin: 0px;\n  box-sizing: border-box;\n}\n`)
 
   // Variables para los breackpoints
@@ -274,7 +274,18 @@ export function EditorProvider({ children }) {
       mediaQuerys: { ...cssStylesRef.current.mediaQuerys, mobilex2: { ...cssStylesRef.current.mediaQuerys?.mobilex2, ...uiStylesMediaquerys?.mobilex2 }, tablet: { ...cssStylesRef.current.mediaQuerys?.tablet, ...uiStylesMediaquerys?.tablet }, desktop: { ...cssStylesRef.current.mediaQuerys?.desktop, ...uiStylesMediaquerys?.desktop }, desktopx2: { ...cssStylesRef.current.mediaQuerys?.desktopx2, ...uiStylesMediaquerys?.desktopx2 }, desktopx3: { ...cssStylesRef.current.mediaQuerys?.desktopx3, ...uiStylesMediaquerys?.desktopx3 } },
       normalStyles: { ...configComponent.normalStyles, ...uiStyles },
     }
-    scripstRef.current = { ...scripstRef.current, ...scripts }
+
+    // Intento de dividir los scripts por evento
+    let keyOfScript = Object.keys(scripts)
+    scripstRef.current = {
+      ...scripstRef.current,
+      [scripts[keyOfScript[0]]['type']]: {
+        ...scripstRef.current[scripts[keyOfScript[0]]['type']],
+        ...scripts
+      }
+    }
+
+    // scripstRef.current={...scripstRef.current,...scripts}
     setHeadStyles()
   }
 
@@ -285,13 +296,22 @@ export function EditorProvider({ children }) {
   const deleteConfigStyle = (ids = []) => {
     let normal = Object.assign({}, configComponent.normalStyles)
     let cssQuerys = Object.assign({}, configComponent.mediaQuerys[breackPoint])
+    let scripts = Object.assign({}, scripstRef.current)
 
     let keysQuerys = Object.keys(cssQuerys)
 
+    let keysScripts = Object.keys(scripts)
+
     // Eliminar la configuracion
     ids.forEach(ele => {
+      // Eliminar estilos
       delete normal[ele]
+      // Eliminar scripts
+      keysScripts.forEach(key => {
+        delete scripts[key][ele]
+      })
       keysQuerys.forEach(key => {
+        // Eliminar cssQuerys
         delete cssQuerys[key][ele]
       })
     })
@@ -307,6 +327,7 @@ export function EditorProvider({ children }) {
       normalStyles: { ...normal },
       mediaQuerys: { ...cssStylesRef.current.mediaQuerys, [breackPoint]: { ...cssStylesRef.current.mediaQuerys?.[breackPoint], ...cssQuerys } }
     }
+    scripstRef.current = scripts
     setHeadStyles()
   }
 
@@ -347,7 +368,7 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef, componentCssSelectors,setComponentCssSelectors,
+        configComponent, setConfigComponent, handleEditComponent, openEditor, handleOpenEditor, actualConfig, handleActualConfig, deleteConfigStyle, getConfigComponent, cssStylesSheetRef, setUiStyles, scripstRef, componentCssSelectors, setComponentCssSelectors,
 
         handleBreackPoint, breackPoint, builderZoneRef, bkpoint, previewMode, handlePreviewMode
       }}

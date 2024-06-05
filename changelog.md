@@ -1,5 +1,12 @@
 # Template Builder
 
+## Version 0.0.140 05-JUN-2024
++ Ahora los scripts de los __components UI__ se deben separa por __eventListener__ con el objetivo de no tener multiples delegaciones de eventos, pero actualmente no funciona del todo bien ya que al importar un componente mas de una vez solo se ejecutan las acciones para el primer componente.
++ Se añadio una nueva funcionalidad al __BuilderArea__ para implementar la nueva funcionalidad de los __scripts__.
++ Ahora los __components UI__ no tendran un randomid, se cambio por un dataId que en el __contex DragDropProvider__ se cambiara por un randomid, ya que al cargar todos componetes el randomid no es dinamico se mantiene con el id generado al cargar el componente.
++ Se añadio un nuevo __stylizer__ y se modificaron otros.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.137 03-JUN-2024
 + Ahora se pueden añadir nuevos selectores.
 + Se añadio un nuevo __stylizer__ y se modificaron otros.

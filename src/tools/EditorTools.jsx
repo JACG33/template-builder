@@ -7,7 +7,7 @@ import EditorToolsHeader from './EditorToolsHeader'
 import StylesOfComponent from './StylesOfComponent'
 import WrapperDropDown from './WrapperDropDown'
 import "./editortools.css"
-import { BackgroundColor, Border, BorderRadius, Cursor, Display, FontAndText, Height, Inset, Margin, Opacity, Padding, Position, StateStyle, StyleSelector, TextDecoration, Transitions, Visibility, Width } from './stylizers'
+import { BackgroundColor, Border, BorderRadius, Cursor, Display, FontAndText, Height, Inset, Margin, Opacity, Padding, Position, StateStyle, StyleSelector, TextDecoration, Transitions, Visibility, Width, ZIndex } from './stylizers'
 
 const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES)
@@ -170,7 +170,7 @@ const EditorTools = () => {
     }
 
     // 
-    if (target.name == "transition" || target.name == "opacity" || target.name == "textDecoration") {
+    if (target.name == "transition" || target.name == "opacity" || target.name == "textDecoration" || target.name == "zIndex") {
       let transitions = target.value
       setConfigTemplate({ ...configTemplate, [target.name]: [transitions] })
       stylesString.current = { ...stylesString.current, [target.name]: transitions }
@@ -224,6 +224,7 @@ const EditorTools = () => {
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Position"}>
         <Position configTemplate={configTemplate} handleChange={handleChange} />
+        <ZIndex configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
         <Inset configTemplate={configTemplate} handleChange={handleChange} configRef={stylesString} />
       </WrapperDropDown>
       <WrapperDropDown secctionName={"Border"}>

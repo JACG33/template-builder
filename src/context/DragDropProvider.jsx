@@ -30,7 +30,8 @@ export function DragAndDropProvider({ children }) {
     let Com = other.component
     let typehtml = other.typehtml || typeElement
     let idComponent = Number(ramdomid())
-    let otherCssClases = [`${typehtml}${idComponent}`, Object.keys(other?.stylesModifiers)].flat()
+    let replaceDataId = ramdomid()
+    let otherCssClases = [`${typehtml}${idComponent}`, Object.keys(JSON.parse(JSON?.stringify(other?.stylesModifiers)?.replaceAll("dataId", replaceDataId)))].flat()
 
     /**
      * Funcion recursiva que modifica el tmpSubComponents.
@@ -49,9 +50,9 @@ export function DragAndDropProvider({ children }) {
           id: subId,
           component: res[subCom.name],
           styles: subCom.styles,
-          otherCssClases: subCom.stylesModifiers != undefined ? [`${subCom.type}${subId}`, Object.keys(subCom.stylesModifiers)].flat() : [`${subCom.type}${subId}`],
+          otherCssClases: subCom.stylesModifiers != undefined ? [`${subCom.type}${subId}`, Object.keys(JSON.parse(JSON?.stringify(subCom.stylesModifiers)?.replaceAll("dataId", replaceDataId)))].flat() : [`${subCom.type}${subId}`],
           type: subCom.type,
-          moreParams: subCom?.moreParams,
+          moreParams: subCom?.moreParams ? JSON.parse(JSON?.stringify(subCom?.moreParams)?.replaceAll("dataId", replaceDataId)) : {},
           parentId: id
         })
         // Estilos
@@ -112,7 +113,7 @@ export function DragAndDropProvider({ children }) {
           }]
 
         uiStyles[`${typehtml}${idComponent}`] = other.styles
-        scripts[`${typehtml}${idComponent}`] = other.scripts
+        scripts[`${typehtml}${idComponent}`] = JSON.parse(JSON?.stringify(other.scripts)?.replaceAll("dataId", replaceDataId))
 
         other.subElements.forEach(subCom => {
           const subId = Number(ramdomid())
@@ -120,9 +121,9 @@ export function DragAndDropProvider({ children }) {
             id: subId,
             component: res[subCom.name],
             styles: subCom.styles,
-            otherCssClases: subCom.stylesModifiers != undefined ? [`${subCom.type}${subId}`, Object.keys(subCom.stylesModifiers)].flat() : [`${subCom.type}${subId}`],
+            otherCssClases: subCom.stylesModifiers != undefined ? [`${subCom.type}${subId}`, Object.keys(JSON.parse(JSON?.stringify(subCom.stylesModifiers)?.replaceAll("dataId", replaceDataId)))].flat() : [`${subCom.type}${subId}`],
             type: subCom.type,
-            moreParams: subCom?.moreParams,
+            moreParams: subCom?.moreParams ? JSON.parse(JSON?.stringify(subCom?.moreParams)?.replaceAll("dataId", replaceDataId)) : {},
             parentId: idComponent
           })
           // Estilos
@@ -135,7 +136,7 @@ export function DragAndDropProvider({ children }) {
             uiStyles[`${subCom.type}${subId}`] = subCom.styles
             let keys = Object.keys(subCom.stylesModifiers)
             keys.forEach(key => {
-              uiStyles[`${key}`] = subCom.stylesModifiers[key]
+              uiStyles[`${key.replaceAll("dataId", replaceDataId)}`] = subCom.stylesModifiers[key]
             })
           }
 
@@ -173,12 +174,13 @@ export function DragAndDropProvider({ children }) {
 
     let ids = []
     subElements.map(ele => {
-      if (ele.parentId == comId)
+      if (ele.parentId == comId) {
         ids.push(`${ele.type}${ele.id}`)
-      subElements.map(ele2 => {
-        if (ele2.parentId == ele.id)
-          ids.push(`${ele2.type}${ele2.id}`)
-      })
+        subElements.map(ele2 => {
+          if (ele2.parentId == ele.id)
+            ids.push(`${ele2.type}${ele2.id}`)
+        })
+      }
     })
 
     deleteConfigStyle([id, ...ids])
@@ -218,7 +220,7 @@ export function DragAndDropProvider({ children }) {
   const deleteCssSelector = ({ id, isSubComponent, cssSelector }) => {
     let component = {}
     let selectors = []
-    
+
     if (isSubComponent) {
       component = subElements.filter(ele => ele.id == id)[0]
       selectors = component.otherCssClases.filter(ele => ele !== cssSelector)

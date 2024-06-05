@@ -28,18 +28,26 @@ function IFrame({ children, bkpoint, breackPoint }) {
   tagScript.type = "text/javascript"
   tagScript.dataset.script = "true"
   if (scripstRef.current) {
-    for (const key in scripstRef.current) {
-      tagScript.textContent = scripstRef.current[key]
-    }
+    // Intento de dividir los scripts por evento
+    let textScript = makeScripsBody({ scripts: scripstRef.current })
+    tagScript.textContent = textScript
+
+    // for (const key in scripstRef.current) {
+    //   tagScript.textContent = scripstRef.current[key]
+    // }
   }
   if (!container?.querySelector("[data-script]"))
     container?.insertAdjacentElement('beforeend', tagScript)
   else {
     container.querySelector("[data-script]").textContent = null
     if (scripstRef.current) {
-      for (const key in scripstRef.current) {
-        container.querySelector("[data-script]").textContent += scripstRef.current[key]
-      }
+      // Intento de dividir los scripts por evento
+      let textScript = makeScripsBody({ scripts: scripstRef.current })
+      container.querySelector("[data-script]").textContent = textScript
+
+      // for (const key in scripstRef.current) {
+      //   container.querySelector("[data-script]").textContent += scripstRef.current[key]
+      // }
     }
   }
 
@@ -96,6 +104,7 @@ function WrapperComponent({ }) {
     </>
   )
 }
+
 function DragOverlayWrapper({ }) {
   const [draggin, setDraggin] = useState(null)
 
@@ -124,4 +133,36 @@ function DragOverlayWrapper({ }) {
     node = <MoldeElementOverlay htmlType={draggin?.data.current?.typehtml} />
   }
   return <DragOverlay>{node}</DragOverlay>
+}
+
+const makeScripsBody = ({ scripts }) => {
+
+  const keysTytpes = Object.keys(scripts)
+
+  let scriptText = ``
+
+  keysTytpes.forEach(keyTytpe => {
+    if (keyTytpe == "click") {
+      scriptText += `
+      document.addEventListener("click", e => {
+        const { target } = e
+      `
+      let componentScriptsKeys = Object.keys(scripts[keyTytpe])
+      componentScriptsKeys.forEach(componentScriptsKey => {
+        scriptText += `${scripts[keyTytpe][componentScriptsKey]["click"]}`
+      })
+
+
+      scriptText += `
+      })
+      document.removeEventListener("click",e=>{})
+    `
+
+    }
+
+  })
+
+  return scriptText
+
+
 }

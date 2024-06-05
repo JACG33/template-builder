@@ -30,16 +30,17 @@ const StyleSelector = ({ setState, idActualConfig = null, defaultName = "" }) =>
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
-        <button type="button" className="" style={{ padding: "5px 10px", cursor: "pointer", textWrap: "nowrap", textOverflow: "ellipsis", overflow: "hidden", paddingInline: "2px" }} onClick={toggleDialog}>
-          {stateType.state == "" ? "Css Selector" : stateType.state}
+      <div style={{ display: "flex", justifyContent: "center", gap: "5px", paddingBlock: "20px" }}>
+        <button title={stateType.state == "" ? "Css Selector" : stateType.state} type="button" className="" style={{ position: "relative", padding: "5px 10px", cursor: "pointer", maxWidth: "200px" }} onClick={toggleDialog}>
+          <span style={{ position: "absolute", inset: "-13px -13px auto auto", backgroundColor: "#17a8c8", padding: "3px 6px", borderRadius: "8px" }}>{componentCssSelectors.length}</span>
+          <span style={{ textWrap: "nowrap", textOverflow: "ellipsis", overflow: "hidden", display: "block" }}>{stateType.state == "" ? "Css Selector" : stateType.state}</span>
         </button>
         <dialog ref={dialogRef} className="dialog__size">
           <div className="dialog__size__btns">
             <button type="button" className="dialog__size__btn dialog__size__btn--close" onClick={clickBtnDialog}>X</button>
             {componentCssSelectors.length > 0 && componentCssSelectors.map((ele, index) =>
               <div key={index} style={{ display: "grid", gridTemplateColumns: "1fr 40px", gap: "8px" }}>
-                <button type="button" className="dialog__size__btn" onClick={clickBtnDialog} data-value={`${ele}`}>{ele}</button>
+                <button type="button" style={{ maxWidth: "200px", textWrap: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }} className="dialog__size__btn" onClick={clickBtnDialog} data-value={`${ele}`}>{ele}</button>
                 <button type="button" className="dialog__size__btn" onClick={deleteCssSelector} data-value={`${ele}`}><TrashIcon /></button>
               </div>
             )}

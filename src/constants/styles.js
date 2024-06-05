@@ -14,5 +14,6 @@ export const STYLES = {
   position: "",
   opacity: "",
   textDecoration: "",
-  cursor:""
+  cursor: "",
+  zIndex:""
 }

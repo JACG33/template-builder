@@ -47,7 +47,7 @@ function NavBarUi() {
         inset: "-70px 0px auto 0px",
       },
       stylesModifiers: {
-        "container__links--show": {
+        "container__links--show--dataId": {
           opacity: 1,
           visibility: "visible",
           inset: "74px 0px auto 0px",
@@ -69,7 +69,7 @@ function NavBarUi() {
         }
       },
       moreParams: {
-        "data-links": dataId
+        "data-links": "dataId"
       },
       subs: [
         {
@@ -105,19 +105,30 @@ function NavBarUi() {
       },
       moreParams: {
         icon: "Menu2",
-        id: `toggle${dataId}`
+        id: `toggledataId`
       }
     }
   ]
 
-  const scripts = `  
-  document.addEventListener("click", e => {
-    const { target } = e
-    if (target.closest("#toggle${dataId}")) {
-      document.querySelector("[data-links='${dataId}']").classList.toggle("container__links--show")
-    }
-  })
-  `
+  // const scripts = `  
+  //                 document.addEventListener("click", e => {
+  //                   const { target } = e
+  //                   if (target.closest("#toggledataId")) {
+  //                     document.querySelector("[data-links='dataId']").classList.toggle("container__links--show--dataId")
+  //                   }
+  //                 })
+  //                 document.removeEventListener("click",e=>{})
+  // `
+
+  // Intento de dividir los scripts por evento
+  const scripts = {
+    type: "click",
+    click: `
+          if (target.closest("#toggledataId")) {
+            document.querySelector("[data-links='dataId']").classList.toggle("container__links--show--dataId")
+          }
+    `
+  }
   return (
     <MoldeElement htmlType={"nav"} nameComponent={"VerticalNav"} other={"navbarui"} componentUi={true} subElements={subElements} styles={placeholderUi} stylesModifiers={stylesModifiers} scripts={scripts} />)
 

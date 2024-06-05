@@ -16,5 +16,6 @@ import TextDecoration from './TextDecoration'
 import Transitions from './Transitions'
 import Visibility from './Visibility'
 import Width from "./Width"
+import ZIndex from "./ZIndex"
 
-export { BackgroundColor, Border, BorderRadius, Cursor, Display, FontAndText, Height, Inset, Margin, Opacity, Padding, Position, StateStyle, StyleSelector, TextDecoration, Transitions, Visibility, Width }
+export { BackgroundColor, Border, BorderRadius, Cursor, Display, FontAndText, Height, Inset, Margin, Opacity, Padding, Position, StateStyle, StyleSelector, TextDecoration, Transitions, Visibility, Width,ZIndex }

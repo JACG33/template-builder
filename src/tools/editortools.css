@@ -42,6 +42,15 @@
 .editor__tools__header {
   text-align: center;
   padding: 4px;
+  display: grid;
+}
+
+.editor__tools__header__classname {
+  margin: auto;
+  text-wrap: balance;
+  word-wrap: break-word;
+  display: block;
+  max-width: 200px;
 }
 
 .state__style {
