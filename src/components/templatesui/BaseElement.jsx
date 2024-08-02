@@ -78,7 +78,7 @@ const BaseElement = ({ TypeElement, placeholder, id, children, dataAttribute, da
         {...droppable.listeners}
         {...droppable.attributes}
 
-        className={cssSelector.length > 0 ? cssSelector.join(" ") : `${TypeElement}${id}`}
+        className={ `${TypeElement}${id}`}
         {...aditionalAttributes}
       >
         {children}

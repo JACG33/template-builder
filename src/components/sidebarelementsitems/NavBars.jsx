@@ -45,6 +45,7 @@ function NavBarUi() {
         transition: "all 250ms ease",
         opacity: 0.01,
         inset: "-70px 0px auto 0px",
+        zIndex:1
       },
       stylesModifiers: {
         "container__links--show--dataId": {

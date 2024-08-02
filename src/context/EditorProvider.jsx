@@ -308,7 +308,10 @@ export function EditorProvider({ children }) {
       delete normal[ele]
       // Eliminar scripts
       keysScripts.forEach(key => {
-        delete scripts[key][ele]
+        if(Object.keys(scripts)?.length>0 && Object.keys(scripts[key]).length==0)
+          delete scripts[key]
+        else
+          delete scripts[key]?.[ele]
       })
       keysQuerys.forEach(key => {
         // Eliminar cssQuerys

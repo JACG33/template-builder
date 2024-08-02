@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { useDragAndDropProvider } from '../../hoks/useDragAndDropProvider'
 import { useEditorProvider } from '../../hoks/useEditorProvider'
 import { MoldeElementOverlay } from '../sidebarelementsitems/MoldeElement'
+import { useEffect } from 'react'
 
 export const BuilderArea = () => {
   const { breackPoint, builderZoneRef, bkpoint } = useEditorProvider()
@@ -20,41 +21,49 @@ export const BuilderArea = () => {
 function IFrame({ children, bkpoint, breackPoint }) {
   const { cssStylesSheetRef, scripstRef } = useEditorProvider()
   const [ref, setRef] = useState();
+  const [refresh,setRefresh]=useState(false)
 
   const container = ref?.contentWindow?.document?.body;
   const head = ref?.contentWindow?.document?.head
 
+  useEffect(()=>{
+    if(Object.keys(scripstRef.current).length>0){
+      ref?.contentWindow?.document.location.reload()
+      setRefresh(!refresh)
+    }
+  },[scripstRef.current])
+
   const tagScript = document.createElement("script");
-  tagScript.type = "text/javascript"
+  tagScript.type = "module"
   tagScript.dataset.script = "true"
   if (scripstRef.current) {
-    // Intento de dividir los scripts por evento
     let textScript = makeScripsBody({ scripts: scripstRef.current })
     tagScript.textContent = textScript
-
-    // for (const key in scripstRef.current) {
-    //   tagScript.textContent = scripstRef.current[key]
-    // }
   }
   if (!container?.querySelector("[data-script]"))
     container?.insertAdjacentElement('beforeend', tagScript)
   else {
     container.querySelector("[data-script]").textContent = null
     if (scripstRef.current) {
-      // Intento de dividir los scripts por evento
       let textScript = makeScripsBody({ scripts: scripstRef.current })
       container.querySelector("[data-script]").textContent = textScript
-
-      // for (const key in scripstRef.current) {
-      //   container.querySelector("[data-script]").textContent += scripstRef.current[key]
-      // }
     }
   }
 
   return (
     <iframe ref={setRef} data-iframe="builder" className={`builder__zone ${bkpoint[breackPoint]}`}>
-      {head && createPortal(<style>{cssStylesSheetRef.current}</style>, head)}
-      {container && createPortal(children, container)}
+      {refresh&&(
+        <>
+          {head && createPortal(<style>{cssStylesSheetRef.current}</style>, head)}
+          {container && createPortal(children, container)}
+        </>
+      )}
+      {!refresh&&(
+        <>
+          {head && createPortal(<style>{cssStylesSheetRef.current}</style>, head)}
+          {container && createPortal(children, container)}
+        </>
+      )}
     </iframe>
   );
 }
@@ -99,8 +108,8 @@ function WrapperComponent({ }) {
           parentElements.map((Item) =>
             <Item.component key={Item.id} id={Item.id} styles={Item?.styles} dataParent={Item} moreParams={Item?.moreParams} cssSelector={Item.otherCssClases} />)
         }
+        <DragOverlayWrapper />
       </div>
-      <DragOverlayWrapper />
     </>
   )
 }
@@ -152,17 +161,11 @@ const makeScripsBody = ({ scripts }) => {
         scriptText += `${scripts[keyTytpe][componentScriptsKey]["click"]}`
       })
 
-
       scriptText += `
       })
-      document.removeEventListener("click",e=>{})
     `
-
     }
-
   })
 
   return scriptText
-
-
 }

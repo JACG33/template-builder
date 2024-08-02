@@ -14,15 +14,19 @@ const SideBarElementsRendered = () => {
   const hoverInElement = ({ cssClass = "" }) => {
     let ifr = document.querySelector(".builder__zone").contentWindow
     let elem = ifr.document.querySelector(`.${cssClass}`)
-    elem.style.outline = "1px solid red";
-    elem.style.outlineOffset = "-2px"
+    if(elem){
+      elem.style.outline = "1px solid red";
+      elem.style.outlineOffset = "-2px"
+    }
   }
 
   const hoverOutElement = ({ cssClass = "" }) => {
     let ifr = document.querySelector(".builder__zone").contentWindow
     let elem = ifr.document.querySelector(`.${cssClass}`)
-    elem.style.outline = null
-    elem.style.outlineOffset = null
+    if(elem){
+      elem.style.outline = null
+      elem.style.outlineOffset = null
+    }
   }
 
   const handleSetOpenEditor = ({ id, cssSelector = [] }) => {

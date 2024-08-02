@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.145 02-AGO-2024
++ Se corrigio un bug en los __scripts__ de los componentes prediseñados que algunos no funcionaban correctamente.
++ Ya no es enecesario cargar las clases css de los componentes prediseñados.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.140 05-JUN-2024
 + Ahora los scripts de los __components UI__ se deben separa por __eventListener__ con el objetivo de no tener multiples delegaciones de eventos, pero actualmente no funciona del todo bien ya que al importar un componente mas de una vez solo se ejecutan las acciones para el primer componente.
 + Se añadio una nueva funcionalidad al __BuilderArea__ para implementar la nueva funcionalidad de los __scripts__.
