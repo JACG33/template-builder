@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
-import { useEditorProvider } from '../../hoks/useEditorProvider'
-import { TrashIcon } from '../../components/svg'
+import { useEditorProvider } from '../../../hoks/useEditorProvider'
+import { TrashIcon } from '../../../components/svg'
 
 const StyleSelector = ({ setState, idActualConfig = null, defaultName = "" }) => {
   const { componentCssSelectors } = useEditorProvider()

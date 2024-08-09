@@ -8,9 +8,9 @@ import BaseElement from "./BaseElement"
  * @param {Boolean} opc.dataParent Identificador del ParentElement. 
  * @returns 
  */
-const Link = ({ id, dataParent, children, styles = {}, moreParams = {},cssSelector=[] }) => {
+const Link = ({ id, dataParent, children, styles = {}, moreParams = {},cssSelector=[],innerText }) => {
   return (
-    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"a"} id={id} placeholder={{ ...LinkSyles, ...styles }} dataAttribute={"Link"} dataParent={dataParent} cssSelector={cssSelector}>Link{children}</BaseElement>
+    <BaseElement aditionalAttributes={{ ...moreParams }} TypeElement={"a"} id={id} placeholder={{ ...LinkSyles, ...styles }} dataAttribute={"Link"} dataParent={dataParent} cssSelector={cssSelector} innerText={innerText}>{children}</BaseElement>
   )
 }
 

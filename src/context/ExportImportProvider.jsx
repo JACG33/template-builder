@@ -1,55 +1,70 @@
-import { createContext, useRef, useState } from 'react'
-import { useEditorProvider } from '../hoks/useEditorProvider'
+import { createContext, useRef, useState } from "react";
+import { useEditorProvider } from "../hoks/useEditorProvider";
+import { makeScriptsStructure } from "../helpers/makeScriptsStructure";
 
 export const ExportImportContext = createContext({
   builderArea: null,
   dialogExport: null,
-  handleExport: () => { },
-  handleCloseModal: () => { },
+  handleExport: () => {},
+  handleCloseModal: () => {},
   codeToShow: {},
-  setCodeToShow: () => { },
-})
+  setCodeToShow: () => {},
+});
 
 export function ExportImportProvider({ children }) {
-
-  const { cssStylesSheetRef, scripstRef } = useEditorProvider()
-  const builderArea = useRef(null)
-  const dialogExport = useRef(null)
-  const [codeToShow, setCodeToShow] = useState({ html: "", css: "", js: "" })
-
+  const { cssStylesSheetRef, scripstRef } = useEditorProvider();
+  const builderArea = useRef(null);
+  const dialogExport = useRef(null);
+  const [codeToShow, setCodeToShow] = useState({ html: "", css: "", js: "" });
 
   const cleanHtmlToExport = () => {
-    let innerBuilder = document.querySelector("iframe").contentDocument.querySelector("body").querySelector("div[data-builderarea=builderArea]").cloneNode(true)
-    innerBuilder.querySelectorAll("[data-tool=builder]").forEach(ele => ele.remove())
+    let innerBuilder = document
+      .querySelector("iframe")
+      .contentDocument.querySelector("body")
+      .querySelector("div[data-builderarea=builderArea]")
+      .cloneNode(true);
 
-    let tmp = innerBuilder.innerHTML
-    let newHtml = ``
+    innerBuilder
+      .querySelectorAll("[data-tool=builder]")
+      .forEach((ele) => ele.remove());
+
+    let tmp = innerBuilder.innerHTML;
+    let newHtml = ``;
 
     for (let i = 0; i < tmp.length; i++) {
-      newHtml += tmp[i]
-      if (tmp[i] == ">")
-        newHtml += `\n`
+      newHtml += tmp[i];
+      if (tmp[i] == ">") newHtml += `\n`;
     }
-    
-    return newHtml
-  }
+    return newHtml;
+  };
 
-  const handleCloseModal = () => dialogExport.current.close()
+  const handleCloseModal = () => dialogExport.current.close();
 
-  const getHtml = () => cleanHtmlToExport()
-  const getCss = () => cssStylesSheetRef.current
-  const getJs = () => { let tmp = ""; for (const key in scripstRef?.current) { tmp += scripstRef?.current[key] } return tmp }
+  const getHtml = () => cleanHtmlToExport();
+  const getCss = () => cssStylesSheetRef.current;
+  const getJs = () => makeScriptsStructure({ script: scripstRef?.current });
 
   const handleExport = () => {
-    setCodeToShow({ ...codeToShow, html: getHtml(), css: getCss(), js: getJs() })
-    dialogExport.current.showModal()
-  }
+    setCodeToShow({
+      ...codeToShow,
+      html: getHtml(),
+      css: getCss(),
+      js: getJs(),
+    });
+    dialogExport.current.showModal();
+  };
 
   return (
     <ExportImportContext.Provider
-      value={{ builderArea, dialogExport, handleExport, handleCloseModal, codeToShow }}
+      value={{
+        builderArea,
+        dialogExport,
+        handleExport,
+        handleCloseModal,
+        codeToShow,
+      }}
     >
       {children}
     </ExportImportContext.Provider>
-  )
+  );
 }

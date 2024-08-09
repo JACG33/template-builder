@@ -17,5 +17,6 @@ import Transitions from './Transitions'
 import Visibility from './Visibility'
 import Width from "./Width"
 import ZIndex from "./ZIndex"
+import EditorTextOfComponents from "./EditorTextOfComponents"
 
-export { BackgroundColor, Border, BorderRadius, Cursor, Display, FontAndText, Height, Inset, Margin, Opacity, Padding, Position, StateStyle, StyleSelector, TextDecoration, Transitions, Visibility, Width,ZIndex }
+export { BackgroundColor, Border, BorderRadius, Cursor, Display, FontAndText, Height, Inset, Margin, Opacity, Padding, Position, StateStyle, StyleSelector, TextDecoration, Transitions, Visibility, Width,ZIndex,EditorTextOfComponents }

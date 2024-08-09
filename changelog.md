@@ -1,5 +1,11 @@
 # Template Builder
 
+## Version 0.0.155 09-AGO-2024
++ Se cambio de ubicacion los stylizers a la carpeta components.
++ Ahora se puede editar el texto de los componentes.
++ Posiblemente en la siguiente version se haga un cambio/restructuraion del proyecto, ya que la funcionalidades agragadas hasta ahora han hecho que sea un poco más complejo la forma en la que se incorpora el codigo.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.145 02-AGO-2024
 + Se corrigio un bug en los __scripts__ de los componentes prediseñados que algunos no funcionaban correctamente.
 + Ya no es enecesario cargar las clases css de los componentes prediseñados.
