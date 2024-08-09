@@ -1,11 +1,10 @@
 import { DragOverlay, useDndMonitor, useDroppable } from "@dnd-kit/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { makeScriptsStructure } from "../../helpers/makeScriptsStructure";
 import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider";
 import { useEditorProvider } from "../../hoks/useEditorProvider";
-import { MoldeElementOverlay } from "../sidebarelementsitems/MoldeElement";
-import { useEffect } from "react";
-import { makeScriptsStructure } from "../../helpers/makeScriptsStructure";
+import { MoldeElementOverlay } from "../sidebar-elegible-items/elegible-list/MoldeElement";
 
 export const BuilderArea = () => {
   const { breackPoint, builderZoneRef, bkpoint } = useEditorProvider();

@@ -53,7 +53,7 @@ const BaseElement = ({
       open: true,
       cssClass: `${TypeElement}${id}`,
       cssSelector,
-      textComponent: textOfComponent == "" ? innerText : textOfComponent,
+      textComponent:  innerText,
     });
   }, []);
 
@@ -104,7 +104,7 @@ const BaseElement = ({
             open: true,
             cssClass: `${TypeElement}${id}`,
             cssSelector,
-            textComponent: textOfComponent == "" ? innerText : textOfComponent,
+            textComponent: innerText ,
           });
         }}
         ref={droppable.setNodeRef}

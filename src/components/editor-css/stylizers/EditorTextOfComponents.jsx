@@ -2,24 +2,37 @@ import React from "react";
 import { useDragAndDropProvider } from "../../../hoks/useDragAndDropProvider";
 import { useEditorProvider } from "../../../hoks/useEditorProvider";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const EditorTextOfComponents = () => {
-  const {changeTextOfComponent }=useDragAndDropProvider()
-  const { actualConfig,textOfComponent}=useEditorProvider()
+  const { changeTextOfComponent } = useDragAndDropProvider();
+  const { actualConfig } = useEditorProvider();
 
-  const [texta,setTexta]=useState(textOfComponent)
+  const [texta, setTexta] = useState();
 
   const hdlTexta = (e) => {
-    setTexta(e.target.textContent)
-    console.log(e.target.value)
-    changeTextOfComponent({id:actualConfig.id,isSubComponent:actualConfig.isSubComponent,text:e.target.value})
-  }
+    setTexta(e.target.value);
+    changeTextOfComponent({
+      id: actualConfig.id,
+      isSubComponent: actualConfig.isSubComponent,
+      text: e.target.value,
+    });
+  };
 
-  return <>
-    <textarea name="" id="" onChange={hdlTexta} style={{resize:"none",height:"300px"}} value={texta}>
-      {texta}
-    </textarea>
-  </>
-}
+  useEffect(() => {
+    if (actualConfig.text == "") setTexta("");
+    else setTexta(actualConfig.text);
+  }, [actualConfig.text]);
 
-export default EditorTextOfComponents
+  return (
+    <textarea
+      name="textof"
+      id="textof"
+      onChange={hdlTexta}
+      style={{ resize: "none", height: "200px" }}
+      value={texta}
+    />
+  );
+};
+
+export default EditorTextOfComponents;

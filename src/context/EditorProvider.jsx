@@ -2,7 +2,6 @@ import { createContext, useState, useRef } from "react";
 
 export const EditorContext = createContext({
   configComponent: false,
-  textOfComponent: "",
   setConfigComponent: () => {},
   handleEditComponent: () => {},
   openEditor: false,
@@ -17,12 +16,9 @@ export const EditorContext = createContext({
     setUi = false,
     textComponent = "",
   }) => {},
-  actualConfig: { nameConfig: "",
-    isSubComponent: false,
-    id: null,
-    text:""},
+  actualConfig: { nameConfig: "", isSubComponent: false, id: null, text: "" },
   setActualConfig: () => {},
-  handleActualConfig: ({ nameConfig, id, isSubComponent }) => {},
+  handleActualConfig: ({ nameConfig, id, isSubComponent,text }) => {},
   deleteConfigStyle: (ids = []) => {},
   getConfigComponent: () => {},
   cssStylesSheetRef: null,
@@ -30,7 +26,6 @@ export const EditorContext = createContext({
   scripstRef: {},
   componentCssSelectors: [],
   setComponentCssSelectors: () => {},
-  hdlTextOfComponent: () => {},
 
   breackPoint: String,
   setBreackPoint: () => {},
@@ -51,11 +46,10 @@ export function EditorProvider({ children }) {
     nameConfig: "",
     isSubComponent: false,
     id: null,
-    text:""
+    text: "",
   });
   const [openEditor, setOpenEditor] = useState(false);
   const [componentCssSelectors, setComponentCssSelectors] = useState([]);
-  const [textOfComponent, setTextOfComponent] = useState("");
   const cssStylesRef = useRef({
     normalStyles: { body: {} },
     mediaQuerys: {},
@@ -130,20 +124,17 @@ export function EditorProvider({ children }) {
     }
   };
 
-  const hdlTextOfComponent = (text) => {
-    setTextOfComponent(text);
-  };
-
   /**
    * Funcion que asigna una configuracion de estilos.
    * @param {Object} opc Objeto de opciones.
    * @param {String} opc.nameConfig Nombre de la Configuracion/EstiloCss.
    * @param {String|Number} opc.id Identificador del componete.
    * @param {Boolean} opc.isSubComponent Booleano que determina si es un SubElelement.
+   * @param {String} opc.text Texto del componente.
    * @returns
    */
-  const handleActualConfig = ({ nameConfig, id, isSubComponent }) =>
-    setActualConfig({ nameConfig, id, isSubComponent });
+  const handleActualConfig = ({ nameConfig, id, isSubComponent ,text}) =>
+    setActualConfig({ nameConfig, id, isSubComponent,text });
 
   /**
    * Funcion para tranformar texto de camelCase a lowercase y separar con guion medio (-).
@@ -284,7 +275,6 @@ export function EditorProvider({ children }) {
     textComponent = "",
   }) => {
     if (previewMode == true) return;
-    if (textComponent != "") setTextOfComponent(textComponent);
     if (open == true || setUi == true) {
       setOpenEditor(true);
       if (
@@ -325,7 +315,7 @@ export function EditorProvider({ children }) {
         };
       }
       if (cssSelector.length > 0) setComponentCssSelectors(cssSelector);
-      handleActualConfig({ nameConfig: cssClass, id, isSubComponent });
+      handleActualConfig({ nameConfig: cssClass, id, isSubComponent,text:textComponent });
       setHeadStyles([cssClass, conf]);
     } else {
       setComponentCssSelectors([]);
@@ -333,6 +323,7 @@ export function EditorProvider({ children }) {
         id: null,
         isSubComponent: false,
         nameConfig: null,
+        text:""
       });
       setOpenEditor(false);
     }
@@ -531,8 +522,6 @@ export function EditorProvider({ children }) {
         scripstRef,
         componentCssSelectors,
         setComponentCssSelectors,
-        textOfComponent,
-        hdlTextOfComponent,
 
         handleBreackPoint,
         breackPoint,

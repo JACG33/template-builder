@@ -1,4 +1,4 @@
-import { WrapperComponents } from '../../layouts/WrapperComponents'
+import { WrapperComponents } from '../../../layouts/WrapperComponents'
 import MoldeElement from './MoldeElement'
 
 const DivElement = () => {

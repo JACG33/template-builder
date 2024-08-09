@@ -3,8 +3,8 @@ import {
   DivStyles,
   LinkSyles,
   VerticalNavStyles,
-} from "../../constants/baseStyle";
-import { WrapperComponents } from "../../layouts/WrapperComponents";
+} from "../../../constants/baseStyle";
+import { WrapperComponents } from "../../../layouts/WrapperComponents";
 import MoldeElement from "./MoldeElement";
 
 const NavBars = () => {
@@ -39,6 +39,7 @@ function NavBarUi() {
       moreParams: {
         href: "#",
       },
+      innerText:"Link"
     },
     {
       name: "Div",
@@ -54,7 +55,7 @@ function NavBarUi() {
         display: "flex",
         flexDirection: "column",
         gap: "10px",
-        height:"auto"
+        height: "auto",
       },
       stylesModifiers: {
         "container__links--show--dataId": {
@@ -126,7 +127,7 @@ function NavBarUi() {
     `,
   };
   return (
-    <MoldeElement
+    <MoldeElement 
       htmlType={"nav"}
       nameComponent={"VerticalNav"}
       other={"navbarui"}

@@ -5,13 +5,21 @@ import { ramdomid } from "../helpers/randomid";
 export const DragAndDropContext = createContext({
   parentElements: [],
   subElements: [],
-  handleDeleteComponent: (id) => {},
+  handleDeleteComponent: (id = 0) => {},
   handleDragginElement: () => {},
   handleDragEnd: (e) => {},
-  setNewCssSelector: ({ id, isSubComponent, newCssSelector }) => {},
-  deleteCssSelector: ({ id, isSubComponent, cssSelector }) => {},
+  setNewCssSelector: ({
+    id = 0,
+    isSubComponent = false,
+    newCssSelector = "",
+  }) => {},
+  deleteCssSelector: ({
+    id = 0,
+    isSubComponent = false,
+    cssSelector = "",
+  }) => {},
 
-  changeTextOfComponent :({ isSubComponent, text, id })=>{}
+  changeTextOfComponent: ({ isSubComponent = false, text = "", id = 0 }) => {},
 });
 
 export function DragAndDropProvider({ children }) {
@@ -72,36 +80,15 @@ export function DragAndDropProvider({ children }) {
     }) => {
       subs.forEach((subCom) => {
         const subId = Number(ramdomid());
-        tmpSubComponents.push({
-          id: subId,
-          component: res[subCom.name],
-          styles: subCom.styles,
-          otherCssClases:
-            subCom.stylesModifiers != undefined
-              ? [
-                  `${subCom.type}${subId}`,
-                  Object.keys(
-                    JSON.parse(
-                      JSON?.stringify(subCom.stylesModifiers)?.replaceAll(
-                        "dataId",
-                        replaceDataId
-                      )
-                    )
-                  ),
-                ].flat()
-              : [`${subCom.type}${subId}`],
-          type: subCom.type,
-          moreParams: subCom?.moreParams
-            ? JSON.parse(
-                JSON?.stringify(subCom?.moreParams)?.replaceAll(
-                  "dataId",
-                  replaceDataId
-                )
-              )
-            : {},
-          parentId: id,
-          innerText: other?.textToComponent,
-        });
+        tmpSubComponents.push(
+          createNewObjectToImportComponent({
+            id,
+            replaceDataId,
+            res,
+            subCom,
+            subId,
+          })
+        );
         // Estilos
         if (subCom.styles != undefined) {
           uiStyles[`${subCom.type}${subId}`] = subCom.styles;
@@ -142,7 +129,7 @@ export function DragAndDropProvider({ children }) {
     };
 
     if (other?.componentUi == true) {
-      import("../components/templatesui/").then((res) => {
+      import("../components/items-to-render-in-builder-area/").then((res) => {
         let uiStyles = {};
         let uiStylesMediaquerys = {};
         let scripts = {};
@@ -181,35 +168,15 @@ export function DragAndDropProvider({ children }) {
 
         other.subElements.forEach((subCom) => {
           const subId = Number(ramdomid());
-          tmpSubComponents.push({
-            id: subId,
-            component: res[subCom.name],
-            styles: subCom.styles,
-            otherCssClases:
-              subCom.stylesModifiers != undefined
-                ? [
-                    `${subCom.type}${subId}`,
-                    Object.keys(
-                      JSON.parse(
-                        JSON?.stringify(subCom.stylesModifiers)?.replaceAll(
-                          "dataId",
-                          replaceDataId
-                        )
-                      )
-                    ),
-                  ].flat()
-                : [`${subCom.type}${subId}`],
-            type: subCom.type,
-            moreParams: subCom?.moreParams
-              ? JSON.parse(
-                  JSON?.stringify(subCom?.moreParams)?.replaceAll(
-                    "dataId",
-                    replaceDataId
-                  )
-                )
-              : {},
-            parentId: idComponent,
-          });
+          tmpSubComponents.push(
+            createNewObjectToImportComponent({
+              id: idComponent,
+              replaceDataId,
+              res,
+              subCom,
+              subId,
+            })
+          );
           // Estilos
           if (subCom.styles != undefined) {
             uiStyles[`${subCom.type}${subId}`] = subCom.styles;
@@ -256,7 +223,7 @@ export function DragAndDropProvider({ children }) {
         setSubElements([...subElements, ...parentElement, ...tmpSubComponents]);
       });
     } else
-      import("../components/templatesui/").then((res) =>
+      import("../components/items-to-render-in-builder-area/").then((res) =>
         fnState([
           ...arrayState,
           {
@@ -268,6 +235,58 @@ export function DragAndDropProvider({ children }) {
           },
         ])
       );
+  };
+
+  /**
+   * Funcion que crea un objeto de parametro para crear un nuevo componente
+   * @param {Object} opc Objecto de parametros.
+   * @param {Object} opc.subCom Objecto de parametros.
+   * @param {Number} opc.replaceDataId Ramdom id.
+   * @param {Number} opc.subId Ramdom id.
+   * @param {Response} opc.res Objeto com informacion de un componente ubicado en el directorio items-to-render-in-builder-area.
+   * @param {Number} opc.id Identificador del parentElement.
+   * @param {other} opc.subCom Objecto de parametros adicionales.
+   */
+  const createNewObjectToImportComponent = ({
+    subCom,
+    replaceDataId,
+    subId,
+    res,
+    id,
+    other,
+  }) => {
+    return {
+      id: subId,
+      component: res[subCom.name],
+      styles: subCom.styles,
+      otherCssClases:
+        subCom.stylesModifiers != undefined
+          ? [
+              `${subCom.type}${subId}`,
+              Object.keys(
+                JSON.parse(
+                  JSON?.stringify(subCom.stylesModifiers)?.replaceAll(
+                    "dataId",
+                    replaceDataId
+                  )
+                )
+              ),
+            ].flat()
+          : [`${subCom.type}${subId}`],
+      type: subCom.type,
+      moreParams: subCom?.moreParams
+        ? JSON.parse(
+            JSON?.stringify(subCom?.moreParams)?.replaceAll(
+              "dataId",
+              replaceDataId
+            )
+          )
+        : {},
+      parentId: id,
+      innerText: other?.textToComponent
+        ? other?.textToComponent
+        : subCom.innerText,
+    };
   };
 
   /**
@@ -298,14 +317,14 @@ export function DragAndDropProvider({ children }) {
 
   /**
    * Funcion que modifica el texto de un componente
-   * @param {Object} opc Objeto de parametros. 
-   * @param {Boolean} opc.isSubComponent Boolean. 
-   * @param {String} opc.text Nuevo texto. 
-   * @param {Number|String} opc.id Identificador del componente. 
+   * @param {Object} opc Objeto de parametros.
+   * @param {Boolean} opc.isSubComponent Boolean.
+   * @param {String} opc.text Nuevo texto.
+   * @param {Number|String} opc.id Identificador del componente.
    */
   const changeTextOfComponent = ({ isSubComponent, text, id }) => {
     if (isSubComponent) {
-      let clone = Object.assign([],subElements);
+      let clone = Object.assign([], subElements);
       clone = clone.map((ele) => {
         if (ele.id == id) {
           return {
@@ -319,7 +338,7 @@ export function DragAndDropProvider({ children }) {
 
       setSubElements(clone);
     } else {
-      let clone = Object.assign([],parentElements);
+      let clone = Object.assign([], parentElements);
       clone = clone.map((ele) => {
         if (ele.id == id) {
           return {

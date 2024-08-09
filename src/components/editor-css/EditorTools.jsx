@@ -40,7 +40,6 @@ const EditorTools = () => {
     handleActualConfig,
     breackPoint,
     deleteConfigStyle,
-    textOfComponent,
   } = useEditorProvider();
   const { setNewCssSelector, deleteCssSelector } = useDragAndDropProvider();
 
@@ -502,11 +501,9 @@ const EditorTools = () => {
         />
       </WrapperDropDown>
 
-      {textOfComponent != "" && (
         <WrapperDropDown secctionName={"Text Of Component"}>
           <EditorTextOfComponents/>
         </WrapperDropDown>
-      )}
     </div>
   );
 };

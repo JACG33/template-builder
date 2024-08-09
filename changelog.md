@@ -1,5 +1,11 @@
 # Template Builder
 
+## Version 0.0.156 09-AGO-2024
++ Se cambio de ubicacion los componentes templatesui a items-to-render-in-builder-area.
++ Se cambio de ubicacion los componentes addcomponent, sidebarelementsitems a sidebar-elegible-items.
++ Se corrigio un bug del editor de texto añadido en la version 0.0.155.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.155 09-AGO-2024
 + Se cambio de ubicacion los stylizers a la carpeta components.
 + Ahora se puede editar el texto de los componentes.
