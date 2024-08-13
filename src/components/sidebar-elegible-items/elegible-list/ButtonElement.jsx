@@ -1,4 +1,4 @@
-import { WrapperComponents } from "../../../layouts/WrapperComponents";
+import { WrapperComponents } from "../../wrapper-components/WrapperComponents";
 import MoldeElement from "./MoldeElement";
 
 const ButtonElement = () => {

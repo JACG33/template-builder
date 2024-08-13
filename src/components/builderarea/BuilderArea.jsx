@@ -127,6 +127,7 @@ function WrapperComponent({}) {
 
 function DragOverlayWrapper({}) {
   const [draggin, setDraggin] = useState(null);
+  const { dragginComponent, hdlDragginComponent } = useDragAndDropProvider();
 
   let node = (
     <div
@@ -146,11 +147,16 @@ function DragOverlayWrapper({}) {
     onDragStart: (e) => {
       setDraggin(e.active);
     },
+    onDragMove: (e) => {
+      if (dragginComponent == false) hdlDragginComponent(true);
+    },
     onDragCancel: (e) => {
       setDraggin(null);
+      if (dragginComponent == true) hdlDragginComponent(false);
     },
     onDragEnd: (e) => {
       setDraggin(null);
+      if (dragginComponent == true) hdlDragginComponent(false);
     },
   });
   if (draggin?.data.current?.sideBar == true) {

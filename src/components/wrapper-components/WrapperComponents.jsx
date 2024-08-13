@@ -5,7 +5,7 @@ export const WrapperComponents = ({ children, secctionName }) => {
   const [openSection, setopenSection] = useState(false)
   const handleOpen = () => setopenSection(!openSection)
   return (
-    <div className={`wrapper__component ${openSection == true ? "bg-slate-300 text-slate-600" : "hover:bg-slate-400"}`}>
+    <div className={`wrapper__component`}>
       <div className='wrapper__component__header' onClick={handleOpen}>
         <span className='wrapper__component__header__span'>{secctionName}</span>
         {/* <button type="button" className='wrapper__component__header__btn py-1 px-2 rounded-lg'> */}

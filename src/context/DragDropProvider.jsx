@@ -5,8 +5,10 @@ import { ramdomid } from "../helpers/randomid";
 export const DragAndDropContext = createContext({
   parentElements: [],
   subElements: [],
+  dragginComponent:false,
   handleDeleteComponent: (id = 0) => {},
   handleDragginElement: () => {},
+  hdlDragginComponent: (Boolean) => {},
   handleDragEnd: (e) => {},
   setNewCssSelector: ({
     id = 0,
@@ -25,6 +27,7 @@ export const DragAndDropContext = createContext({
 export function DragAndDropProvider({ children }) {
   const [parentElements, setParentElements] = useState([]);
   const [subElements, setSubElements] = useState([]);
+  const [dragginComponent,setDragginComponent]=useState(false)
   const { deleteConfigStyle, setUiStyles, setComponentCssSelectors } =
     useEditorProvider();
 
@@ -320,44 +323,30 @@ export function DragAndDropProvider({ children }) {
    * @param {Object} opc Objeto de parametros.
    * @param {Boolean} opc.isSubComponent Boolean.
    * @param {String} opc.text Nuevo texto.
-   * @param {Number|String} opc.id Identificador del componente.
+   * @param {Number} opc.id Identificador del componente.
    */
   const changeTextOfComponent = ({ isSubComponent, text, id }) => {
-    if (isSubComponent) {
-      let clone = Object.assign([], subElements);
-      clone = clone.map((ele) => {
-        if (ele.id == id) {
-          return {
-            ...ele,
-            innerText: text,
-          };
-        } else {
-          return ele;
-        }
-      });
+    let clone = [];
+    if (isSubComponent) clone = Object.assign([], subElements);
+    else clone = Object.assign([], parentElements);
 
-      setSubElements(clone);
-    } else {
-      let clone = Object.assign([], parentElements);
-      clone = clone.map((ele) => {
-        if (ele.id == id) {
-          return {
-            ...ele,
-            innerText: text,
-          };
-        } else {
-          return ele;
-        }
-      });
+    clone = clone.map((ele) => {
+      if (ele.id == id)
+        return {
+          ...ele,
+          innerText: text,
+        };
+      else return ele;
+    });
 
-      setParentElements(clone);
-    }
+    if (isSubComponent) setSubElements(clone);
+    else setParentElements(clone);
   };
 
   /**
    * Funcion que asigna nuevos selectores si no existe en el array de selectores.
    * @param {Object} opc Objeto de parametros.
-   * @param {Number|String} opc.id Identificador del ParentElement/SubElement.
+   * @param {Number} opc.id Identificador del ParentElement/SubElement.
    * @param {Boolean} opc.isSubComponent Booleano que determina si es un SubElement.
    * @param {String} opc.newCssSelector Nuevo selector css.
    */
@@ -378,7 +367,7 @@ export function DragAndDropProvider({ children }) {
   /**
    * Funcion que elimina selectores css del array de selectores.
    * @param {Object} opc Objeto de parametros.
-   * @param {Number|String} opc.id Identificador del ParentElement/SubElement.
+   * @param {Number} opc.id Identificador del ParentElement/SubElement.
    * @param {Boolean} opc.isSubComponent Booleano que determina si es un SubElement.
    * @param {String} opc.cssSelector Selector css a eliminar.
    */
@@ -418,7 +407,7 @@ export function DragAndDropProvider({ children }) {
 
   /**
    * Funcion que busca index en un array.
-   * @param {String|Number} id Id del elemnto.
+   * @param {Number} id Id del elemnto.
    * @param {Array} arrayData Array de los elemntos.
    * @returns Index del elemento encontrado.
    */
@@ -445,9 +434,19 @@ export function DragAndDropProvider({ children }) {
       return newEle;
     });
   };
+  
+  /**
+   * Funcion que indicara si un componente viene del sidebar, para que los componentes renderizados sean o no dropeables.
+   * @param {Boolean} change Booleano que inidica si un componente viene del sidebar 
+   */
+  const hdlDragginComponent = (change) => {
+    setDragginComponent(change)
+  }
+  
 
   const handleDragEnd = (e) => {
     const { active, over } = e;
+    console.log(e)
 
     // Drop en el BuilderArea
     if (over.data.current.typeElement == "builderArea") {
@@ -796,8 +795,10 @@ export function DragAndDropProvider({ children }) {
       value={{
         parentElements,
         subElements,
+        dragginComponent,
         handleDeleteComponent,
         handleDragEnd,
+        hdlDragginComponent,
         setNewCssSelector,
         deleteCssSelector,
         changeTextOfComponent,

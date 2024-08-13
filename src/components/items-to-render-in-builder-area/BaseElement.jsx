@@ -28,10 +28,10 @@ const BaseElement = ({
   cssSelector = [],
   innerText = "",
 }) => {
-  const { configComponent, handleOpenEditor, breackPoint, textOfComponent } =
+  const { configComponent, handleOpenEditor, breackPoint } =
     useEditorProvider();
   const styles = useRef(placeholder);
-  const { subElements } = useDragAndDropProvider();
+  const { subElements, dragginComponent } = useDragAndDropProvider();
 
   if (
     breackPoint == "mobilex2" ||
@@ -53,7 +53,7 @@ const BaseElement = ({
       open: true,
       cssClass: `${TypeElement}${id}`,
       cssSelector,
-      textComponent:  innerText,
+      textComponent: innerText,
     });
   }, []);
 
@@ -68,70 +68,99 @@ const BaseElement = ({
     },
   });
 
-  // Droppable Hook
-  const droppable = useDroppable({
-    id: `${id}-droppable`,
-    data: {
-      idIndex: id,
-      id: `${TypeElement}${id}`,
-      parent: dataParent?.parentId,
-      overArea: true,
-    },
-  });
-
   return (
-    <div
-      ref={draggable.setNodeRef}
-      {...draggable.listeners}
-      {...draggable.attributes}
-      style={{ position: "relative" }}
-    >
-      <InteractionAreas
-        TypeElement={TypeElement}
-        id={id}
-        dataParent={dataParent}
-      />
+    <>
+      {dragginComponent == true && (
+        <div style={{ position: "relative" }}>
+          <InteractionAreas
+            TypeElement={TypeElement}
+            id={id}
+            dataParent={dataParent}
+          />
+          <TypeElement
+            onClickCapture={(e) => {
+              e.preventDefault();
+              handleOpenEditor({
+                conf: styles.current?.[`${TypeElement}${id}`]
+                  ? styles.current[`${TypeElement}${id}`]
+                  : {},
+                id,
+                isSubComponent: dataParent?.parentId ? true : false,
+                open: true,
+                cssClass: `${TypeElement}${id}`,
+                cssSelector,
+                textComponent: innerText,
+              });
+            }}
+            ref={draggable.setNodeRef}
+            {...draggable.listeners}
+            {...draggable.attributes}
+            className={`${TypeElement}${id}`}
+            {...aditionalAttributes}
+          >
+            {innerText}
+            {children}
+            {subElements.length > 0 &&
+              subElements.map((Item) => {
+                if (Item?.parentId == id)
+                  return (
+                    <Item.component
+                      key={Item.id}
+                      id={Item.id}
+                      styles={Item?.styles}
+                      dataParent={Item}
+                      moreParams={Item?.moreParams}
+                      cssSelector={Item.otherCssClases}
+                      innerText={Item?.innerText}
+                    />
+                  );
+              })}
+          </TypeElement>
+        </div>
+      )}
 
-      <TypeElement
-        onClickCapture={(e) => {
-          e.preventDefault();
-          handleOpenEditor({
-            conf: styles.current?.[`${TypeElement}${id}`]
-              ? styles.current[`${TypeElement}${id}`]
-              : {},
-            id,
-            isSubComponent: dataParent?.parentId ? true : false,
-            open: true,
-            cssClass: `${TypeElement}${id}`,
-            cssSelector,
-            textComponent: innerText ,
-          });
-        }}
-        ref={droppable.setNodeRef}
-        {...droppable.listeners}
-        {...droppable.attributes}
-        className={`${TypeElement}${id}`}
-        {...aditionalAttributes}
-      >
-        {innerText}
-        {children}
-        {subElements.length > 0 &&
-          subElements.map((Item) => {
-            if (Item?.parentId == id)
-              return (
-                <Item.component
-                  key={Item.id}
-                  id={Item.id}
-                  styles={Item?.styles}
-                  dataParent={Item}
-                  moreParams={Item?.moreParams}
-                  cssSelector={Item.otherCssClases}
-                  innerText={Item?.innerText}
-                />
-              );
-          })}
-      </TypeElement>
-    </div>
+      {dragginComponent == false && (
+        <TypeElement
+          onClickCapture={(e) => {
+            e.preventDefault();
+            handleOpenEditor({
+              conf: styles.current?.[`${TypeElement}${id}`]
+                ? styles.current[`${TypeElement}${id}`]
+                : {},
+              id,
+              isSubComponent: dataParent?.parentId ? true : false,
+              open: true,
+              cssClass: `${TypeElement}${id}`,
+              cssSelector,
+              textComponent: innerText,
+            });
+          }}
+          ref={draggable.setNodeRef}
+          {...draggable.listeners}
+          {...draggable.attributes}
+          className={`${TypeElement}${id}`}
+          {...aditionalAttributes}
+        >
+          {innerText}
+          {children}
+          {subElements.length > 0 &&
+            subElements.map((Item) => {
+              if (Item?.parentId == id)
+                return (
+                  <Item.component
+                    key={Item.id}
+                    id={Item.id}
+                    styles={Item?.styles}
+                    dataParent={Item}
+                    moreParams={Item?.moreParams}
+                    cssSelector={Item.otherCssClases}
+                    innerText={Item?.innerText}
+                  />
+                );
+            })}
+        </TypeElement>
+      )}
+    </>
   );
 };
 
