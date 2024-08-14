@@ -1,5 +1,8 @@
 # Template Builder
 
+## Version 0.0.172 14-AGO-2024
++ Se cambio los estilos de un componente para mejorar la experiencia visual.
+
 ## Version 0.0.170 13-AGO-2024
 + Se cambio de ubicacion los comoponentes de layouts a la carpeta components/wrapper-components, ya que este no era un layout.
 + Se agrego un nuevo estado al Contex de DragDrop para evaluar cuando se esta haciendo drag de un componente, esto es para renderizar dos casos si este estado es true se renderiza un div con el componente y 3 divs internos que indican en que lugar se colocara el componente con el que se esta haciendo draggin, de lo contrario solo se renderiza el componente, en la version anterior el funcionamieto era como el true del estado, pero lo cambio ya que al exportar el __HTML__ lo hace con todos estos indicadores, ahora el __HTML__ estara un poco más limpio.
