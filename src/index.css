@@ -1,57 +1,16 @@
-@import "./assets/base.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-body {
-  background-color: var(--dark-950);
+:root{
+   interpolate-size: allow-keywords;
 }
-
-.builder__area {
-  display: grid;
-  grid-template-rows: 40px 1fr;
-  grid-template-columns: 50px 1fr 270px;
-}
-
-.top__area {
-  width: 100%;
-  background-color: blueviolet;
-  background-color: var(--dark-900);
-  border-bottom: 1px solid var(--dark-500);
-  grid-column: 1/4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.builder__aside {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-block: 8px;
-  background-color: var(--dark-900);
-  height: calc(100dvh - 40px);
-}
-
-.builder__aside--left {
-  width: 50px;
-}
-
-.builder__aside--right {
-  width: 270px;
-  overflow-y: auto;
-}
-
-.wrap__builder {
-  overflow: hidden;
-  position: relative;
-  /* display: flex; */
-}
-
 
 .builder__zone {
   width: 99%;
-  height: calc(100dvh - 60px);
   background-color: #FFF;
   overflow-y: auto;
-  margin: 1% auto;
+  margin: auto;
 }
 
 .builder__zone--mobile {
@@ -104,36 +63,4 @@ body {
   transform: scale(0.6) translate(-420px, 0px);
   position: absolute;
   inset: 0px 10px;
-}
-
-.element__drag__over {
-  position: relative;
-  opacity: .85;
-  transition: outline 200ms ease-in-out;
-}
-
-.componets__dialog--show {
-  animation: ShowDialogComponents 100ms linear forwards;
-}
-
-@keyframes ShowDialogComponents {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-.tree__element {
-  display: flex;
-  width: 100%;
-  gap: 10px;
-  justify-content: space-between;
-  padding: 5px 10px;
-}
-
-.h-100 {
-  min-height: 100%;
 }

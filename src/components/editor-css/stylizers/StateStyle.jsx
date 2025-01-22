@@ -15,14 +15,14 @@ const StateStyle = ({ setState }) => {
   }
 
   return (
-    <div className='state__style'>
+    <div className='grid grid-cols-2 px-2 items-center'>
       <span>State</span>
-      <button type="button" className="" onClick={toggleDialog}>{stateType.state == "" ? "normal" : stateType.state}</button>
-      <dialog ref={dialogRef} className="dialog__size">
-        <div className="dialog__size__btns">
-          <button type="button" className="dialog__size__btn dialog__size__btn--close" onClick={clickBtnDialog}>X</button>
-          <button type="button" className="dialog__size__btn" onClick={clickBtnDialog} data-value="">normal</button>
-          <button type="button" className="dialog__size__btn" onClick={clickBtnDialog} data-value=":hover">hover</button>
+      <button type="button" className="px-2 py-1 rounded-lg bg-blue-500 text-gray-50" onClick={toggleDialog}>{stateType.state == "" ? "normal" : stateType.state}</button>
+      <dialog ref={dialogRef} className="rounded-lg">
+        <div className="grid gap-2 p-2">
+          <button type="button" className="px-2 py-1 rounded-lg bg-red-500 text-gray-50" onClick={clickBtnDialog}>X</button>
+          <button type="button" className="px-2 py-1 rounded-lg bg-green-500 text-gray-50" onClick={clickBtnDialog} data-value="">normal</button>
+          <button type="button" className="px-2 py-1 rounded-lg bg-green-500 text-gray-50" onClick={clickBtnDialog} data-value=":hover">hover</button>
         </div>
       </dialog>
     </div>

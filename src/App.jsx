@@ -1,11 +1,8 @@
 import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core"
-import { Suspense, lazy } from "react"
-import { Loader } from "./components/Loader/Loader"
 import { BuilderArea } from "./components/builderarea/BuilderArea"
 import SideBarLeftItems from "./components/sidebarleftitems/SideBarLeftItems"
 import TopAreaBuilder from "./components/topareabuilder/TopAreaBuilder"
-import EditorTools from "./components/editor-css/EditorTools"
-const DialogExport = lazy(() => import("./components/dialogExport/DialogExport"))
+import SideBarRigthtItems from "./components/sidebarrigthtitems/SideBarLeftItems"
 
 function App() {
   const mouseSensor = useSensor(MouseSensor, {
@@ -25,22 +22,13 @@ function App() {
 
   return (
     <>
-      <div className='builder__area'>
+      <div className='w-full h-screen builder__area bg-gray-900'>
         <TopAreaBuilder />
         <DndContext sensors={sensors}>
-          <aside className='builder__aside builder__aside--left'>
-            <Suspense fallback={<Loader size={"md"} />}>
-              <DialogExport />
-            </Suspense>
-            <SideBarLeftItems />
-          </aside>
+          <SideBarLeftItems />
           <BuilderArea />
         </DndContext>
-        <aside className='builder__aside builder__aside--right'>
-          <Suspense fallback={<Loader />}>
-            <EditorTools />
-          </Suspense>
-        </aside>
+        <SideBarRigthtItems/>
       </div>
     </>
   )

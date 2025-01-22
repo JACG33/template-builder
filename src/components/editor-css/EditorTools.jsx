@@ -5,30 +5,28 @@ import { useDragAndDropProvider } from "../../hoks/useDragAndDropProvider";
 import { useEditorProvider } from "../../hoks/useEditorProvider";
 import EditorToolsHeader from "./EditorToolsHeader";
 import StylesOfComponent from "./StylesOfComponent";
-import WrapperDropDown from "./WrapperDropDown";
-import "./editortools.css";
-import {
-  BackgroundColor,
-  Border,
-  BorderRadius,
-  Cursor,
-  Display,
-  EditorTextOfComponents,
-  FontAndText,
-  Height,
-  Inset,
-  Margin,
-  Opacity,
-  Padding,
-  Position,
-  StateStyle,
-  StyleSelector,
-  TextDecoration,
-  Transitions,
-  Visibility,
-  Width,
-  ZIndex,
-} from "./stylizers";
+import StateStyle from "./stylizers/StateStyle";
+import StyleSelector from "./stylizers/StyleSelector";
+import Display from "./stylizers/Display";
+import Width from "./stylizers/Width";
+import Height from "./stylizers/Height";
+import Padding from "./stylizers/Padding";
+import Margin from "./stylizers/Margin";
+import Position from "./stylizers/Position";
+import ZIndex from "./stylizers/ZIndex";
+import Inset from "./stylizers/Inset";
+import BorderRadius from "./stylizers/BorderRadius";
+import Border from "./stylizers/Border";
+import Opacity from "./stylizers/Opacity";
+import Visibility from "./stylizers/Visibility";
+import Cursor from "./stylizers/Cursor";
+import BackgroundColor from "./stylizers/BackgroundColor";
+import FontAndText from "./stylizers/FontAndText";
+import TextDecoration from "./stylizers/TextDecoration";
+import Transitions from "./stylizers/Transitions";
+import EditorTextOfComponents from "./stylizers/EditorTextOfComponents";
+import { WrapperComponents } from "../wrapper-components/WrapperComponents";
+
 
 const EditorTools = () => {
   const [configTemplate, setConfigTemplate] = useState(STYLES);
@@ -55,19 +53,19 @@ const EditorTools = () => {
       alterConf = Object.assign(
         {},
         configComponent?.mediaQuerys?.[actualConfig.nameConfig] ||
-          configTemplate
+        configTemplate
       );
       stylesString.current = Object.assign(
         {},
         configComponent?.mediaQuerys?.[breackPoint]?.[
-          actualConfig.nameConfig
+        actualConfig.nameConfig
         ] || {}
       );
     } else {
       alterConf = Object.assign(
         {},
         configComponent?.normalStyles?.[actualConfig.nameConfig] ||
-          configTemplate
+        configTemplate
       );
       stylesString.current = Object.assign(
         {},
@@ -140,9 +138,8 @@ const EditorTools = () => {
       if (target.dataset.split == "joined") {
         stringSave = `${padding[0]}${type}`;
       } else {
-        stringSave = `${padding[0]}${type} ${padding[1] || 0}${type} ${
-          padding[2] || 0
-        }${type} ${padding[3] || 0}${type}`;
+        stringSave = `${padding[0]}${type} ${padding[1] || 0}${type} ${padding[2] || 0
+          }${type} ${padding[3] || 0}${type}`;
       }
       setConfigTemplate({ ...configTemplate, [target.name]: padding });
       stylesString.current = {
@@ -251,9 +248,8 @@ const EditorTools = () => {
       if (target.dataset.split == "joined") {
         stringSave = `${borderRadius[0]}${type}`;
       } else {
-        stringSave = `${borderRadius[0]}${type} ${
-          borderRadius[1] || 0
-        }${type} ${borderRadius[2] || 0}${type} ${borderRadius[3] || 0}${type}`;
+        stringSave = `${borderRadius[0]}${type} ${borderRadius[1] || 0
+          }${type} ${borderRadius[2] || 0}${type} ${borderRadius[3] || 0}${type}`;
       }
       setConfigTemplate({ ...configTemplate, [target.name]: borderRadius });
       stylesString.current = {
@@ -385,20 +381,20 @@ const EditorTools = () => {
   };
 
   return (
-    <div className="px-2">
+    <>
       <EditorToolsHeader cssClass={actualConfig.nameConfig} />
       <StateStyle setState={setState} />
-      <WrapperDropDown secctionName={"Css Selector"}>
+      <WrapperComponents secctionName={"Css Selector"}>
         <StyleSelector
           setState={setState}
           idActualConfig={actualConfig.id}
           defaultName={`${actualConfig.nameConfig}`}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Display"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Display"}>
         <Display configTemplate={configTemplate} handleChange={handleChange} />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Size"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Size"}>
         <Width
           configTemplate={configTemplate}
           handleChange={handleChange}
@@ -409,8 +405,8 @@ const EditorTools = () => {
           handleChange={handleChange}
           configRef={stylesString}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Spacing"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Spacing"}>
         <Padding
           configTemplate={configTemplate}
           handleChange={handleChange}
@@ -421,8 +417,8 @@ const EditorTools = () => {
           handleChange={handleChange}
           configRef={stylesString}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Position"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Position"}>
         <Position configTemplate={configTemplate} handleChange={handleChange} />
         <ZIndex
           configTemplate={configTemplate}
@@ -434,8 +430,8 @@ const EditorTools = () => {
           handleChange={handleChange}
           configRef={stylesString}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Border"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Border"}>
         <BorderRadius
           configTemplate={configTemplate}
           handleChange={handleChange}
@@ -446,8 +442,8 @@ const EditorTools = () => {
           handleChange={handleChange}
           configRef={stylesString}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Opacity"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Opacity"}>
         <Opacity
           configTemplate={configTemplate}
           handleChange={handleChange}
@@ -458,22 +454,22 @@ const EditorTools = () => {
           handleChange={handleChange}
           configRef={stylesString}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Cursor"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Cursor"}>
         <Cursor
           configTemplate={configTemplate}
           handleChange={handleChange}
           configRef={stylesString}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Background"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Background"}>
         <BackgroundColor
           configTemplate={configTemplate}
           handleChange={handleChange}
           configRef={stylesString}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Font and Text"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Font and Text"}>
         <FontAndText
           configRef={stylesString}
           configTemplate={configTemplate}
@@ -484,14 +480,14 @@ const EditorTools = () => {
           configTemplate={configTemplate}
           handleChange={handleChange}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Transitions"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Transitions"}>
         <Transitions
           configTemplate={configTemplate}
           handleChange={handleChange}
         />
-      </WrapperDropDown>
-      <WrapperDropDown secctionName={"Styles Of Component"}>
+      </WrapperComponents>
+      <WrapperComponents secctionName={"Styles Of Component"}>
         <StylesOfComponent
           configTemplate={configTemplate}
           handleChange={handleChange}
@@ -499,12 +495,12 @@ const EditorTools = () => {
           actualConfig={actualConfig.nameConfig}
           stylesString={stylesString}
         />
-      </WrapperDropDown>
+      </WrapperComponents>
 
-        <WrapperDropDown secctionName={"Text Of Component"}>
-          <EditorTextOfComponents/>
-        </WrapperDropDown>
-    </div>
+      <WrapperComponents secctionName={"Text Of Component"}>
+        <EditorTextOfComponents />
+      </WrapperComponents>
+    </>
   );
 };
 

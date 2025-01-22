@@ -7,7 +7,7 @@ import TextWrap from "./TextWrap";
 const FontAndText = ({ handleChange, configRef, configTemplate }) => {
 
   return (
-    <div>
+    <div className="grid gap-2">
       <FontSize configRef={configRef} configTemplate={configTemplate} handleChange={handleChange} sizeName={"fontSize"} />
       <TextAlign configTemplate={configTemplate} handleChange={handleChange} />
       <TextWrap configTemplate={configTemplate} handleChange={handleChange} />

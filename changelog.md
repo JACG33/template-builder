@@ -1,5 +1,9 @@
 # Template Builder
 
+## Version 0.0.18 22-ENE-2024
++ Regresamos nuevamente a __TailwindCss__, en su momento quite la dependencia de esta libreria ya que generaba conflictos con los estilos de la plantilla que se esta haciendo, pero ahora las plantillas se hacen dentro de un __iframe__ por lo que los estilos de __TailwindCss__ no enterfieren con la plantilla.
++ Se eliminaron algunos componentes y se modificaron otros.
+
 ## Version 0.0.172 14-AGO-2024
 + Se cambio los estilos de un componente para mejorar la experiencia visual.
 

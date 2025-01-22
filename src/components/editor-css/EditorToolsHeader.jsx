@@ -1,12 +1,10 @@
-const EditorToolsHeader = ({cssClass}) => {
+const EditorToolsHeader = ({ cssClass }) => {
 
   return (
-    <>
-      <div className='editor__tools__header'>
-        <span>ClassName</span>
-        <span className="editor__tools__header__classname">{cssClass}</span>
-      </div>
-    </>
+    <div className='grid gap-2 text-center py-4'>
+      <span>ClassName</span>
+      <span className="editor__tools__header__classname">{cssClass}</span>
+    </div>
   )
 }
 

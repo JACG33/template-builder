@@ -31,10 +31,23 @@ const StyleSelector = ({ setState, idActualConfig = null, defaultName = "" }) =>
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center", gap: "5px", paddingBlock: "20px" }}>
-        <button title={stateType.state == "" ? "Css Selector" : stateType.state} type="button" className="" style={{ position: "relative", padding: "5px 10px", cursor: "pointer", maxWidth: "200px" }} onClick={toggleDialog}>
-          <span style={{ position: "absolute", inset: "-13px -13px auto auto", backgroundColor: "#17a8c8", padding: "3px 6px", borderRadius: "8px" }}>{componentCssSelectors.length}</span>
-          <span style={{ textWrap: "nowrap", textOverflow: "ellipsis", overflow: "hidden", display: "block" }}>{stateType.state == "" ? "Css Selector" : stateType.state}</span>
+
+        <button 
+          title={stateType.state == "" ? "Css Selector" : stateType.state} 
+          type="button" 
+          className="relative py-2 px-4 cursor-pointer max-w-[200px] rounded-lg border border-blue-500 hover:bg-blue-500 transition-all duration-300" 
+          onClick={toggleDialog}
+        >
+          <span 
+            className='absolute inset-[-13px_-13px_auto_auto] bg-blue-500 rounded-lg py-1 px-2'
+          >
+            {componentCssSelectors.length}
+          </span>
+          <span className='text-nowrap text-ellipsis overflow-hidden block'>
+            {stateType.state == "" ? "Css Selector" : stateType.state}
+          </span>
         </button>
+
         <dialog ref={dialogRef} className="dialog__size">
           <div className="dialog__size__btns">
             <button type="button" className="dialog__size__btn dialog__size__btn--close" onClick={clickBtnDialog}>X</button>
@@ -48,9 +61,9 @@ const StyleSelector = ({ setState, idActualConfig = null, defaultName = "" }) =>
           </div>
         </dialog>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "5px" }}>
-        <input ref={cssSelectorRef} type="text" placeholder='New Css Selector' />
-        <button onClick={addCssSelector} >Add css selector</button>
+      <div className='flex justify-between gap-2'>
+        <input ref={cssSelectorRef} type="text" placeholder='New Css Selector' className='rounded-lg px-2 text-gray-700' />
+        <button onClick={addCssSelector} type='button' className='bg-blue-500 rounded-lg'>Add css selector</button>
       </div>
     </>
   )

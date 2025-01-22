@@ -1,4 +1,5 @@
 import { createContext, useState, useRef } from "react";
+import { joinAndLower } from "../helpers/joinAndLower";
 
 export const EditorContext = createContext({
   configComponent: false,
@@ -32,8 +33,6 @@ export const EditorContext = createContext({
   handleBreackPoint: () => {},
   builderZoneRef: null,
   bkpoint: Object,
-  previewMode: null,
-  handlePreviewMode: () => {},
 });
 
 export function EditorProvider({ children }) {
@@ -61,7 +60,6 @@ export function EditorProvider({ children }) {
 
   // Variables para los breackpoints
   const [breackPoint, setBreackPoint] = useState("mobile");
-  const [previewMode, setPreviewMode] = useState(false);
   const builderZoneRef = useRef(null);
   const bkpoint = {
     "": "",
@@ -74,7 +72,6 @@ export function EditorProvider({ children }) {
   };
 
   const handleEditComponent = (conf) => {
-    if (previewMode == true) return;
     if (openEditor == true) {
       if (
         breackPoint == "mobilex2" ||
@@ -135,19 +132,6 @@ export function EditorProvider({ children }) {
    */
   const handleActualConfig = ({ nameConfig, id, isSubComponent ,text}) =>
     setActualConfig({ nameConfig, id, isSubComponent,text });
-
-  /**
-   * Funcion para tranformar texto de camelCase a lowercase y separar con guion medio (-).
-   * @param {String} text Texto a transformar.
-   * @example borderRadius => border-radius.
-   * @returns Texto transformado
-   */
-  const joinAndLower = (text) =>
-    text
-      .replace(/([a-z])([A-Z])/g, "$1 $2")
-      .split(" ")
-      .join("-")
-      .toLocaleLowerCase();
 
   /**
    * Funcion para asignar media querys
@@ -274,7 +258,6 @@ export function EditorProvider({ children }) {
     setUi = false,
     textComponent = "",
   }) => {
-    if (previewMode == true) return;
     if (open == true || setUi == true) {
       setOpenEditor(true);
       if (
@@ -503,7 +486,6 @@ export function EditorProvider({ children }) {
     setBreackPoint(bkpoint);
   };
 
-  const handlePreviewMode = () => setPreviewMode(!previewMode);
 
   return (
     <EditorContext.Provider
@@ -527,8 +509,6 @@ export function EditorProvider({ children }) {
         breackPoint,
         builderZoneRef,
         bkpoint,
-        previewMode,
-        handlePreviewMode,
       }}
     >
       {children}

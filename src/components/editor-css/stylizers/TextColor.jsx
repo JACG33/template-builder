@@ -1,6 +1,6 @@
 const TextColor = ({ handleChange, configTemplate }) => {
   return (
-    <div className="grid grid__columns--3 items__center">
+    <div className="grid grid-cols-3 items-center">
       <label htmlFor="color">Color</label>
       <input type="color" id="color" name="color" onChange={handleChange} value={configTemplate?.color ? configTemplate.color : "#000000"} />
       <button type="button" onClick={e => handleChange({ target: { value: "", name: "color" } })}>

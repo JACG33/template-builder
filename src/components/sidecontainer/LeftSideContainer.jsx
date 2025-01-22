@@ -1,14 +1,13 @@
 import { XCircle } from "../svg"
-import "./leftsidecontainer.css"
 
 const LeftSideContainer = ({ children, handleShowComponents }) => {
   return (
     <>
-      <div className='aside__float__left__container componets__dialog componets__dialog--show'>
-        <div className="aside__float__left__container__header">
+      <div className='bg-gray-800 h-11/12 z-0 rounded-tr-xl rounded-br-xl'>
+        <div className="flex justify-end">
           <button type='button'
             onClick={e=>handleShowComponents("")}
-            className='aside__float__left__container__header__btn'
+            className='px-2 py-1 rounded-lg'
           >
             <XCircle />
           </button>

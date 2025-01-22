@@ -29,14 +29,14 @@ const SpacingComponent = ({ text, handleChange, configTemplate, sizeName, config
   }, [])
 
   return (
-    <div className="size__component">
+    <div className="grid grid-cols-2">
       <label htmlFor={`${sizeName}${positionNumber}`}>{text} {positionText}</label>
 
-      <div className="size__component__input_wp">
+      <div className="grid grid-cols-[1fr_30px] rounded-lg overflow-hidden">
 
         {sizeType.size == "auto" ?
           <input
-            className=""
+            className="w-full"
             id={`${sizeName}${positionNumber}`}
             type="text"
             name={sizeName}
@@ -48,7 +48,7 @@ const SpacingComponent = ({ text, handleChange, configTemplate, sizeName, config
           />
           :
           <input
-            className=""
+            className="w-full"
             id={`${sizeName}${positionNumber}`}
             type="number"
             name={sizeName}

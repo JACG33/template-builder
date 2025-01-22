@@ -1,8 +1,8 @@
 const TextAlign = ({ handleChange, configTemplate }) => {
   return (
-    <div className="display__select__wp">
+    <div className="grid grid-cols-2">
       <span>Text Align</span>
-      <select name="textAlign" id="" onChange={handleChange} value={configTemplate?.textAlign ? configTemplate.textAlign : ""}>
+      <select name="textAlign" id="" onChange={handleChange} value={configTemplate?.textAlign ? configTemplate.textAlign : ""} className="p-2 text-gray-700 cursor-pointer rounded-lg">
         <option value="">Select Align</option>
         <option value="center">center</option>
         <option value="justify">justify</option>

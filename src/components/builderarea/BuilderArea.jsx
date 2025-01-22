@@ -10,7 +10,7 @@ export const BuilderArea = () => {
   const { breackPoint, builderZoneRef, bkpoint } = useEditorProvider();
 
   return (
-    <div className="wrap__builder" ref={builderZoneRef}>
+    <div className="w-full h-screen flex flex-col" ref={builderZoneRef}>
       <IFrame bkpoint={bkpoint} breackPoint={breackPoint}>
         <WrapperComponent />
       </IFrame>
@@ -54,7 +54,7 @@ function IFrame({ children, bkpoint, breackPoint }) {
     <iframe
       ref={setRef}
       data-iframe="builder"
-      className={`builder__zone ${bkpoint[breackPoint]}`}
+      className={`h-screen builder__zone ${bkpoint[breackPoint]}`}
     >
       {refresh && (
         <>

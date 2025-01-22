@@ -23,11 +23,11 @@ const BorderRadius = ({ handleChange, configTemplate, configRef }) => {
 
 
   return (
-    <div className="padding__wrp">
-      <div className=" padding__header">
+    <div className="grid gap-2">
+      <div className="grid grid-cols-3">
         <label htmlFor={"borderRadius1"}>Border Radius</label>
         <SideOptions setSplitType={setSplitType} split={split} />
-        <select className="h-[21px]" onChange={typeWidthHandleChange} id={"borderRadius1"} name={"borderRadius"} data-type="select" value={typeWidth.size}>
+        <select className="rounded-lg p-2 text-gray-700 cursor-pointer" onChange={typeWidthHandleChange} id={"borderRadius1"} name={"borderRadius"} data-type="select" value={typeWidth.size}>
           <option value="px">px</option>
           <option value="%">%</option>
           <option value="em">em</option>
@@ -37,34 +37,34 @@ const BorderRadius = ({ handleChange, configTemplate, configRef }) => {
         </select>
       </div>
       {split == "joined" && <div className="padding__joined">
-        <input type="number" name="borderRadius" data-sizetype={typeWidth.size} min={0} max={10000} data-split={split} data-position='0' onChange={handleChange} value={configTemplate?.borderRadius ? configTemplate.borderRadius[0] : 0} />
+        <input type="number" className='w-full rounded-lg text-gray-700 px-2 py-1' name="borderRadius" data-sizetype={typeWidth.size} min={0} max={10000} data-split={split} data-position='0' onChange={handleChange} value={configTemplate?.borderRadius ? configTemplate.borderRadius[0] : 0} />
       </div>}
 
-      {split == "separated" && <div className="padding__separated">
-        <div>
+      {split == "separated" && <div className="grid gap-2">
+        <div className='grid grid-cols-2'>
           <span>top</span>
-          <input className="w-full" type="number" name={"borderRadius"} data-sizetype={typeWidth.size} data-split={split} data-position='0' onChange={handleChange} min={0} max={99999}
+          <input className="w-full rounded-lg text-gray-700 px-2 py-1" type="number" name={"borderRadius"} data-sizetype={typeWidth.size} data-split={split} data-position='0' onChange={handleChange} min={0} max={99999}
             value={
               configTemplate?.["borderRadius"]?.[0] ? configTemplate["borderRadius"][0] : ""
             } />
         </div>
-        <div>
+        <div className='grid grid-cols-2'>
           <span>right</span>
-          <input className="w-full" type="number" name={"borderRadius"} data-sizetype={typeWidth.size} data-split={split} data-position='1' onChange={handleChange} min={0} max={99999}
+          <input className="w-full rounded-lg text-gray-700 px-2 py-1" type="number" name={"borderRadius"} data-sizetype={typeWidth.size} data-split={split} data-position='1' onChange={handleChange} min={0} max={99999}
             value={
               configTemplate?.["borderRadius"]?.[1] ? configTemplate["borderRadius"][1] : ""
             } />
         </div>
-        <div>
+        <div className='grid grid-cols-2'>
           <span>bottom</span>
-          <input className="w-full" type="number" name={"borderRadius"} data-sizetype={typeWidth.size} data-split={split} data-position='2' onChange={handleChange} min={0} max={99999}
+          <input className="w-full rounded-lg text-gray-700 px-2 py-1" type="number" name={"borderRadius"} data-sizetype={typeWidth.size} data-split={split} data-position='2' onChange={handleChange} min={0} max={99999}
             value={
               configTemplate?.["borderRadius"]?.[2] ? configTemplate["borderRadius"][2] : ""
             } />
         </div>
-        <div>
+        <div className='grid grid-cols-2'>
           <span>left</span>
-          <input className="w-full" type="number" name={"borderRadius"} data-sizetype={typeWidth.size} data-split={split} data-position='3' onChange={handleChange} min={0} max={99999}
+          <input className="w-full rounded-lg text-gray-700 px-2 py-1" type="number" name={"borderRadius"} data-sizetype={typeWidth.size} data-split={split} data-position='3' onChange={handleChange} min={0} max={99999}
             value={
               configTemplate?.["borderRadius"]?.[3] ? configTemplate["borderRadius"][3] : ""
             } />

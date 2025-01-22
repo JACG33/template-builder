@@ -20,10 +20,10 @@ const Border = ({ handleChange, configTemplate, configRef }) => {
 
   return (
     <div>
-      <div className="padding__header">
+      <div className="grid grid-cols-3">
         <label htmlFor={"border"}>Border</label>
         <SideOptions setSplitType={setSplitType} split={split} />
-        <select className="h-[21px]" onChange={typeWidthHandleChange} id={"border"} data-type="select" value={typeWidth.size}>
+        <select className="rounded-lg text-gray-700 cursor-pointer p-2" onChange={typeWidthHandleChange} id={"border"} data-type="select" value={typeWidth.size}>
           <option value="px">px</option>
           <option value="em">em</option>
           <option value="rem">rem</option>
@@ -36,20 +36,20 @@ const Border = ({ handleChange, configTemplate, configRef }) => {
         <BorderSeparated configRef={configRef} configTemplate={configTemplate} handleChange={handleChange} split={split} typeWidth={typeWidth} borderPosition={"border"} sizeUnit={typeWidth.size} />
       </div>}
 
-      {split == "separated" && <div className="w-full grid gap-2">
-        <div>
+      {split == "separated" && <div className="w-full grid gap-3">
+        <div className='flex flex-col'>
           <span>top</span>
           <BorderSeparated configRef={configRef} configTemplate={configTemplate} handleChange={handleChange} split={split} typeWidth={typeWidth} borderPosition={"borderTop"} sizeUnit={typeWidth.size} />
         </div>
-        <div>
+        <div className='flex flex-col'>
           <span>right</span>
           <BorderSeparated configRef={configRef} configTemplate={configTemplate} handleChange={handleChange} split={split} typeWidth={typeWidth} borderPosition={"borderRight"} sizeUnit={typeWidth.size} />
         </div>
-        <div>
+        <div className='flex flex-col'>
           <span>bottom</span>
           <BorderSeparated configRef={configRef} configTemplate={configTemplate} handleChange={handleChange} split={split} typeWidth={typeWidth} borderPosition={"borderBottom"} sizeUnit={typeWidth.size} />
         </div>
-        <div>
+        <div className='flex flex-col'>
           <span>left</span>
           <BorderSeparated configRef={configRef} configTemplate={configTemplate} handleChange={handleChange} split={split} typeWidth={typeWidth} borderPosition={"borderLeft"} sizeUnit={typeWidth.size} />
         </div>
@@ -95,11 +95,11 @@ const BorderSeparated = ({ handleChange, configRef, typeWidth, split, borderPosi
 
 
   return (
-    <div className="border__wrp">
-      <input className="" ref={inpRef} type="number" name={borderPosition} data-name={borderPosition} data-sizetype={typeWidth.size} data-split={split} onChange={borderChange} min={0} max={99999}
+    <div className="grid grid-cols-3 items-center gap-2 justify-between">
+      <input className="text-gray-700 rounded-lg px-2 py-1" ref={inpRef} type="number" name={borderPosition} data-name={borderPosition} data-sizetype={typeWidth.size} data-split={split} onChange={borderChange} min={0} max={99999}
         value={borderStyles.current.size ? borderStyles.current.size : 0} data-borderstyle={JSON.stringify(borderStyles.current)} />
 
-      <select name="selectstyle" id="" value={borderStyles.current.style} onChange={borderChange} data-borderstyle={JSON.stringify(borderStyles.current)}>
+      <select name="selectstyle" className="rounded-lg text-gray-700 cursor-pointer p-2" id="" value={borderStyles.current.style} onChange={borderChange} data-borderstyle={JSON.stringify(borderStyles.current)}>
         <option value="none">none</option>
         <option value="hidden">hidden</option>
         <option value="dotted">dotted</option>

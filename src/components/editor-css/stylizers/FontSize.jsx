@@ -12,7 +12,7 @@ const FontSize = ({ handleChange, sizeName, configRef, configTemplate }) => {
 
   const clickBtnDialog = (e) => {
     dialogRef.current.close()
-    if(!e.target.dataset.value)return
+    if (!e.target.dataset.value) return
     setSizeType({ size: e.target.dataset.value })
 
     const { value, name, dataset, id } = inp.current
@@ -29,37 +29,35 @@ const FontSize = ({ handleChange, sizeName, configRef, configTemplate }) => {
   }, [])
 
   return (
-    <div>
-      <div className="size__component">
-        <label htmlFor={`${sizeName}1`}>Font Size</label>
-        <div className="size__component__input_wp">
-          {sizeType.size == "auto" ?
-            <input
-              className=""
-              id={`${sizeName}1`}
-              type="text"
-              name={sizeName}
-              value="auto"
-              ref={inp}
-              data-sizetype={sizeType.size}
-              onChange={handleChange}
-            />
-            :
-            <input
-              className=""
-              id={`${sizeName}1`}
-              type="number"
-              name={sizeName}
-              value={configTemplate?.[sizeName] ? configTemplate[sizeName] : 16}
-              ref={inp}
-              min={0}
-              max={99999}
-              data-sizetype={sizeType.size}
-              onChange={handleChange}
-            />
-          }
-          <DialogSize clickBtnDialog={clickBtnDialog} dialogRef={dialogRef} sizeType={sizeType} toggleDialog={toggleDialog} />
-        </div>
+    <div className="grid grid-cols-2">
+      <label htmlFor={`${sizeName}1`}>Font Size</label>
+      <div className="grid grid-cols-[1fr_30px] rounded-lg overflow-hidden">
+        {sizeType.size == "auto" ?
+          <input
+            className="w-full"
+            id={`${sizeName}1`}
+            type="text"
+            name={sizeName}
+            value="auto"
+            ref={inp}
+            data-sizetype={sizeType.size}
+            onChange={handleChange}
+          />
+          :
+          <input
+            className=""
+            id={`${sizeName}1`}
+            type="number"
+            name={sizeName}
+            value={configTemplate?.[sizeName] ? configTemplate[sizeName] : 16}
+            ref={inp}
+            min={0}
+            max={99999}
+            data-sizetype={sizeType.size}
+            onChange={handleChange}
+          />
+        }
+        <DialogSize clickBtnDialog={clickBtnDialog} dialogRef={dialogRef} sizeType={sizeType} toggleDialog={toggleDialog} />
       </div>
     </div>
   )

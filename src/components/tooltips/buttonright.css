@@ -10,37 +10,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.btn__tooltip:hover .btn__tooltip__message{
-  visibility: visible;
-  opacity: 1;
+  anchor-name: var(--first-box);
 }
 
 .btn__tooltip__message{
-  position: absolute;
-  top: 5px;
-  left: 55px;
-  background-color: var(--blue-600);
-  border-radius: .5rem;
-  padding: .5rem;
-  width: fit-content;
-  text-wrap: nowrap;
   visibility: hidden;
-  transition: all 100ms  ease-in-out;
-  font-size: 12px;
-  opacity: 0;
-  z-index: 1;
+  position: absolute;
+  position-anchor: var(--first-box); /* Acoplamos a referencia */
+  position-area:right;
 }
 
-.btn__tooltip__message::after{
-  content: "";
-  position: absolute;
-  display: block;
-  height: 15px;
-  width: 15px;
-  top: 30%;
-  left: -13px;
-  background-color: var(--blue-600);
-  clip-path: polygon(100% 0, 0 49%, 100% 100%);
+.btn__tooltip:hover ~ .btn__tooltip__message{
+  visibility: visible;
 }

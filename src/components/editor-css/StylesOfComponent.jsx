@@ -8,7 +8,7 @@ const StylesOfComponent = ({ handleChange, configTemplate, breackPoint, actualCo
   }
 
   return (
-    <div style={{display:"grid",gap:"0.8rem"}}>
+    <div className="grid gap-1">
       {jsonStyles.length > 0 && jsonStyles.map((style, index) => <div key={index} style={{display:"grid",gridTemplateColumns:"75% 1fr",gap:"0.5rem"}}>
         <span style={{textOverflow:"ellipsis",textWrap:"nowrap",overflow:"hidden"}} title={`${style[0]}: ${style[1]} ;`}>{`${style[0]}: ${style[1]} ;`}</span>
         <button type="button"  onClick={e => handleChange({ target: { value: "", name: style[0] } })}>
