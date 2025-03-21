@@ -23,7 +23,7 @@ const Border = ({ handleChange, configTemplate, configRef }) => {
       <div className="grid grid-cols-3">
         <label htmlFor={"border"}>Border</label>
         <SideOptions setSplitType={setSplitType} split={split} />
-        <select className="rounded-lg text-gray-700 cursor-pointer p-2" onChange={typeWidthHandleChange} id={"border"} data-type="select" value={typeWidth.size}>
+        <select className="rounded-lg border border-gray-100 text-gray-100 cursor-pointer p-2" onChange={typeWidthHandleChange} id={"border"} data-type="select" value={typeWidth.size}>
           <option value="px">px</option>
           <option value="em">em</option>
           <option value="rem">rem</option>
@@ -96,10 +96,10 @@ const BorderSeparated = ({ handleChange, configRef, typeWidth, split, borderPosi
 
   return (
     <div className="grid grid-cols-3 items-center gap-2 justify-between">
-      <input className="text-gray-700 rounded-lg px-2 py-1" ref={inpRef} type="number" name={borderPosition} data-name={borderPosition} data-sizetype={typeWidth.size} data-split={split} onChange={borderChange} min={0} max={99999}
+      <input className="border border-gray-100 text-gray-100 rounded-lg px-2 py-1" ref={inpRef} type="number" name={borderPosition} data-name={borderPosition} data-sizetype={typeWidth.size} data-split={split} onChange={borderChange} min={0} max={99999}
         value={borderStyles.current.size ? borderStyles.current.size : 0} data-borderstyle={JSON.stringify(borderStyles.current)} />
 
-      <select name="selectstyle" className="rounded-lg text-gray-700 cursor-pointer p-2" id="" value={borderStyles.current.style} onChange={borderChange} data-borderstyle={JSON.stringify(borderStyles.current)}>
+      <select name="selectstyle" className="rounded-lg border border-gray-100 text-gray-100 cursor-pointer p-2" id="" value={borderStyles.current.style} onChange={borderChange} data-borderstyle={JSON.stringify(borderStyles.current)}>
         <option value="none">none</option>
         <option value="hidden">hidden</option>
         <option value="dotted">dotted</option>
@@ -112,7 +112,7 @@ const BorderSeparated = ({ handleChange, configRef, typeWidth, split, borderPosi
         <option value="outset">outset</option>
       </select>
 
-      <input type="color" name="bordercolor" id="" value={borderStyles.current.color} onChange={borderChange} data-borderstyle={JSON.stringify(borderStyles.current)} />
+      <input type="color" name="bordercolor" className='border border-gray-100' id="" value={borderStyles.current.color} onChange={borderChange} data-borderstyle={JSON.stringify(borderStyles.current)} />
     </div>
   )
 }

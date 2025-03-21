@@ -1,6 +1,11 @@
 # Template Builder
 
-## Version 0.0.18 22-ENE-2024
+## Version 0.0.20 21-MAR-2025
++ Migracion a la version 19 de React.
++ Migracion a la version 4 de TailwindCss.
++ Correcion de estilos css.
+
+## Version 0.0.18 22-ENE-2025
 + Regresamos nuevamente a __TailwindCss__, en su momento quite la dependencia de esta libreria ya que generaba conflictos con los estilos de la plantilla que se esta haciendo, pero ahora las plantillas se hacen dentro de un __iframe__ por lo que los estilos de __TailwindCss__ no enterfieren con la plantilla.
 + Se eliminaron algunos componentes y se modificaron otros.
 

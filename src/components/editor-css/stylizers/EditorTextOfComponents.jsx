@@ -29,7 +29,7 @@ const EditorTextOfComponents = () => {
       name="textof"
       id="textof"
       onChange={hdlTexta}
-      style={{ resize: "none", height: "200px" }}
+      className="w-full h-50 resize-none"
       value={texta}
     />
   );

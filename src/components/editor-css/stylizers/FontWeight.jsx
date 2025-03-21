@@ -2,7 +2,7 @@ const FontWeight = ({ handleChange, configTemplate }) => {
   return (
     <div className="grid grid-cols-2">
       <span>Font Weight</span>
-      <select name="fontWeight" id="" onChange={handleChange} value={configTemplate?.fontWeight ? configTemplate.fontWeight : ""} className="p-2 text-gray-700 cursor-pointer rounded-lg">
+      <select name="fontWeight" id="" onChange={handleChange} value={configTemplate?.fontWeight ? configTemplate.fontWeight : ""} className="p-2 border border-gray-100 bg-gray-700 text-gray-100 cursor-pointer rounded-lg">
         <option value="">Select Weight</option>
         <option value="100">100</option>
         <option value="200">200</option>

@@ -22,7 +22,7 @@ function App() {
 
   return (
     <>
-      <div className='w-full h-screen builder__area bg-gray-900'>
+      <div className='w-full h-screen builder__area bg-gray-900 overflow-x-hidden'>
         <TopAreaBuilder />
         <DndContext sensors={sensors}>
           <SideBarLeftItems />

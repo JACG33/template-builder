@@ -13,7 +13,7 @@ const Display = ({ handleChange, configTemplate }) => {
     <>
       <div className="grid grid-cols-2">
         <span>Display</span>
-        <select name="display" id="" onChange={selectHandleChange} value={configTemplate?.display ? configTemplate.display : ""} className="text-gray-700 p-2 rounded-lg cursor-pointer">
+        <select name="display" id="" onChange={selectHandleChange} value={configTemplate?.display ? configTemplate.display : ""} className="border border-gray-100 text-gray-100 bg-gray-700 p-2 rounded-lg cursor-pointer">
           <option value="">Select Display</option>
           <option value="none">None</option>
           <option value="block">Block</option>

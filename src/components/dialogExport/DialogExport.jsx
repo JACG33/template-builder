@@ -24,7 +24,7 @@ const DialogExport = () => {
 
   return (
     <div>
-      <dialog className="rounded-lg p-2 m-auto bg-gray-800 w-[90%] h-[90%]" ref={dialogExport}>
+      <dialog className="rounded-lg p-2 m-auto bg-gray-800 w-[90%] h-[90%]" ref={dialogExport} closedBy="any">
         <div className='grid grid-rows-[70px_1fr] h-full gap-2'>
           <div>
             <div className="flex justify-end items-center">

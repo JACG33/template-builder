@@ -4,7 +4,7 @@ const Cursor = ({ handleChange, configTemplate }) => {
     <>
       <div className="grid grid-cols-2">
         <span>Cursor</span>
-        <select name="cursor" id="" onChange={handleChange} value={configTemplate?.cursor ? configTemplate.cursor : ""} className='p-2 text-gray-700 cursor-pointer rounded-lg'>
+        <select name="cursor" id="" onChange={handleChange} value={configTemplate?.cursor ? configTemplate.cursor : ""} className='p-2 border border-gray-100 bg-gray-700 text-gray-100 cursor-pointer rounded-lg'>
           <option value="">Select Cursor</option>
           <option value="auto">Auto</option>
           <option value="default">Default</option>

@@ -11,13 +11,13 @@ const SideBarRigthtItems = () => {
   }
 
   return (
-    <aside className={`absolute z-10 inset-[20px_10px_20px_auto] h-11/12  rounded-xl shadow-lg bg-gray-700 text-white builder__aside builder__aside--right flex justify-center items-center`}>
+    <aside className={`fixed z-10 inset-[20px_10px_20px_auto] rounded-xl shadow-lg bg-gray-700 text-white builder__aside builder__aside--right flex justify-center items-center transition-all duration-300 ${hiddenSecction ? "translate-x-[330px]" : ""}`}>
       <div className="relative flex items-center">
-        <button className="w-6 h-8 absolute rounded-tl-full rounded-bl-full bg-blue-500 right-[0.01px] flex justify-center items-center text-white transition-all duration-300" type="button" onClick={hdlToggle}> 
+        <button className="w-6 h-8 absolute rounded-tl-full rounded-bl-full bg-gray-700 right-[0.01px] flex justify-center items-center text-white transition-all duration-300" type="button" onClick={hdlToggle}> 
           <ChevronCompactLeft className={`transition-all duration-300 ${hiddenSecction ? "" : "rotate-180"}`} />
         </button>
       </div>
-      <div className={`transition-all h-full overflow-y-auto overflow-x-hidden ${hiddenSecction ? "w-0 invisible" : "w-80 visible"}`} style={{ scrollbarWidth: "thin" }}>
+      <div className={`h-full w-80 overflow-y-auto overflow-x-hidden`} style={{ scrollbarWidth: "thin" }}>
         <Suspense fallback={<Loader />}>
           <EditorTools />
         </Suspense>

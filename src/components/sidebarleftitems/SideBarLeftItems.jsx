@@ -16,7 +16,7 @@ const SideBarLeftItems = () => {
   };
 
   return (
-    <aside className='absolute z-10 inset-[20px_auto_20px_10px] h-11/12 overflow-y-auto overflow-x-hidden rounded-xl shadow-lg bg-gray-700 text-white flex transition-all duration-500'>
+    <aside className='absolute z-10 inset-[20px_auto_20px_10px] overflow-y-auto overflow-x-hidden rounded-xl shadow-lg bg-gray-700 text-white flex transition-all duration-500'>
       <div className="">  
         <Suspense fallback={<Loader size={"md"} />}>
           <DialogExport />
