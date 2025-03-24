@@ -791,7 +791,7 @@ export function DragAndDropProvider({ children }) {
   };
 
   return (
-    <DragAndDropContext.Provider
+    <DragAndDropContext
       value={{
         parentElements,
         subElements,
@@ -805,6 +805,6 @@ export function DragAndDropProvider({ children }) {
       }}
     >
       {children}
-    </DragAndDropContext.Provider>
+    </DragAndDropContext>
   );
 }

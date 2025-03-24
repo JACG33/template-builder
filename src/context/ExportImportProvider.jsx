@@ -55,7 +55,7 @@ export function ExportImportProvider({ children }) {
   };
 
   return (
-    <ExportImportContext.Provider
+    <ExportImportContext
       value={{
         builderArea,
         dialogExport,
@@ -65,6 +65,6 @@ export function ExportImportProvider({ children }) {
       }}
     >
       {children}
-    </ExportImportContext.Provider>
+    </ExportImportContext>
   );
 }

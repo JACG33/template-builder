@@ -1,5 +1,8 @@
 # Template Builder
 
+## Version 0.0.205 24-MAR-2025
++ Correcciones.
+
 ## Version 0.0.20 21-MAR-2025
 + Migracion a la version 19 de React.
 + Migracion a la version 4 de TailwindCss.

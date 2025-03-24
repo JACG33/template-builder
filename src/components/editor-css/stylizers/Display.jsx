@@ -29,7 +29,7 @@ const Display = ({ handleChange, configTemplate }) => {
             id="fdire" 
             onChange={selectHandleChange} v
             alue={configTemplate?.flexDirection ? configTemplate.flexDirection : ""} 
-            className="text-gray-700 p-2 rounded-lg cursor-pointer">
+            className="border border-gray-100 text-gray-100 bg-gray-700 p-2 rounded-lg cursor-pointer">
             <option value=""></option>
             <option value="row">Row</option>
             <option value="row-reverse">Row-reverse</option>
@@ -46,7 +46,7 @@ const Display = ({ handleChange, configTemplate }) => {
             id="juCo" 
             onChange={selectHandleChange} 
             value={configTemplate?.justifyContent ? configTemplate.justifyContent : ""}
-            className="text-gray-700 p-2 rounded-lg cursor-pointer">
+            className="border border-gray-100 text-gray-100 bg-gray-700 p-2 rounded-lg cursor-pointer">
             <option value=""></option>
             <option value="start">Start</option>
             <option value="center">Center</option>
@@ -65,7 +65,7 @@ const Display = ({ handleChange, configTemplate }) => {
             id="AlI" 
             onChange={selectHandleChange} 
             value={configTemplate?.alignItems ? configTemplate.alignItems : ""}
-            className="text-gray-700 p-2 rounded-lg cursor-pointer">
+            className="border border-gray-100 text-gray-100 bg-gray-700 p-2 rounded-lg cursor-pointer">
             <option value=""></option>
             <option value="start">Start</option>
             <option value="center">Center</option>
@@ -82,7 +82,7 @@ const Display = ({ handleChange, configTemplate }) => {
             id="spc" min={0} max={10000} 
             onChange={handleChange} 
             value={configTemplate?.gap ? configTemplate.gap : 0} 
-            className="text-gray-700 p-2 rounded-lg" />
+            className="border border-gray-100 text-gray-100 bg-gray-700 p-2 rounded-lg" />
         </div>
       }
     </>

@@ -23,7 +23,7 @@ const Border = ({ handleChange, configTemplate, configRef }) => {
       <div className="grid grid-cols-3">
         <label htmlFor={"border"}>Border</label>
         <SideOptions setSplitType={setSplitType} split={split} />
-        <select className="rounded-lg border border-gray-100 text-gray-100 cursor-pointer p-2" onChange={typeWidthHandleChange} id={"border"} data-type="select" value={typeWidth.size}>
+        <select className="rounded-lg border border-gray-100 text-gray-100 bg-gray-700 cursor-pointer p-2" onChange={typeWidthHandleChange} id={"border"} data-type="select" value={typeWidth.size}>
           <option value="px">px</option>
           <option value="em">em</option>
           <option value="rem">rem</option>

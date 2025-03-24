@@ -18,7 +18,7 @@ const StateStyle = ({ setState }) => {
     <div className='grid grid-cols-2 px-2 items-center'>
       <span>State</span>
       <button type="button" className="px-2 py-1 rounded-lg bg-blue-500 text-gray-50" onClick={toggleDialog}>{stateType.state == "" ? "normal" : stateType.state}</button>
-      <dialog ref={dialogRef} className="rounded-lg">
+      <dialog ref={dialogRef} className="rounded-lg m-auto" closedBy="any">
         <div className="grid gap-2 p-2">
           <button type="button" className="px-2 py-1 rounded-lg bg-red-500 text-gray-50" onClick={clickBtnDialog}>X</button>
           <button type="button" className="px-2 py-1 rounded-lg bg-green-500 text-gray-50" onClick={clickBtnDialog} data-value="">normal</button>

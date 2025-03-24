@@ -15,7 +15,7 @@
 
 .btn__tooltip__message{
   visibility: hidden;
-  position: absolute;
+  position: fixed;
   position-anchor: var(--first-box); /* Acoplamos a referencia */
   position-area:right;
 }

@@ -488,7 +488,7 @@ export function EditorProvider({ children }) {
 
 
   return (
-    <EditorContext.Provider
+    <EditorContext
       value={{
         configComponent,
         setConfigComponent,
@@ -512,6 +512,6 @@ export function EditorProvider({ children }) {
       }}
     >
       {children}
-    </EditorContext.Provider>
+    </EditorContext>
   );
 }

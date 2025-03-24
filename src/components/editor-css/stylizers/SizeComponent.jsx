@@ -12,7 +12,7 @@ const SizeComponent = ({ text, handleChange, configTemplate, sizeName, configRef
 
   const clickBtnDialog = (e) => {
     dialogRef.current.close()
-    if(!e.target.dataset.value)return
+    if (!e.target.dataset.value) return
     setSizeType({ size: e.target.dataset.value })
 
     const { value, name, dataset, id } = inp.current
@@ -32,9 +32,10 @@ const SizeComponent = ({ text, handleChange, configTemplate, sizeName, configRef
     <div className="grid grid-cols-2">
       <label htmlFor={`${sizeName}1`}>{text}</label>
 
-      <div className="grid grid-cols-[1fr_30px] border border-blue-500 rounded-lg overflow-hidden">
+      <div className="grid grid-cols-[minmax(30px,1fr)_30px] border border-blue-500 rounded-lg overflow-hidden">
 
-        {sizeType.size == "auto" ?
+        {sizeType.size == "auto" 
+          ?
           <input
             className=""
             id={`${sizeName}1`}

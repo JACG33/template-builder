@@ -11,7 +11,9 @@ const DialogSize = ({ toggleDialog, clickBtnDialog, dialogRef, sizeAuto,sizeType
           <button type="button" className="bg-green-500 rounded-lg text-gray-50 py-1 px-2 cursor-pointer" onClick={clickBtnDialog} data-value="em">em</button>
           <button type="button" className="bg-green-500 rounded-lg text-gray-50 py-1 px-2 cursor-pointer" onClick={clickBtnDialog} data-value="rem">rem</button>
           <button type="button" className="bg-green-500 rounded-lg text-gray-50 py-1 px-2 cursor-pointer" onClick={clickBtnDialog} data-value="vh">vh</button>
+          <button type="button" className="bg-green-500 rounded-lg text-gray-50 py-1 px-2 cursor-pointer" onClick={clickBtnDialog} data-value="vh">dvh</button>
           <button type="button" className="bg-green-500 rounded-lg text-gray-50 py-1 px-2 cursor-pointer" onClick={clickBtnDialog} data-value="vw">vw</button>
+          <button type="button" className="bg-green-500 rounded-lg text-gray-50 py-1 px-2 cursor-pointer" onClick={clickBtnDialog} data-value="vw">dvw</button>
         </div>
       </dialog>
     </>
