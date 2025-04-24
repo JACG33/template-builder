@@ -4,7 +4,7 @@
  * @param {Object} opc.script Objecto de listeners. 
  * @returns String de los scripts
  */
-export const makeScriptsStructure = ({ script }) => {
+export const makeScriptsStructureGrouped = ({ script }) => {
   const keysTytpes = Object.keys(script);
 
   let scriptText = ``;
@@ -25,6 +25,30 @@ export const makeScriptsStructure = ({ script }) => {
     `;
     }
   });
+
+  return scriptText;
+}
+
+/**
+ * Funcion para crear la estructura de los scripts.
+ * @param {Object} opc Objecto de parametros. 
+ * @param {string} opc.type Tipo de Evento. 
+ * @param {string} opc.login Logica del Evento. 
+ * @returns String con la logica del Evento
+ */
+export const makeScriptsStructure = ({ type, logic }) => {
+
+  let scriptText = ``;
+
+  if (type == "click") {
+    scriptText += `
+      document.addEventListener("click", e => {
+        const { target } = e
+
+        ${logic}
+
+      })`;
+  }
 
   return scriptText;
 }

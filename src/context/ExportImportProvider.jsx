@@ -1,6 +1,6 @@
 import { createContext, useRef, useState } from "react";
 import { useEditorProvider } from "../hoks/useEditorProvider";
-import { makeScriptsStructure } from "../helpers/makeScriptsStructure";
+import { makeScriptsStructureGrouped } from "../helpers/makeScriptsStructure";
 
 export const ExportImportContext = createContext({
   builderArea: null,
@@ -42,7 +42,7 @@ export function ExportImportProvider({ children }) {
 
   const getHtml = () => cleanHtmlToExport();
   const getCss = () => cssStylesSheetRef.current;
-  const getJs = () => makeScriptsStructure({ script: scripstRef?.current });
+  const getJs = () => makeScriptsStructureGrouped({ script: scripstRef?.current });
 
   const handleExport = () => {
     setCodeToShow({

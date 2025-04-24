@@ -20,56 +20,64 @@ export const BuilderArea = () => {
 
 function IFrame({ children, bkpoint, breackPoint }) {
   const { cssStylesSheetRef, scripstRef } = useEditorProvider();
-  const [ref, setRef] = useState();
-  const [refresh, setRefresh] = useState(false);
-
-  const container = ref?.contentWindow?.document?.body;
-  const head = ref?.contentWindow?.document?.head;
+  const [iframeRef, setIframeRef] = useState(null);
 
   useEffect(() => {
-    if (Object.keys(scripstRef.current).length > 0) {
-      ref?.contentWindow?.document.location.reload();
-      setRefresh(!refresh);
-    }
-  }, [scripstRef.current]);
+    if (iframeRef && scripstRef.current) {
+      const container = iframeRef.contentWindow.document.body;
+      const keyListner = Object.keys(scripstRef.current)
 
-  const tagScript = document.createElement("script");
-  tagScript.type = "module";
-  tagScript.dataset.script = "true";
-  if (scripstRef.current) {
-    let textScript = makeScripsBody({ scripts: scripstRef.current });
-    tagScript.textContent = textScript;
-  }
-  if (!container?.querySelector("[data-script]"))
-    container?.insertAdjacentElement("beforeend", tagScript);
-  else {
-    container.querySelector("[data-script]").textContent = null;
-    if (scripstRef.current) {
-      let textScript = makeScripsBody({ scripts: scripstRef.current });
-      container.querySelector("[data-script]").textContent = textScript;
+      // Obtener todos los scripts ya existentes
+      const existingScripts = container.querySelectorAll("[data-id]");
+      existingScripts.forEach((scriptElement) => {
+        const scriptId = scriptElement.getAttribute("data-id");
+        // Si el script ya no está en scripstRef, remuévelo
+
+        keyListner.forEach((key) => {
+          if (!scripstRef.current[key][scriptId.replace("script-", "")]) {
+            scriptElement.remove();
+          }
+        })
+      });
+
+      keyListner.forEach((keyName) => {
+        // Inyectar o actualizar scripts actuales
+        if (scripstRef.current[keyName]) {
+          Object.entries(scripstRef.current[keyName]).forEach(([key, script]) => {
+            const scriptId = `script-${key}`;
+            let scriptElement = container.querySelector(`[data-id="${scriptId}"]`);
+            if (scriptElement) {
+              scriptElement.textContent = makeScriptsStructure({ type: keyName, logic: script[keyName] })
+            } else {
+              scriptElement = document.createElement("script");
+              scriptElement.dataset.id = scriptId;
+              scriptElement.textContent = makeScriptsStructure({ type: keyName, logic: script[keyName] })
+           
+              container.appendChild(scriptElement);
+            }
+          });
+        }
+      })
     }
-  }
+  }, [scripstRef.current, iframeRef]);
+
+
+  const head = iframeRef?.contentWindow?.document?.head;
+  const container = iframeRef?.contentWindow?.document?.body;
 
   return (
     <iframe
-      ref={setRef}
+      ref={setIframeRef}
       data-iframe="builder"
       className={`h-screen builder__zone ${bkpoint[breackPoint]}`}
     >
-      {refresh && (
-        <>
-          {head &&
-            createPortal(<style>{cssStylesSheetRef.current}</style>, head)}
-          {container && createPortal(children, container)}
-        </>
-      )}
-      {!refresh && (
-        <>
-          {head &&
-            createPortal(<style>{cssStylesSheetRef.current}</style>, head)}
-          {container && createPortal(children, container)}
-        </>
-      )}
+      {head &&
+        createPortal(
+          <style>{cssStylesSheetRef.current}</style>,
+          head
+        )}
+      {container &&
+        createPortal(children, container)}
     </iframe>
   );
 }
@@ -164,6 +172,3 @@ function DragOverlayWrapper({}) {
   }
   return <DragOverlay>{node}</DragOverlay>;
 }
-
-const makeScripsBody = ({ scripts }) =>
-  makeScriptsStructure({ script: scripts });
