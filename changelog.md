@@ -1,5 +1,10 @@
 # Template Builder
 
+## Version 0.0.215 03-MAY-2025
++ Se corrigio el problema al eliminar un elemento del arbol de elementos, que al eliminar uno si este tenia subelementos estos no desaparecian.
++ Se modifico el componete __SyntaxHighlight__.
++ Se hicieron otras modificaciones.
+
 ## Version 0.0.21 24-ABR-2025
 + Se corrigio el problema de que al cargar el componente NavBar UI mas de una ves la UI desaparecia, con ayuda de __AI__ puede mejorar la funcionalidad, aunque el resultado ocacionó que los __scripts__ del componente esten separados en diferentes etiquetas __script__.
 + Se añadio una nueva funcion en el __helpers__ __makeScriptsStructure__.

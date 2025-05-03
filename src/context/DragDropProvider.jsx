@@ -5,7 +5,7 @@ import { ramdomid } from "../helpers/randomid";
 export const DragAndDropContext = createContext({
   parentElements: [],
   subElements: [],
-  dragginComponent:false,
+  dragginComponent: false,
   handleDeleteComponent: (id = 0) => {},
   handleDragginElement: () => {},
   hdlDragginComponent: (Boolean) => {},
@@ -27,7 +27,7 @@ export const DragAndDropContext = createContext({
 export function DragAndDropProvider({ children }) {
   const [parentElements, setParentElements] = useState([]);
   const [subElements, setSubElements] = useState([]);
-  const [dragginComponent,setDragginComponent]=useState(false)
+  const [dragginComponent, setDragginComponent] = useState(false)
   const { deleteConfigStyle, setUiStyles, setComponentCssSelectors } =
     useEditorProvider();
 
@@ -265,25 +265,25 @@ export function DragAndDropProvider({ children }) {
       otherCssClases:
         subCom.stylesModifiers != undefined
           ? [
-              `${subCom.type}${subId}`,
-              Object.keys(
-                JSON.parse(
-                  JSON?.stringify(subCom.stylesModifiers)?.replaceAll(
-                    "dataId",
-                    replaceDataId
-                  )
+            `${subCom.type}${subId}`,
+            Object.keys(
+              JSON.parse(
+                JSON?.stringify(subCom.stylesModifiers)?.replaceAll(
+                  "dataId",
+                  replaceDataId
                 )
-              ),
-            ].flat()
+              )
+            ),
+          ].flat()
           : [`${subCom.type}${subId}`],
       type: subCom.type,
       moreParams: subCom?.moreParams
         ? JSON.parse(
-            JSON?.stringify(subCom?.moreParams)?.replaceAll(
-              "dataId",
-              replaceDataId
-            )
+          JSON?.stringify(subCom?.moreParams)?.replaceAll(
+            "dataId",
+            replaceDataId
           )
+        )
         : {},
       parentId: id,
       innerText: other?.textToComponent
@@ -298,10 +298,33 @@ export function DragAndDropProvider({ children }) {
    */
   const handleDeleteComponent = (id) => {
     let comId = Number(id.replace(/[a-zA-Z]+/, "").replace(".", ""));
+
+    const findSub = subElements.filter(sub => sub.parentId == comId)
+
+    const idsToRemove = new Set();
+
+    // Función recursiva que recolecta todos los descendientes de un elemento
+    function collectDescendants(id) {
+      subElements.forEach(sub => {
+        if (sub.parentId === id) {
+          if (!idsToRemove.has(sub.id)) {  // Evitar procesar de nuevo
+            idsToRemove.add(sub.id);
+            collectDescendants(sub.id);
+          }
+        }
+      });
+    }
+
+    findSub.forEach(ele => {
+      collectDescendants(ele.id)  
+    })
+    
+
+    console.log({ findSub, idsToRemove, subElements })
+
     const filteredComponents = parentElements.filter((ele) => ele.id !== comId);
-    const filteredSubComponents = subElements.filter(
-      (ele) => ele.id !== comId && ele.parentId !== comId
-    );
+    let filteredSubComponents = subElements.filter(sub => !idsToRemove.has(sub.id))
+    filteredSubComponents = filteredSubComponents.filter(sub => sub.parentId !== comId)
 
     let ids = [];
     subElements.map((ele) => {
@@ -434,7 +457,7 @@ export function DragAndDropProvider({ children }) {
       return newEle;
     });
   };
-  
+
   /**
    * Funcion que indicara si un componente viene del sidebar, para que los componentes renderizados sean o no dropeables.
    * @param {Boolean} change Booleano que inidica si un componente viene del sidebar 
@@ -442,11 +465,11 @@ export function DragAndDropProvider({ children }) {
   const hdlDragginComponent = (change) => {
     setDragginComponent(change)
   }
-  
+
 
   const handleDragEnd = (e) => {
     const { active, over } = e;
-    console.log(e)
+    // console.log(e)
 
     // Drop en el BuilderArea
     if (over.data.current.typeElement == "builderArea") {

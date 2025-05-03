@@ -1,10 +1,11 @@
+import { useState } from 'react'
 import { useDragAndDropProvider } from '../../hoks/useDragAndDropProvider'
 import { useEditorProvider } from '../../hoks/useEditorProvider'
-import { TrashIcon } from '../svg'
+import { MinusIcon, PlusIcon, TrashIcon } from '../svg'
 
 const SideBarElementsRendered = () => {
   const { parentElements, subElements, handleDeleteComponent } = useDragAndDropProvider()
-  const { handleOpenEditor, getConfigComponent, componentCssSelectors } = useEditorProvider()
+  const { handleOpenEditor, getConfigComponent } = useEditorProvider()
 
   const handleDelete = (configNmae = "") => {
     handleDeleteComponent(configNmae)
@@ -14,7 +15,7 @@ const SideBarElementsRendered = () => {
   const hoverInElement = ({ cssClass = "" }) => {
     let ifr = document.querySelector(".builder__zone").contentWindow
     let elem = ifr.document.querySelector(`.${cssClass}`)
-    if(elem){
+    if (elem) {
       elem.style.outline = "1px solid red";
       elem.style.outlineOffset = "-2px"
     }
@@ -23,7 +24,7 @@ const SideBarElementsRendered = () => {
   const hoverOutElement = ({ cssClass = "" }) => {
     let ifr = document.querySelector(".builder__zone").contentWindow
     let elem = ifr.document.querySelector(`.${cssClass}`)
-    if(elem){
+    if (elem) {
       elem.style.outline = null
       elem.style.outlineOffset = null
     }
@@ -35,55 +36,79 @@ const SideBarElementsRendered = () => {
   }
 
   const tree = [];
+  const nodeMap = {};
 
-  parentElements.map(parentElement => {
-    let structure = {}
+  // console.log(subElements)
 
-    structure.elemen = parentElement
-    structure.sub = []
+  // Primero, creamos los nodos para los elementos padres:
+  parentElements.forEach(parent => {
+    const node = { element: parent, sub: [] };
+    nodeMap[parent.id] = node;
+    // Se asume que los elementos de parentElements son de primer nivel
+    tree.push(node);
+  });
 
-    subElements.map(subElement => {
-
-      if (parentElement.id == subElement.parentId) structure.sub.push(subElement)
-
-      subElements.map(subElement2 => {
-
-        if (parentElement.id == subElement.parentId && subElement.id == subElement2.parentId) structure.sub.push(subElement2)
-
-      })
-
-    })
-
-    tree.push(structure)
-
-  })
+  // Ahora, recorremos los subElements para asignarlos a su padre correspondiente:
+  subElements.forEach(sub => {
+    const node = { element: sub, sub: [] };
+    // Agregamos el nodo al diccionario usando su id para futuras búsquedas (en caso de tener sub-sub-elementos)
+    nodeMap[sub.id] = node;
+  
+    // Buscamos el nodo padre usando el parentId del subElement
+    const parentNode = nodeMap[sub.parentId];
+  
+    // Si encontramos el nodo padre, lo anidamos ahí:
+    if (parentNode) {
+      parentNode.sub.push(node);
+    } else {
+      // Si no se encuentra el nodo padre, lo agregamos al nivel raíz
+      // (o se podría manejar como un huerfano de otra forma)
+      tree.push(node);
+    }
+  });
 
   return (
     <>
       <span className='text-center'>Rendered Components</span>
-      <div className='my-2 grid gap-2'>
+      <div className='my-2 grid content-start p-1 gap-2 h-[calc(100%_-_70px)] overflow-y-auto' style={{ scrollbarWidth: 'thin' }}>
         {tree?.length > 0 && tree.map(parent => {
-          return (
-            // ParentElement
-            <div key={parent.elemen.id}>
-              <div className='tree__element'
-                onMouseOverCapture={e => hoverInElement({ cssClass: `${parent.elemen.type}${parent.elemen.id}` })}
-                onMouseLeave={e => hoverOutElement({ cssClass: `${parent.elemen.type}${parent.elemen.id}` })}
-              >
-                <button
-                  type='button'
-                  key={parent.elemen.id}
-                  onClick={e => handleSetOpenEditor({id:`${parent.elemen.type}${parent.elemen.id}`,cssSelector:parent.elemen.otherCssClases})}
-                >{`<${parent.elemen.type}>`}</button>
-                <ButtonDelete handleDelete={handleDelete} type={parent.elemen.type} id={parent.elemen.id} />
+          if (parent.sub.length > 0) {
+            return (
+              // ParentElement
+              <div key={parent.element.id}>
+                <Tree
+                  handleDelete={handleDelete}
+                  handleSetOpenEditor={handleSetOpenEditor}
+                  keyObject={parent}
+                  onMouseOverCapture={() => hoverInElement({ cssClass: `${parent.element.type}${parent.element.id}` })}
+                  onMouseLeave={() => hoverOutElement({ cssClass: `${parent.element.type}${parent.element.id}` })}>
+          
+                  {/* SubElements */}
+                  <SubComponent subComponent={parent.sub} handleSetOpenEditor={handleSetOpenEditor} hoverInElement={hoverInElement} hoverOutElement={hoverOutElement} handleDelete={handleDelete} />
+                </Tree>
+                        
               </div>
-
-              {/* SubElements */}
-              <div style={{ paddingLeft: "10px", marginLeft: "10px", borderLeft: "1px solid #fff" }}>
-                <SubComponent subComponent={parent.sub} handleSetOpenEditor={handleSetOpenEditor} hoverInElement={hoverInElement} hoverOutElement={hoverOutElement} handleDelete={handleDelete} />
+            )
+          } else {
+            return (
+              // ParentElement
+              <div key={parent.element.id}>
+                <div className='grid grid-cols-[1fr_40px] gap-1'
+                  onMouseOverCapture={() => hoverInElement({ cssClass: `${parent.element.type}${parent.element.id}` })}
+                  onMouseLeave={() => hoverOutElement({ cssClass: `${parent.element.type}${parent.element.id}` })}
+                >
+                  <button
+                    className='p-1 rounded-lg bg-slate-700 hover:bg-slate-600 transition-all duration-300 cursor-pointer'
+                    type='button'
+                    key={parent.element.id}
+                    onClick={() => handleSetOpenEditor({ id: `${parent.element.type}${parent.element.id}`, cssSelector: parent.element.otherCssClases })}
+                  >{`<${parent.element.type}>`}</button>
+                  <ButtonDelete handleDelete={handleDelete} type={parent.element.type} id={parent.element.id} />
+                </div>
               </div>
-            </div>
-          )
+            )
+          }
+            
         }
         )}
       </div>
@@ -93,9 +118,9 @@ const SideBarElementsRendered = () => {
 
 const ButtonDelete = ({ handleDelete, type, id }) => {
   return (
-    <button type='button' className=' py-1 px-2 border border-red-600 rounded-lg hover:text-white hover:bg-red-600'
-      onClick={e => handleDelete(`${type}${id}`)}>
-      <TrashIcon/>
+    <button type='button' className='cursor-pointer py-1 px-2 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 rounded-lg p-1 cursor-pointer'
+      onClick={() => handleDelete(`${type}${id}`)}>
+      <TrashIcon />
     </button>
   )
 }
@@ -105,24 +130,85 @@ const SubComponent = ({ subComponent = [], hoverInElement, hoverOutElement, hand
     <>
       {
         subComponent.length > 0 && subComponent.map(sub => {
-          return (
-            <div key={sub.id}>
-              <div className='tree__element'
-                onMouseOverCapture={e => hoverInElement({ cssClass: `${sub.type}${sub.id}` })}
-                onMouseLeave={e => hoverOutElement({ cssClass: `${sub.type}${sub.id}` })}
-              >
-                <button
-                  type='button'
-                  key={sub.id}
-                  onClick={e => handleSetOpenEditor({id:`${sub.type}${sub.id}`,cssSelector:sub.otherCssClases})}
-                >{`<${sub.type}>`}</button>
-                <ButtonDelete handleDelete={handleDelete} type={sub.type} id={sub.id} />
+          if (sub.sub && sub.sub.length > 0) {
+            return (
+              <div key={sub.element.id}>
+                <Tree
+                  handleDelete={handleDelete}
+                  handleSetOpenEditor={handleSetOpenEditor}
+                  keyObject={sub}
+                  onMouseOverCapture={() => hoverInElement({ cssClass: `${sub.element.type}${sub.element.id}` })}
+                  onMouseLeave={() => hoverOutElement({ cssClass: `${sub.element.type}${sub.element.id}` })}>
+          
+                  {/* SubElements */}
+                  <SubComponent subComponent={sub.sub} handleSetOpenEditor={handleSetOpenEditor} hoverInElement={hoverInElement} hoverOutElement={hoverOutElement} handleDelete={handleDelete} />
+                </Tree>
               </div>
-            </div>
-          )
+            )
+          } else {
+            return (
+              <div key={sub.element.id}>
+                <div className='grid grid-cols-[1fr_40px] gap-1'
+                  onMouseOverCapture={() => hoverInElement({ cssClass: `${sub.element.type}${sub.element.id}` })}
+                  onMouseLeave={() => hoverOutElement({ cssClass: `${sub.element.type}${sub.element.id}` })}
+                >
+                  <button
+                    className='p-1 rounded-lg bg-slate-700 hover:bg-slate-600 transition-all duration-300 cursor-pointer'
+                    type='button'
+                    key={sub.element.id}
+                    onClick={() => handleSetOpenEditor({ id: `${sub.element.type}${sub.element.id}`, cssSelector: sub.element.otherCssClases })}
+                  >{`<${sub.element.type}>`}</button>
+                  <ButtonDelete handleDelete={handleDelete} type={sub.type} id={sub.id} />
+                </div>
+              </div>
+            )
+          }
         })
       }
     </>
+  )
+}
+
+
+const Branch = ({ children, className = "" }) => {
+  return (
+    <div className={`grid gap-1 pl-3 ml-3 border-l ${className}`}>
+      {children}
+    </div>
+  )
+}
+
+
+const Tree = ({ children, keyObject, handleSetOpenEditor, handleDelete, ...params }) => {
+  const [openTree, setOpenTree] = useState(false)
+
+  const hdlOpenTree = () => setOpenTree(!openTree)
+
+  return (
+
+    <div className='grid gap-1'>
+      <div className='grid grid-cols-[36px_1fr_40px] gap-1 cursor-pointer' {...params}>
+        <button 
+          className='p-1 rounded-lg border border-slate-500 hover:bg-slate-500 transition-all duration-300 cursor-pointer' 
+          title={`${openTree ? "Close" : "Open"}`}
+          onClick={hdlOpenTree}
+        >
+          {openTree && <MinusIcon />}
+          {!openTree && <PlusIcon />}
+        </button>
+        <button
+          type='button'
+          className='p-1 rounded-lg hover:bg-slate-600 transition-all duration-300 cursor-pointer'
+          key={keyObject.element.id}
+          onClick={() => handleSetOpenEditor({ id: `${keyObject.element.type}${keyObject.element.id}`, cssSelector: keyObject.element.otherCssClases })}
+        >
+          <span>{`<${keyObject.element.type}>`}</span> 
+        </button>
+        <ButtonDelete handleDelete={handleDelete} type={keyObject.element.type} id={keyObject.element.id} />
+      </div>
+      <Branch className={`${openTree ? "" : "hidden"}`}>{children}</Branch>
+    </div>
+
   )
 }
 
