@@ -4,7 +4,7 @@ Template Builder (ALFA) es un project con el que podras crear plantillas arrastr
 
 # Preview
 
-![Preview Template Builder](./screenshot/capture.webm)
+![Preview Template Builder](./screenshot/capture.mp4)
 
 Instalacion de dependencias via pnpm
 ```js
